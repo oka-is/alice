@@ -1,0 +1,2 @@
+*.pb.go -diff
+*_mock.go -diff
