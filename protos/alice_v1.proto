@@ -117,7 +117,7 @@ message CardItem {
 // Workspace with linked table "user_workspaces",
 // which is contain encrypted master kay and auth key
 message UserWithWorkspace {
-  string record_id = 1;
+  string id = 1;
   string user_id = 2;
   string owner_id = 3;
   bytes owner_pub_key = 4;
@@ -125,8 +125,7 @@ message UserWithWorkspace {
   bytes aed_key_enc = 6;
   bytes aed_key_tag = 7;
   bytes title_enc = 8;
-  string record_created_at = 9;
-  string workspace_created_at = 10;
+  string created_at = 9;
 }
 
 message ListCardsResponse {
