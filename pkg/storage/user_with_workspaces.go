@@ -28,7 +28,6 @@ func userWorkspacesScope() SelectBuilder {
 			"owners.pub_key AS owner_pub_key",
 			"user_workspaces.workspace_id AS workspace_id",
 			"user_workspaces.aed_key_enc AS aed_key_enc",
-			"user_workspaces.aed_key_tag AS aed_key_tag",
 			"workspaces.title_enc AS title_enc",
 			"user_workspaces.created_at AS record_created_at",
 			"workspaces.created_at AS workspace_created_at").

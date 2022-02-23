@@ -27,7 +27,6 @@ func MapUserWithWorkspace(input domain.UserWithWorkspace) *alice_v1.UserWithWork
 		OwnerPubKey: input.OwnerPubKey.Bytea,
 		WorkspaceId: input.WorkspaceID.String,
 		AedKeyEnc:   input.AedKeyEnc.Bytea,
-		AedKeyTag:   input.AedKeyTag.Bytea,
 		TitleEnc:    input.TitleEnc.Bytea,
 		CreatedAt:   input.WorkspaceCreatedAt.Time.String(),
 	}

@@ -13,14 +13,12 @@ func (s *Storage) insertUserWorkspace(ctx context.Context, conn IConn, userWorks
 			"user_id",
 			"owner_id",
 			"workspace_id",
-			"aed_key_enc",
-			"aed_key_tag").
+			"aed_key_enc").
 		Values(
 			userWorkspace.UserID,
 			userWorkspace.OwnerID,
 			userWorkspace.WorkspaceID,
-			userWorkspace.AedKeyEnc,
-			userWorkspace.AedKeyTag).
+			userWorkspace.AedKeyEnc).
 		Suffix("RETURNING id, created_at")
 
 	return s.QueryRow(ctx, conn, query).Scan(&userWorkspace.ID, &userWorkspace.CreatedAt)

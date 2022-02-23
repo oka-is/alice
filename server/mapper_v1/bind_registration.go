@@ -20,7 +20,6 @@ func BindRegistration(input *alice_v1.RegistrationRequest) (domain.User, domain.
 
 	userWorkspace := domain.UserWorkspace{
 		AedKeyEnc: domain.NewEmptyBytes(w.GetAedKeyEnc()),
-		AedKeyTag: domain.NewEmptyBytes(w.GetAedKeyTag()),
 	}
 
 	workspace := domain.Workspace{

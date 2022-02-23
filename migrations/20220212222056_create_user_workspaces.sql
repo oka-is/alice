@@ -7,7 +7,6 @@ CREATE TABLE user_workspaces
     owner_id     UUID REFERENCES users (id) ON DELETE CASCADE      NOT NULL,
     workspace_id UUID REFERENCES workspaces (id) ON DELETE CASCADE NOT NULL,
     aed_key_enc  bytea                                             NOT NULL,
-    aed_key_tag  bytea                                             NOT NULL,
     created_at   TIMESTAMPTZ                                       NOT NULL DEFAULT NOW()
 );
 

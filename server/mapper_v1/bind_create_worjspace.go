@@ -8,7 +8,6 @@ import (
 func BindCreateWorkspace(input *alice_v1.CreateWorkspaceRequest) (domain.UserWorkspace, domain.Workspace) {
 	userWorkspace := domain.UserWorkspace{
 		AedKeyEnc: domain.NewEmptyBytes(input.GetAedKeyEnc()),
-		AedKeyTag: domain.NewEmptyBytes(input.GetAedKeyTag()),
 	}
 
 	workspace := domain.Workspace{
