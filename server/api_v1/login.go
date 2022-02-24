@@ -75,6 +75,7 @@ func auth0(ctx *engine.Context, req *alice_v1.Login0Request) (proto.Message, err
 
 	return &alice_v1.Login0Response{
 		Mutual: mutual,
+		Salt:   user.SrpSalt.Bytea,
 	}, nil
 }
 
