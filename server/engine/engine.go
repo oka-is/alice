@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"net/http"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -39,6 +40,8 @@ func New(store storage.IStore, opts Opts) *Engine {
 		MaxAge:           12 * time.Hour,
 	}))
 
+	router.GET("/health", WrapAction(health))
+
 	return router
 }
 
@@ -52,5 +55,13 @@ func useExtendedContext(store storage.IStore, opts Opts) gin.HandlerFunc {
 	return func(ctx *gin.Context) {
 		Ctx(ctx).SetStore(store).SetOpts(opts)
 		ctx.Next()
+	}
+}
+
+func health(ctx *Context) {
+	if err := ctx.GetStore().Ping(ctx.Ctx()); err != nil {
+		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+	} else {
+		ctx.String(http.StatusOK, "[OK]")
 	}
 }

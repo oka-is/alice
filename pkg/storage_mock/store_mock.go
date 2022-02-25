@@ -255,6 +255,20 @@ func (mr *MockStoreMockRecorder) NominateSession(ctx, jti interface{}) *gomock.C
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NominateSession", reflect.TypeOf((*MockStore)(nil).NominateSession), ctx, jti)
 }
 
+// Ping mocks base method.
+func (m *MockStore) Ping(ctx context.Context) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Ping", ctx)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Ping indicates an expected call of Ping.
+func (mr *MockStoreMockRecorder) Ping(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Ping", reflect.TypeOf((*MockStore)(nil).Ping), ctx)
+}
+
 // RetrieveSession mocks base method.
 func (m *MockStore) RetrieveSession(ctx context.Context, opts jwt.IOts, token string) (domain.Session, error) {
 	m.ctrl.T.Helper()

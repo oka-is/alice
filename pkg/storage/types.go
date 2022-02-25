@@ -19,6 +19,10 @@ type (
 
 //go:generate mockgen -destination ../storage_mock/store_mock.go -source types.go -package storage_mock -mock_names IStore=MockStore
 type IStore interface {
+	// Common
+
+	Ping(ctx context.Context) error
+
 	// Operations about sessions
 
 	IssueSession(ctx context.Context, opts jwt.IOts) (*domain.Session, string, error)
