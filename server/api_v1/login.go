@@ -91,6 +91,11 @@ func auth1(ctx *engine.Context, req *alice_v1.Login1Request) (proto.Message, err
 		return nil, fmt.Errorf("invalid credentials")
 	}
 
+	err = ctx.GetStore().NominateSession(ctx.Ctx(), ctx.MustGetSession().Jti.String)
+	if err != nil {
+		return nil, fmt.Errorf("failed to candidate session: %w", err)
+	}
+
 	return &alice_v1.Login1Response{
 		Proof: srp.Proof(),
 	}, nil
