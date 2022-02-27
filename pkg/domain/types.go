@@ -39,3 +39,7 @@ func NewEmptyByteSlice(input [][]byte) NullByteaSlice {
 func NewEmptyTime(input time.Time) NullTime {
 	return NullTime{Time: input, Valid: !input.IsZero()}
 }
+
+func NewEmptyBool(input bool) NullBool {
+	return NullBool{Bool: input, Valid: true}
+}

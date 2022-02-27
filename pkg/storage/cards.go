@@ -69,13 +69,3 @@ func (s *Storage) insertCard(ctx context.Context, db IConn, card *domain.Card) e
 
 	return s.QueryRow(ctx, db, query).Scan(&card.ID, &card.CreatedAt)
 }
-
-func (s *Storage) insertCardItem(ctx context.Context, db IConn, item domain.CardItem) error {
-	query := Builder().
-		Insert("card_items").
-		Columns("card_id", "title_enc", "body_enc").
-		Values(item.CardID, item.TitleEnc, item.BodyEnc).
-		Suffix("RETURNING id")
-
-	return s.QueryRow(ctx, db, query).Scan(&item.ID)
-}

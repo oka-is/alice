@@ -11,6 +11,7 @@ func MapCardItem(input domain.CardItem) *alice_v1.CardItem {
 		CardId:   input.CardID.String,
 		TitleEnc: input.TitleEnc.Bytea,
 		BodyEnc:  input.BodyEnc.Bytea,
+		Hidden:   input.Hidden.Bool,
 	}
 }
 

@@ -33,6 +33,7 @@ func BindRegistration(input *alice_v1.RegistrationRequest) (domain.User, domain.
 			items[ix] = domain.CardItem{
 				TitleEnc: domain.NewEmptyBytes(item.GetTitleEnc()),
 				BodyEnc:  domain.NewEmptyBytes(item.GetBodyEnc()),
+				Hidden:   domain.NewEmptyBool(item.GetHidden()),
 			}
 		}
 

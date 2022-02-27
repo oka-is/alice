@@ -5,7 +5,8 @@ CREATE TABLE card_items
     id        UUID DEFAULT gen_random_uuid() PRIMARY KEY,
     card_id   UUID REFERENCES cards (id) ON DELETE CASCADE NOT NULL,
     title_enc bytea,
-    body_enc  bytea
+    body_enc  bytea,
+    hidden    boolean
 );
 
 CREATE INDEX ix_card_items_card_id
