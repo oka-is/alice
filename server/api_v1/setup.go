@@ -21,7 +21,7 @@ func Extend(router *engine.Engine) *engine.Engine {
 	auth.POST("/v1/workspaces/create", engine.WrapAction(CreateWorkspace))
 	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards", paramWorkspaceID), engine.WrapAction(ListCards))
 	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/delete", paramWorkspaceID), engine.WrapAction(DeleteWorkspace))
-	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s", paramWorkspaceID, paramCardID), engine.WrapAction(ListCardItems))
+	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/items", paramWorkspaceID, paramCardID), engine.WrapAction(ListCardItems))
 	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/create", paramWorkspaceID), engine.WrapAction(CreateCard))
 	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/delete", paramWorkspaceID, paramCardID), engine.WrapAction(DeleteCard))
 	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/clone", paramWorkspaceID, paramCardID), engine.WrapAction(CloneCard))
