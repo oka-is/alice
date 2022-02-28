@@ -39,17 +39,28 @@ var (
 		Name:  "backup-url",
 		Value: "http://localhost:3000/backup.html",
 	}
+
+	FlagServerVer666 = &cli.BoolFlag{
+		Name:    "ver666",
+		EnvVars: []string{"VER666"},
+	}
 )
 
 func Server(ctx *cli.Context) error {
-	routes := engine.New(Ctx(ctx).GetStore(), engine.Opts{
+	opts := engine.Opts{
 		AllowOrigin:  ctx.StringSlice(FlagServerAllowOrigin.Name),
 		CookieSecure: ctx.Bool(FlagServerCookieSecure.Name),
 		CookieDomain: ctx.String(FlagServerCookieDomain.Name),
 		BackupUrl:    ctx.String(FlagServerBackupUrl.Name),
 		Ver:          pack.NewWer(pack.Ver1),
-	})
+	}
 
+	if ctx.Bool(FlagServerVer666.Name) {
+		opts.Ver = pack.NewWer(pack.Ver666)
+	}
+
+	routes := engine.New(Ctx(ctx).GetStore(), opts)
 	api_v1.Extend(routes)
+
 	return routes.Run(ctx.String(FlagServerAddress.Name))
 }

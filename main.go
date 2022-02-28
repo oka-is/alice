@@ -29,6 +29,7 @@ func main() {
 					cmd.FlagServerCookieDomain,
 					cmd.FlagServerCookieSecure,
 					cmd.FlagServerBackupUrl,
+					cmd.FlagServerVer666,
 				},
 				Before: cmd.BeforeAll(cmd.BeforeStore),
 				Action: cmd.Server,

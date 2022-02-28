@@ -9,8 +9,9 @@ import (
 
 const (
 	PubCipherUnknown = PubCipherByte(iota)
-	Rsa2048Sha256
 	Rsa4096Sha256
+	Rsa2048Sha256
+	Rsa1024Sha256
 )
 
 func NewPubCipher(byte PubCipherByte) IPubCipher {
@@ -19,6 +20,8 @@ func NewPubCipher(byte PubCipherByte) IPubCipher {
 		return &RsaCipher{size: 4096, hash: NewHash(SHA256)}
 	case Rsa2048Sha256:
 		return &RsaCipher{size: 2048, hash: NewHash(SHA256)}
+	case Rsa1024Sha256:
+		return &RsaCipher{size: 1024, hash: NewHash(SHA256)}
 	default:
 		return nil
 	}
