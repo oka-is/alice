@@ -69,3 +69,9 @@ func (s *Storage) CandidateSession(ctx context.Context, jti, candidateID string,
 	_, err := s.Exec(ctx, s.db, query)
 	return err
 }
+
+func (s *Storage) DeleteSession(ctx context.Context, jti string) error {
+	query := Builder().Delete("sessions").Where("jti = ?", jti)
+	_, err := s.Exec(ctx, s.db, query)
+	return err
+}

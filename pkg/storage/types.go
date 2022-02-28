@@ -29,6 +29,7 @@ type IStore interface {
 	RetrieveSession(ctx context.Context, opts jwt.IOts, token string) (session domain.Session, err error)
 	NominateSession(ctx context.Context, jti string) error
 	CandidateSession(ctx context.Context, jti, candidateID string, srp []byte) error
+	DeleteSession(ctx context.Context, jti string) error
 
 	// Operations about users
 
