@@ -30,6 +30,7 @@ func main() {
 					cmd.FlagServerCookieSecure,
 					cmd.FlagServerBackupUrl,
 					cmd.FlagServerVer666,
+					cmd.FlagServerMountCypress,
 				},
 				Before: cmd.BeforeAll(cmd.BeforeStore),
 				Action: cmd.Server,

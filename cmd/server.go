@@ -3,6 +3,7 @@ package cmd
 import (
 	"github.com/oka-is/alice/pkg/pack"
 	"github.com/oka-is/alice/server/api_v1"
+	"github.com/oka-is/alice/server/cypress"
 	"github.com/oka-is/alice/server/engine"
 	"github.com/urfave/cli/v2"
 )
@@ -44,6 +45,12 @@ var (
 		Name:    "ver666",
 		EnvVars: []string{"VER666"},
 	}
+
+	FlagServerMountCypress = &cli.BoolFlag{
+		Name:    "mount-cypress",
+		Usage:   "mount cypress endpoints for test cases only",
+		EnvVars: []string{"MOUNT_CYPRESS"},
+	}
 )
 
 func Server(ctx *cli.Context) error {
@@ -61,6 +68,10 @@ func Server(ctx *cli.Context) error {
 
 	routes := engine.New(Ctx(ctx).GetStore(), opts)
 	api_v1.Extend(routes)
+
+	if ctx.Bool(FlagServerMountCypress.Name) {
+		cypress.Extend(routes)
+	}
 
 	return routes.Run(ctx.String(FlagServerAddress.Name))
 }
