@@ -22,6 +22,7 @@ type IStore interface {
 	// Common
 
 	Ping(ctx context.Context) error
+	TruncateAll(ctx context.Context) error
 
 	// Operations about sessions
 
