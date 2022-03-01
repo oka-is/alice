@@ -37,6 +37,21 @@ func (m *MockStore) EXPECT() *MockStoreMockRecorder {
 	return m.recorder
 }
 
+// ArchiveCard mocks base method.
+func (m *MockStore) ArchiveCard(ctx context.Context, ID string) (bool, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ArchiveCard", ctx, ID)
+	ret0, _ := ret[0].(bool)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ArchiveCard indicates an expected call of ArchiveCard.
+func (mr *MockStoreMockRecorder) ArchiveCard(ctx, ID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ArchiveCard", reflect.TypeOf((*MockStore)(nil).ArchiveCard), ctx, ID)
+}
+
 // CandidateSession mocks base method.
 func (m *MockStore) CandidateSession(ctx context.Context, jti, candidateID string, srp []byte) error {
 	m.ctrl.T.Helper()
@@ -119,6 +134,20 @@ func (m *MockStore) DeleteCard(ctx context.Context, cardID string) error {
 func (mr *MockStoreMockRecorder) DeleteCard(ctx, cardID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteCard", reflect.TypeOf((*MockStore)(nil).DeleteCard), ctx, cardID)
+}
+
+// DeleteSession mocks base method.
+func (m *MockStore) DeleteSession(ctx context.Context, jti string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteSession", ctx, jti)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteSession indicates an expected call of DeleteSession.
+func (mr *MockStoreMockRecorder) DeleteSession(ctx, jti interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSession", reflect.TypeOf((*MockStore)(nil).DeleteSession), ctx, jti)
 }
 
 // DeleteWorkspace mocks base method.

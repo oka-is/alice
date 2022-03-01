@@ -23,6 +23,7 @@ func CloneCard(ctx *engine.Context) {
 	err := ctx.GetStore().CloneCard(ctx.Context, &card, cardID)
 	if err != nil {
 		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 
 	ctx.ProtoBuf(http.StatusOK, &alice_v1.CloneCardResponse{

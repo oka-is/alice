@@ -19,6 +19,17 @@ func (s *Storage) CloneCard(ctx context.Context, card *domain.Card, oldCardID st
 	})
 }
 
+func (s *Storage) ArchiveCard(ctx context.Context, ID string) (archived bool, err error) {
+	query := Builder().
+		Update("cards").
+		Set("archived", Expr("NOT COALESCE(archived, FALSE)")).
+		Where("id = ?", ID).
+		Suffix("RETURNING archived")
+
+	err = s.Get(ctx, s.db, &archived, query)
+	return
+}
+
 func (s *Storage) ListCardsByWorkspace(ctx context.Context, workspaceID string) (out []domain.Card, err error) {
 	query := Builder().Select("*").From("cards").Where("workspace_id = ?", workspaceID)
 	err = s.Select(ctx, s.db, &out, query)
@@ -63,8 +74,8 @@ func (s *Storage) cloneCard(ctx context.Context, db IConn, card *domain.Card, ol
 func (s *Storage) insertCard(ctx context.Context, db IConn, card *domain.Card) error {
 	query := Builder().
 		Insert("cards").
-		Columns("workspace_id", "title_enc", "tags_enc").
-		Values(card.WorkspaceID, card.TitleEnc, card.TagsEnc).
+		Columns("workspace_id", "archived", "title_enc", "tags_enc").
+		Values(card.WorkspaceID, card.Archived, card.TitleEnc, card.TagsEnc).
 		Suffix("RETURNING id, created_at")
 
 	return s.QueryRow(ctx, db, query).Scan(&card.ID, &card.CreatedAt)
