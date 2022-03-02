@@ -38,7 +38,7 @@ func Test_Whoami(t *testing.T) {
 	})
 }
 
-func Test_ListWorkspacesResponse(t *testing.T) {
+func Test_ListWorkspace(t *testing.T) {
 	t.Run("it works", func(t *testing.T) {
 		ctrl, buf, backup, _, flush := MustSetup(t)
 		defer ctrl.Finish()
@@ -47,19 +47,18 @@ func Test_ListWorkspacesResponse(t *testing.T) {
 
 		flush.EXPECT().Flush().Times(1)
 
-		err := ListWorkspacesResponse(backup, []domain.UserWithWorkspace{workspace})
+		err := ListWorkspace(backup, workspace)
 		require.NoError(t, err)
 
-		res := new(alice_v1.ListWorkspacesResponse)
+		res := new(alice_v1.UserWithWorkspace)
 		marker := MustParse(t, buf, res)
-		require.Equal(t, MarkerListWorkspacesResponse, marker)
+		require.Equal(t, MarkerWorkspace, marker)
 
-		require.Len(t, res.Items, 1)
-		require.Equal(t, res.Items[0].WorkspaceId, workspace.WorkspaceID.String)
+		require.Equal(t, res.WorkspaceId, workspace.WorkspaceID.String)
 	})
 }
 
-func Test_ListCardsResponses(t *testing.T) {
+func Test_ListCard(t *testing.T) {
 	t.Run("it works", func(t *testing.T) {
 		ctrl, buf, backup, store, flush := MustSetup(t)
 		defer ctrl.Finish()
@@ -70,15 +69,14 @@ func Test_ListCardsResponses(t *testing.T) {
 		flush.EXPECT().Flush().Times(1)
 		store.EXPECT().ListCardsByWorkspace(gomock.Any(), gomock.Any()).Return([]domain.Card{card}, nil)
 
-		err := ListCardsResponses(backup, []domain.UserWithWorkspace{workspace})
+		err := ListCards(backup, workspace)
 		require.NoError(t, err)
 
-		res := new(alice_v1.ListCardsResponse)
+		res := new(alice_v1.Card)
 		marker := MustParse(t, buf, res)
-		require.Equal(t, MarkerListCardsResponse, marker)
+		require.Equal(t, MarkerCard, marker)
 
-		require.Len(t, res.Items, 1)
-		require.Equal(t, res.Items[0].Id, card.ID.String)
+		require.Equal(t, res.Id, card.ID.String)
 	})
 }
 

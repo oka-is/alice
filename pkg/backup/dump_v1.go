@@ -17,12 +17,14 @@ func (b *Backup) DumpV1(userID string) error {
 		return fmt.Errorf("failed to dump a whoami: %w", err)
 	}
 
-	if err = ListWorkspacesResponse(b, workspaces); err != nil {
-		return fmt.Errorf("failed to dump a workspaces: %w", err)
-	}
+	for ix := range workspaces {
+		if err = ListWorkspace(b, workspaces[ix]); err != nil {
+			return fmt.Errorf("failed to dump a workspaces: %w", err)
+		}
 
-	if err = ListCardsResponses(b, workspaces); err != nil {
-		return fmt.Errorf("failed to dump a workspaces: %w", err)
+		if err = ListCards(b, workspaces[ix]); err != nil {
+			return fmt.Errorf("failed to dump a cards: %w", err)
+		}
 	}
 
 	return nil
@@ -44,10 +46,9 @@ func Whoami(b *Backup, userID string) error {
 	return nil
 }
 
-func ListWorkspacesResponse(b *Backup, workspaces []domain.UserWithWorkspace) error {
-	if _, err := b.writer.write(
-		MarkerListWorkspacesResponse,
-		mapper_v1.MapListUserWorkspaceResponse(workspaces)); err != nil {
+func ListWorkspace(b *Backup, workspace domain.UserWithWorkspace) error {
+	if _, err := b.writer.write(MarkerWorkspace,
+		mapper_v1.MapUserWithWorkspace(workspace)); err != nil {
 		return err
 	}
 
@@ -55,21 +56,19 @@ func ListWorkspacesResponse(b *Backup, workspaces []domain.UserWithWorkspace) er
 	return nil
 }
 
-func ListCardsResponses(b *Backup, workspaces []domain.UserWithWorkspace) error {
-	for ix := range workspaces {
-		cards, err := b.store.ListCardsByWorkspace(b.ctx, workspaces[ix].WorkspaceID.String)
-		if err != nil {
-			return fmt.Errorf("filed to list cards: %w", err)
-		}
-
-		if _, err = b.writer.write(
-			MarkerListCardsResponse,
-			mapper_v1.MapListCardsResponse(cards)); err != nil {
-			return err
-		}
-
-		b.f.Flush()
+func ListCards(b *Backup, workspace domain.UserWithWorkspace) error {
+	cards, err := b.store.ListCardsByWorkspace(b.ctx, workspace.WorkspaceID.String)
+	if err != nil {
+		return fmt.Errorf("filed to list cards: %w", err)
 	}
 
+	for ix := range cards {
+		_, err = b.writer.write(MarkerCard, mapper_v1.MapCard(cards[ix]))
+		if err != nil {
+			return err
+		}
+	}
+
+	b.f.Flush()
 	return nil
 }
