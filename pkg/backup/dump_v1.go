@@ -22,8 +22,19 @@ func (b *Backup) DumpV1(userID string) error {
 			return fmt.Errorf("failed to dump a workspaces: %w", err)
 		}
 
-		if err = ListCards(b, workspaces[ix]); err != nil {
-			return fmt.Errorf("failed to dump a cards: %w", err)
+		cards, err := b.store.ListCardsByWorkspace(b.ctx, workspaces[ix].WorkspaceID.String)
+		if err != nil {
+			return fmt.Errorf("filed to list cards: %w", err)
+		}
+
+		for cid := range cards {
+			if err = ListCard(b, cards[cid]); err != nil {
+				return fmt.Errorf("failed to dump a card: %w", err)
+			}
+
+			if err = ListCardItems(b, cards[cid]); err != nil {
+				return fmt.Errorf("failed to dump card items: %w", err)
+			}
 		}
 	}
 
@@ -56,14 +67,24 @@ func ListWorkspace(b *Backup, workspace domain.UserWithWorkspace) error {
 	return nil
 }
 
-func ListCards(b *Backup, workspace domain.UserWithWorkspace) error {
-	cards, err := b.store.ListCardsByWorkspace(b.ctx, workspace.WorkspaceID.String)
+func ListCard(b *Backup, card domain.Card) error {
+	_, err := b.writer.write(MarkerCard, mapper_v1.MapCard(card))
 	if err != nil {
-		return fmt.Errorf("filed to list cards: %w", err)
+		return err
 	}
 
-	for ix := range cards {
-		_, err = b.writer.write(MarkerCard, mapper_v1.MapCard(cards[ix]))
+	b.f.Flush()
+	return nil
+}
+
+func ListCardItems(b *Backup, card domain.Card) error {
+	items, err := b.store.ListCardItems(b.ctx, card.ID.String)
+	if err != nil {
+		return fmt.Errorf("filed to list card items: %w", err)
+	}
+
+	for ix := range items {
+		_, err = b.writer.write(MarkerCardItem, mapper_v1.MapCardItem(items[ix]))
 		if err != nil {
 			return err
 		}

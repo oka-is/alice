@@ -60,16 +60,13 @@ func Test_ListWorkspace(t *testing.T) {
 
 func Test_ListCard(t *testing.T) {
 	t.Run("it works", func(t *testing.T) {
-		ctrl, buf, backup, store, flush := MustSetup(t)
+		ctrl, buf, backup, _, flush := MustSetup(t)
 		defer ctrl.Finish()
 
-		workspace := domain.UserWithWorkspace{}
-		card := domain.Card{ID: domain.NewEmptyString("foo")}
-
 		flush.EXPECT().Flush().Times(1)
-		store.EXPECT().ListCardsByWorkspace(gomock.Any(), gomock.Any()).Return([]domain.Card{card}, nil)
 
-		err := ListCards(backup, workspace)
+		card := domain.Card{ID: domain.NewEmptyString("foo")}
+		err := ListCard(backup, card)
 		require.NoError(t, err)
 
 		res := new(alice_v1.Card)
@@ -77,6 +74,26 @@ func Test_ListCard(t *testing.T) {
 		require.Equal(t, MarkerCard, marker)
 
 		require.Equal(t, res.Id, card.ID.String)
+	})
+}
+
+func Test_ListCardItems(t *testing.T) {
+	t.Run("it works", func(t *testing.T) {
+		ctrl, buf, backup, store, flush := MustSetup(t)
+		defer ctrl.Finish()
+
+		item := domain.CardItem{ID: domain.NewEmptyString("foo")}
+
+		flush.EXPECT().Flush().Times(1)
+		store.EXPECT().ListCardItems(gomock.Any(), gomock.Any()).Return([]domain.CardItem{item}, nil)
+
+		err := ListCardItems(backup, domain.Card{})
+		require.NoError(t, err)
+
+		res := new(alice_v1.CardItem)
+		marker := MustParse(t, buf, res)
+		require.Equal(t, MarkerCardItem, marker)
+		require.Equal(t, res.Id, item.ID.String)
 	})
 }
 
