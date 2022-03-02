@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/oka-is/alice/pkg/domain"
+	"github.com/oka-is/alice/pkg/validator"
 )
 
 func (s *Storage) CreateUser(ctx context.Context, user *domain.User, uw *domain.UserWorkspace,
@@ -21,8 +22,41 @@ func (s *Storage) FindUserIdentity(ctx context.Context, identity string) (user d
 }
 
 func (s *Storage) FindUser(ctx context.Context, ID string) (user domain.User, err error) {
+	return s.findUserDB(ctx, s.db, ID)
+}
+
+func (s *Storage) TerminateUser(ctx context.Context, identity []byte, userID string) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx *Tx) error {
+		return s.terminateUserDB(c, tx, identity, userID)
+	})
+}
+
+func (s *Storage) terminateUserDB(ctx context.Context, db IConn, identity []byte, userID string) error {
+	user, err := s.findUserDB(ctx, db, userID)
+	if err != nil {
+		return fmt.Errorf("failed to find a user: %w", err)
+	}
+
+	err = s.validator.ValidateTerminate(validator.ValidateTerminateOpts{
+		User:     user,
+		Identity: identity,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to validate termination: %w", err)
+	}
+
+	err = s.deleteOwnerWorkspaces(ctx, db, userID)
+	if err != nil {
+		return fmt.Errorf("failed to delete workspaces: %w", err)
+	}
+
+	query := Builder().Delete("users").Where("id = ?", userID)
+	return s.Exec1(ctx, db, query)
+}
+
+func (s *Storage) findUserDB(ctx context.Context, db IConn, ID string) (user domain.User, err error) {
 	query := Builder().Select("*").From("users").Where("id = ?", ID).Limit(1)
-	err = s.Get(ctx, s.db, &user, query)
+	err = s.Get(ctx, db, &user, query)
 	return
 }
 

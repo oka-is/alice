@@ -14,6 +14,7 @@ func CreateCard(ctx *engine.Context) {
 	req := new(alice_v1.CreateCardRequest)
 	if err := ctx.MustBindProto(req); err != nil {
 		_ = ctx.AbortWithError(http.StatusBadRequest, err)
+		return
 	}
 
 	card, items := mapper_v1.BindCreateCard(req)

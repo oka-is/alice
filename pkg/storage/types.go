@@ -37,6 +37,7 @@ type IStore interface {
 	CreateUser(ctx context.Context, user *domain.User, uw *domain.UserWorkspace, workspace *domain.Workspace, cards []domain.CardWithItems) error
 	FindUserIdentity(ctx context.Context, identity string) (user domain.User, err error)
 	FindUser(ctx context.Context, ID string) (user domain.User, err error)
+	TerminateUser(ctx context.Context, identity []byte, userID string) error
 
 	// Operations about cards & items
 

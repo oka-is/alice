@@ -1183,6 +1183,53 @@ func (x *ArchiveCardResponse) GetArchived() bool {
 	return false
 }
 
+type TerminateRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Identity []byte `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
+}
+
+func (x *TerminateRequest) Reset() {
+	*x = TerminateRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_alice_v1_proto_msgTypes[19]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *TerminateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*TerminateRequest) ProtoMessage() {}
+
+func (x *TerminateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alice_v1_proto_msgTypes[19]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use TerminateRequest.ProtoReflect.Descriptor instead.
+func (*TerminateRequest) Descriptor() ([]byte, []int) {
+	return file_alice_v1_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *TerminateRequest) GetIdentity() []byte {
+	if x != nil {
+		return x.Identity
+	}
+	return nil
+}
+
 type RegistrationRequest_User struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -1200,7 +1247,7 @@ type RegistrationRequest_User struct {
 func (x *RegistrationRequest_User) Reset() {
 	*x = RegistrationRequest_User{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[19]
+		mi := &file_alice_v1_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1213,7 +1260,7 @@ func (x *RegistrationRequest_User) String() string {
 func (*RegistrationRequest_User) ProtoMessage() {}
 
 func (x *RegistrationRequest_User) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[19]
+	mi := &file_alice_v1_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1290,7 +1337,7 @@ type RegistrationRequest_Workspace struct {
 func (x *RegistrationRequest_Workspace) Reset() {
 	*x = RegistrationRequest_Workspace{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[20]
+		mi := &file_alice_v1_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1303,7 +1350,7 @@ func (x *RegistrationRequest_Workspace) String() string {
 func (*RegistrationRequest_Workspace) ProtoMessage() {}
 
 func (x *RegistrationRequest_Workspace) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[20]
+	mi := &file_alice_v1_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1346,7 +1393,7 @@ type RegistrationRequest_CardItem struct {
 func (x *RegistrationRequest_CardItem) Reset() {
 	*x = RegistrationRequest_CardItem{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[21]
+		mi := &file_alice_v1_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1359,7 +1406,7 @@ func (x *RegistrationRequest_CardItem) String() string {
 func (*RegistrationRequest_CardItem) ProtoMessage() {}
 
 func (x *RegistrationRequest_CardItem) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[21]
+	mi := &file_alice_v1_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1409,7 +1456,7 @@ type RegistrationRequest_CardWithItems struct {
 func (x *RegistrationRequest_CardWithItems) Reset() {
 	*x = RegistrationRequest_CardWithItems{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[22]
+		mi := &file_alice_v1_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1422,7 +1469,7 @@ func (x *RegistrationRequest_CardWithItems) String() string {
 func (*RegistrationRequest_CardWithItems) ProtoMessage() {}
 
 func (x *RegistrationRequest_CardWithItems) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[22]
+	mi := &file_alice_v1_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1613,7 +1660,10 @@ var file_alice_v1_proto_rawDesc = []byte{
 	0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x22, 0x31, 0x0a, 0x13, 0x41, 0x72, 0x63, 0x68, 0x69,
 	0x76, 0x65, 0x43, 0x61, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x1a,
 	0x0a, 0x08, 0x61, 0x72, 0x63, 0x68, 0x69, 0x76, 0x65, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x08,
-	0x52, 0x08, 0x61, 0x72, 0x63, 0x68, 0x69, 0x76, 0x65, 0x64, 0x2a, 0x60, 0x0a, 0x08, 0x53, 0x72,
+	0x52, 0x08, 0x61, 0x72, 0x63, 0x68, 0x69, 0x76, 0x65, 0x64, 0x22, 0x2e, 0x0a, 0x10, 0x54, 0x65,
+	0x72, 0x6d, 0x69, 0x6e, 0x61, 0x74, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a,
+	0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c,
+	0x52, 0x08, 0x69, 0x64, 0x65, 0x6e, 0x74, 0x69, 0x74, 0x79, 0x2a, 0x60, 0x0a, 0x08, 0x53, 0x72,
 	0x70, 0x53, 0x74, 0x61, 0x67, 0x65, 0x12, 0x15, 0x0a, 0x11, 0x53, 0x52, 0x50, 0x5f, 0x53, 0x54,
 	0x41, 0x47, 0x45, 0x5f, 0x55, 0x4e, 0x4b, 0x4e, 0x4f, 0x57, 0x4e, 0x10, 0x00, 0x12, 0x13, 0x0a,
 	0x0f, 0x53, 0x52, 0x50, 0x5f, 0x53, 0x54, 0x41, 0x47, 0x45, 0x5f, 0x41, 0x55, 0x54, 0x48, 0x30,
@@ -1637,7 +1687,7 @@ func file_alice_v1_proto_rawDescGZIP() []byte {
 }
 
 var file_alice_v1_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_alice_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 23)
+var file_alice_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
 var file_alice_v1_proto_goTypes = []interface{}{
 	(SrpStage)(0),                             // 0: alice_v1.SrpStage
 	(*RegistrationRequest)(nil),               // 1: alice_v1.RegistrationRequest
@@ -1659,15 +1709,16 @@ var file_alice_v1_proto_goTypes = []interface{}{
 	(*ListCardsResponse)(nil),                 // 17: alice_v1.ListCardsResponse
 	(*ListCardItemsResponse)(nil),             // 18: alice_v1.ListCardItemsResponse
 	(*ArchiveCardResponse)(nil),               // 19: alice_v1.ArchiveCardResponse
-	(*RegistrationRequest_User)(nil),          // 20: alice_v1.RegistrationRequest.User
-	(*RegistrationRequest_Workspace)(nil),     // 21: alice_v1.RegistrationRequest.Workspace
-	(*RegistrationRequest_CardItem)(nil),      // 22: alice_v1.RegistrationRequest.CardItem
-	(*RegistrationRequest_CardWithItems)(nil), // 23: alice_v1.RegistrationRequest.CardWithItems
+	(*TerminateRequest)(nil),                  // 20: alice_v1.TerminateRequest
+	(*RegistrationRequest_User)(nil),          // 21: alice_v1.RegistrationRequest.User
+	(*RegistrationRequest_Workspace)(nil),     // 22: alice_v1.RegistrationRequest.Workspace
+	(*RegistrationRequest_CardItem)(nil),      // 23: alice_v1.RegistrationRequest.CardItem
+	(*RegistrationRequest_CardWithItems)(nil), // 24: alice_v1.RegistrationRequest.CardWithItems
 }
 var file_alice_v1_proto_depIdxs = []int32{
-	20, // 0: alice_v1.RegistrationRequest.user:type_name -> alice_v1.RegistrationRequest.User
-	21, // 1: alice_v1.RegistrationRequest.workspace:type_name -> alice_v1.RegistrationRequest.Workspace
-	23, // 2: alice_v1.RegistrationRequest.card_with_items:type_name -> alice_v1.RegistrationRequest.CardWithItems
+	21, // 0: alice_v1.RegistrationRequest.user:type_name -> alice_v1.RegistrationRequest.User
+	22, // 1: alice_v1.RegistrationRequest.workspace:type_name -> alice_v1.RegistrationRequest.Workspace
+	24, // 2: alice_v1.RegistrationRequest.card_with_items:type_name -> alice_v1.RegistrationRequest.CardWithItems
 	16, // 3: alice_v1.CreateWorkspaceResponse.workspace:type_name -> alice_v1.UserWithWorkspace
 	14, // 4: alice_v1.CreateCardRequest.card:type_name -> alice_v1.Card
 	15, // 5: alice_v1.CreateCardRequest.card_items:type_name -> alice_v1.CardItem
@@ -1676,7 +1727,7 @@ var file_alice_v1_proto_depIdxs = []int32{
 	16, // 8: alice_v1.ListWorkspacesResponse.items:type_name -> alice_v1.UserWithWorkspace
 	14, // 9: alice_v1.ListCardsResponse.items:type_name -> alice_v1.Card
 	15, // 10: alice_v1.ListCardItemsResponse.items:type_name -> alice_v1.CardItem
-	22, // 11: alice_v1.RegistrationRequest.CardWithItems.items:type_name -> alice_v1.RegistrationRequest.CardItem
+	23, // 11: alice_v1.RegistrationRequest.CardWithItems.items:type_name -> alice_v1.RegistrationRequest.CardItem
 	12, // [12:12] is the sub-list for method output_type
 	12, // [12:12] is the sub-list for method input_type
 	12, // [12:12] is the sub-list for extension type_name
@@ -1919,7 +1970,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RegistrationRequest_User); i {
+			switch v := v.(*TerminateRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1931,7 +1982,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RegistrationRequest_Workspace); i {
+			switch v := v.(*RegistrationRequest_User); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1943,7 +1994,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RegistrationRequest_CardItem); i {
+			switch v := v.(*RegistrationRequest_Workspace); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -1955,6 +2006,18 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RegistrationRequest_CardItem); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_alice_v1_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RegistrationRequest_CardWithItems); i {
 			case 0:
 				return &v.state
@@ -1973,7 +2036,7 @@ func file_alice_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_alice_v1_proto_rawDesc,
 			NumEnums:      1,
-			NumMessages:   23,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

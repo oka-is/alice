@@ -16,6 +16,7 @@ func Extend(router *engine.Engine) *engine.Engine {
 	auth.POST("/v1/login/auth1", engine.WrapAction(LoginAuth1))
 	auth.POST("/v1/whoami", engine.WrapAction(WhoAmI))
 	auth.POST("/v1/sessions/delete", engine.WrapAction(DeleteSession))
+	auth.POST("/v1/terminate", engine.WrapAction(Terminate))
 	auth.GET("/v1/backups/create", engine.WrapAction(CreateBackup))
 	auth.POST("/v1/workspaces/list", engine.WrapAction(ListWorkspaces))
 	auth.POST("/v1/workspaces/create", engine.WrapAction(CreateWorkspace))

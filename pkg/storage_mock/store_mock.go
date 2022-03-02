@@ -313,6 +313,20 @@ func (mr *MockStoreMockRecorder) RetrieveSession(ctx, opts, token interface{}) *
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveSession", reflect.TypeOf((*MockStore)(nil).RetrieveSession), ctx, opts, token)
 }
 
+// TerminateUser mocks base method.
+func (m *MockStore) TerminateUser(ctx context.Context, identity []byte, userID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "TerminateUser", ctx, identity, userID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// TerminateUser indicates an expected call of TerminateUser.
+func (mr *MockStoreMockRecorder) TerminateUser(ctx, identity, userID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TerminateUser", reflect.TypeOf((*MockStore)(nil).TerminateUser), ctx, identity, userID)
+}
+
 // TruncateAll mocks base method.
 func (m *MockStore) TruncateAll(ctx context.Context) error {
 	m.ctrl.T.Helper()

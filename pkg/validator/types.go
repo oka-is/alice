@@ -4,6 +4,7 @@ import "github.com/oka-is/alice/pkg/domain"
 
 type IValidator interface {
 	ValidateUser(user domain.User) error
+	ValidateTerminate(opts ValidateTerminateOpts) error
 }
 
 type Validator struct{}

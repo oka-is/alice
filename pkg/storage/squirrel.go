@@ -24,6 +24,11 @@ func (s *Storage) Exec(ctx context.Context, conn IConn, query IBuilder) (Result,
 	return conn.ExecContext(ctx, sql, args...)
 }
 
+func (s *Storage) Exec1(ctx context.Context, conn IConn, query IBuilder) error {
+	_, err := s.Exec(ctx, conn, query)
+	return err
+}
+
 func (s *Storage) Select(ctx context.Context, conn IConn, dest interface{}, query IBuilder) error {
 	sql, args, err := query.ToSql()
 	if err != nil {

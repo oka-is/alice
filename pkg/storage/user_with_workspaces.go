@@ -18,6 +18,17 @@ func (s *Storage) FindUserWithWorkspace(ctx context.Context, ID string) (out dom
 	return
 }
 
+func (s *Storage) deleteOwnerWorkspaces(ctx context.Context, db IConn, userID string) error {
+	query := Builder().
+		Delete("workspaces").
+		Where(`id IN 
+(SELECT workspace_id
+FROM user_workspaces
+WHERE owner_id = ?)`, userID)
+
+	return s.Exec1(ctx, db, query)
+}
+
 func userWorkspacesScope() SelectBuilder {
 	return Builder().
 		Select().
