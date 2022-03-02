@@ -10,24 +10,22 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
-func LoginCookie(ctx *engine.Context) {
-	_, token, err := ctx.GetStore().IssueSession(ctx.Ctx(), ctx.JwtOpts())
+func LoginAuth0(ctx *engine.Context) {
+	req := new(alice_v1.Login0Request)
+	err := ctx.MustBindProto(req)
+	if err != nil {
+		_ = ctx.AbortWithError(http.StatusUnprocessableEntity, err)
+		return
+	}
+
+	session, token, err := ctx.GetStore().IssueSession(ctx.Ctx(), ctx.JwtOpts())
 	if err != nil {
 		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
 	ctx.SetCookieToken(token)
-	ctx.Done()
-}
-
-func LoginAuth0(ctx *engine.Context) {
-	req := new(alice_v1.Login0Request)
-	err := ctx.MustBindProto(req)
-	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
-		return
-	}
+	ctx.SetSession(session)
 
 	message, err := auth0(ctx, req)
 	if err != nil {

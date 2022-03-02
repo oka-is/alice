@@ -210,10 +210,10 @@ func (mr *MockStoreMockRecorder) FindUserWithWorkspace(ctx, ID interface{}) *gom
 }
 
 // IssueSession mocks base method.
-func (m *MockStore) IssueSession(ctx context.Context, opts jwt.IOts) (*domain.Session, string, error) {
+func (m *MockStore) IssueSession(ctx context.Context, opts jwt.IOts) (domain.Session, string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "IssueSession", ctx, opts)
-	ret0, _ := ret[0].(*domain.Session)
+	ret0, _ := ret[0].(domain.Session)
 	ret1, _ := ret[1].(string)
 	ret2, _ := ret[2].(error)
 	return ret0, ret1, ret2
@@ -311,6 +311,20 @@ func (m *MockStore) RetrieveSession(ctx context.Context, opts jwt.IOts, token st
 func (mr *MockStoreMockRecorder) RetrieveSession(ctx, opts, token interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveSession", reflect.TypeOf((*MockStore)(nil).RetrieveSession), ctx, opts, token)
+}
+
+// TruncateAll mocks base method.
+func (m *MockStore) TruncateAll(ctx context.Context) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "TruncateAll", ctx)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// TruncateAll indicates an expected call of TruncateAll.
+func (mr *MockStoreMockRecorder) TruncateAll(ctx interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TruncateAll", reflect.TypeOf((*MockStore)(nil).TruncateAll), ctx)
 }
 
 // MockIBuilder is a mock of IBuilder interface.

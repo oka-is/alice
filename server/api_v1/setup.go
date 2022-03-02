@@ -9,11 +9,10 @@ import (
 
 func Extend(router *engine.Engine) *engine.Engine {
 	router.POST("/v1/register", engine.WrapAction(Register))
-	router.POST("/v1/login/cookie", engine.WrapAction(LoginCookie))
+	router.POST("/v1/login/auth0", engine.WrapAction(LoginAuth0))
 
 	// BEGIN:AUTHENTICATED
 	auth := router.Group("/", engine.WrapAction(useAuth))
-	auth.POST("/v1/login/auth0", engine.WrapAction(LoginAuth0))
 	auth.POST("/v1/login/auth1", engine.WrapAction(LoginAuth1))
 	auth.POST("/v1/whoami", engine.WrapAction(WhoAmI))
 	auth.POST("/v1/sessions/delete", engine.WrapAction(DeleteSession))

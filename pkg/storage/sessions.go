@@ -14,8 +14,8 @@ const (
 )
 
 // IssueSession creates a session for anonymous and generates JWT token
-func (s *Storage) IssueSession(ctx context.Context, opts jwt.IOts) (*domain.Session, string, error) {
-	session := &domain.Session{
+func (s *Storage) IssueSession(ctx context.Context, opts jwt.IOts) (domain.Session, string, error) {
+	session := domain.Session{
 		Jti:      domain.NewEmptyString(domain.NewUUID()),
 		TimeFrom: domain.NewEmptyTime(time.Now()),
 		TimeTo:   domain.NewEmptyTime(time.Now().Add(SessionExpirationDuration)),
