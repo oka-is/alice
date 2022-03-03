@@ -31,5 +31,6 @@ func BindCardItem(input *alice_v1.CardItem) domain.CardItem {
 		CardID:   domain.NewNullString(),
 		TitleEnc: domain.NewEmptyBytes(input.GetTitleEnc()),
 		BodyEnc:  domain.NewEmptyBytes(input.GetBodyEnc()),
+		Hidden:   domain.NewEmptyBool(input.GetHidden()),
 	}
 }
