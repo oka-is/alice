@@ -6,7 +6,7 @@ BIN_LINTER:=$(BIN)/golangci-lint
 VERSION:=$(shell cat VERSION)
 REGISTRY_DOMAIN=ghcr.io
 REGISTRY_NAME=ghcr.io/oka-is/alice
-PG_DSN:=postgres://localhost:5432/alice?sslmode=disable&timezone=utc
+PG_DSN?=postgres://localhost:5432/alice?sslmode=disable&timezone=utc
 
 help:
 	@echo 'Available targets: $(VERSION)'
@@ -15,6 +15,8 @@ help:
 	@echo '  make db:up'
 	@echo '  make db:down'
 	@echo '  make NAME="create_users" db:create'
+	@echo ' '
+	@echo '  make test'
 
 .PHONY: install-lint
 install-lint:
@@ -23,11 +25,17 @@ ifeq ($(wildcard $(BIN_LINTER)),)
 	GOBIN=$(BIN) go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.44.0
 endif
 
+spec:
+	$(eval PG_DSN?=postgres://localhost:5432/alice_test?sslmode=disable&timezone=utc)
+
 db\:up:
 	goose -dir migrations postgres "$(PG_DSN)" up
 
 db\:down:
 	goose -dir migrations postgres "$(PG_DSN)" down
+
+db\:status:
+	goose -dir migrations postgres "$(PG_DSN)" status
 
 db\:create: NAME=$NAME
 db\:create:
@@ -36,8 +44,9 @@ db\:create:
 proto:
 	protoc --proto_path=protos --go_out=. alice_v1.proto
 
+test: spec
 test:
-	go test -count=1 -p 4 -race -cover -covermode atomic ./...
+	PG_DSN="$(PG_DSN)" go test -count=1 -p 4 -race -cover -covermode atomic ./...
 
 test\:wasm:
 	yarn --cwd js run test

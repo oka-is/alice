@@ -48,10 +48,8 @@ func (s *Storage) Get(ctx context.Context, conn IConn, dest interface{}, query I
 func (s *Storage) QueryRow(ctx context.Context, conn IConn, query IBuilder) *Row {
 	sql, args, err := query.ToSql()
 	if err != nil {
-		// TODO WTF?
 		return &Row{}
 	}
-
 	return conn.QueryRowContext(ctx, sql, args...)
 }
 

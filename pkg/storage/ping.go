@@ -5,7 +5,5 @@ import (
 )
 
 func (s *Storage) Ping(ctx context.Context) error {
-	query := Builder().Select("1")
-	_, err := s.Exec(ctx, s.db, query)
-	return err
+	return s.Exec1(ctx, s.db, Builder().Select("1"))
 }

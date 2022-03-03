@@ -32,8 +32,7 @@ func (s *Storage) IssueSession(ctx context.Context, opts jwt.IOts) (domain.Sessi
 		Columns("jti", "time_from", "time_to").
 		Values(session.Jti, session.TimeFrom, session.TimeTo)
 
-	_, err = s.Exec(ctx, s.db, query)
-	return session, token, err
+	return session, token, s.Exec1(ctx, s.db, query)
 }
 
 // RetrieveSession find & verify a session by JWT token
@@ -72,6 +71,5 @@ func (s *Storage) CandidateSession(ctx context.Context, jti, candidateID string,
 
 func (s *Storage) DeleteSession(ctx context.Context, jti string) error {
 	query := Builder().Delete("sessions").Where("jti = ?", jti)
-	_, err := s.Exec(ctx, s.db, query)
-	return err
+	return s.Exec1(ctx, s.db, query)
 }

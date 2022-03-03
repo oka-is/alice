@@ -14,7 +14,7 @@ func (s *Storage) Truncate(ctx context.Context, tables ...string) error {
 		statements[ix] = fmt.Sprintf("TRUNCATE TABLE %s CASCADE;", table)
 	}
 
-	_, err := s.db.Exec(strings.Join(statements, ";\n"))
+	_, err := s.db.ExecContext(ctx, strings.Join(statements, ";\n"))
 	return err
 }
 

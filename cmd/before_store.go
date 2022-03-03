@@ -18,11 +18,11 @@ var (
 )
 
 func BeforeStore(ctx *cli.Context) error {
-	store, err := storage.Connect(ctx.String(FlagPostgresDSN.Name), validator.New())
+	db, err := storage.Connect(ctx.String(FlagPostgresDSN.Name))
 	if err != nil {
 		return fmt.Errorf("filed to connect to store: %w", err)
 	}
 
-	Ctx(ctx).SetStore(store)
+	Ctx(ctx).SetStore(storage.NewStorage(db, validator.New()))
 	return nil
 }

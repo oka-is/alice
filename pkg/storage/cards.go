@@ -8,19 +8,19 @@ import (
 )
 
 func (s *Storage) CreateCardWithItems(ctx context.Context, card *domain.Card, items []domain.CardItem) error {
-	return s.Tx(ctx, nil, func(c context.Context, tx *Tx) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
 		return s.createCardWithItems(c, tx, card, items)
 	})
 }
 
 func (s *Storage) UpdateCardWithItems(ctx context.Context, card *domain.Card, items []domain.CardItem) error {
-	return s.Tx(ctx, nil, func(c context.Context, tx *Tx) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
 		return s.updateCardWithItems(c, tx, card, items)
 	})
 }
 
 func (s *Storage) CloneCard(ctx context.Context, card *domain.Card, oldCardID string) error {
-	return s.Tx(ctx, nil, func(c context.Context, tx *Tx) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
 		return s.cloneCard(c, tx, card, oldCardID)
 	})
 }

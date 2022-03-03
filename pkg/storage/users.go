@@ -10,7 +10,7 @@ import (
 
 func (s *Storage) CreateUser(ctx context.Context, user *domain.User, uw *domain.UserWorkspace,
 	workspace *domain.Workspace, cardsWithItems []domain.CardWithItems) error {
-	return s.Tx(ctx, nil, func(c context.Context, tx *Tx) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
 		return s.createUser(c, tx, user, uw, workspace, cardsWithItems)
 	})
 }
@@ -26,7 +26,7 @@ func (s *Storage) FindUser(ctx context.Context, ID string) (user domain.User, er
 }
 
 func (s *Storage) TerminateUser(ctx context.Context, identity []byte, userID string) error {
-	return s.Tx(ctx, nil, func(c context.Context, tx *Tx) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
 		return s.terminateUserDB(c, tx, identity, userID)
 	})
 }

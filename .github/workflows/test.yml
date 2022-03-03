@@ -3,6 +3,20 @@ name: Test
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    env:
+      PG_DSN: postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable&timezone=utc
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -15,8 +29,11 @@ jobs:
       - name: Download
         run: go mod download
 
-      - name: Lint
-        run: make lint
+      #- name: Lint
+      #  run: make lint
+
+      - name: Migrate
+        run: make generate_build && go run main.go goose up
 
       - name: Test
         run: make test

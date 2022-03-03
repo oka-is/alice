@@ -14,7 +14,7 @@ type (
 	Tx     = sqlx.Tx
 	Row    = sql.Row
 	TxOpts = sql.TxOptions
-	TxFunc func(ctx context.Context, tx *Tx) error
+	TxFunc func(ctx context.Context, tx IConn) error
 )
 
 //go:generate mockgen -destination ../storage_mock/store_mock.go -source types.go -package storage_mock -mock_names IStore=MockStore
@@ -66,4 +66,16 @@ type IConn interface {
 	ExecContext(ctx context.Context, query string, args ...interface{}) (Result, error)
 	GetContext(ctx context.Context, dest interface{}, query string, args ...interface{}) error
 	QueryRowContext(ctx context.Context, query string, args ...interface{}) *Row
+}
+
+type IDb interface {
+	IConn
+	SqlDB() *sql.DB
+	BeginTxx(ctx context.Context, opts *TxOpts) (ITransaction, error)
+}
+
+type ITransaction interface {
+	IConn
+	Rollback() error
+	Commit() error
 }

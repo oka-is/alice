@@ -8,7 +8,7 @@ import (
 )
 
 func (s *Storage) CreateWorkspace(ctx context.Context, uw *domain.UserWorkspace, workspace *domain.Workspace) error {
-	return s.Tx(ctx, nil, func(c context.Context, tx *Tx) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
 		return s.createWorkspace(c, tx, uw, workspace)
 	})
 }

@@ -11,6 +11,7 @@ func DeleteCard(ctx *engine.Context) {
 	err := ctx.GetStore().DeleteCard(ctx.Context, cardID)
 	if err != nil {
 		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
 	}
 
 	ctx.Done()

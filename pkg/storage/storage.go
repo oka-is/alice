@@ -2,7 +2,6 @@ package storage
 
 import (
 	"database/sql"
-	"fmt"
 
 	sq "github.com/Masterminds/squirrel"
 	_ "github.com/jackc/pgx/v4/stdlib"
@@ -11,17 +10,21 @@ import (
 )
 
 type Storage struct {
-	db        *sqlx.DB
+	db        IDb
 	validator validator.IValidator
 }
 
-func Connect(dsn string, validator validator.IValidator) (*Storage, error) {
-	db, err := sqlx.Connect("pgx", dsn)
-	if err != nil {
-		return nil, fmt.Errorf("filed to connect to postgres: %w", err)
-	}
+func Connect(dsn string) (*sqlx.DB, error) {
+	return sqlx.Connect("pgx", dsn)
+}
 
-	return &Storage{db: db, validator: validator}, nil
+func NewStorage(db *sqlx.DB, validator validator.IValidator) *Storage {
+	return &Storage{db: NewSqlxDB(db), validator: validator}
+}
+
+func NewSavepointStorage(db *sqlx.DB, validator validator.IValidator) (*Storage, *SavepointDB) {
+	savepoint := NewSavepointDB(db)
+	return &Storage{db: savepoint, validator: validator}, savepoint
 }
 
 func (s *Storage) SetValidator(validator validator.IValidator) *Storage {
@@ -29,8 +32,10 @@ func (s *Storage) SetValidator(validator validator.IValidator) *Storage {
 	return s
 }
 
+// SqlDB returns raw SQL connection, required for
+// goose migrations
 func (s *Storage) SqlDB() *sql.DB {
-	return s.db.DB
+	return s.db.SqlDB()
 }
 
 // Builder returns SQL Builder object
