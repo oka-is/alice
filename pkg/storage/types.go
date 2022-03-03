@@ -42,6 +42,7 @@ type IStore interface {
 	// Operations about cards & items
 
 	CreateCardWithItems(ctx context.Context, card *domain.Card, items []domain.CardItem) error
+	UpdateCardWithItems(ctx context.Context, card *domain.Card, items []domain.CardItem) error
 	ListCardsByWorkspace(ctx context.Context, workspaceID string) (out []domain.Card, err error)
 	ListCardItems(ctx context.Context, cardID string) (out []domain.CardItem, err error)
 	DeleteCard(ctx context.Context, cardID string) error

@@ -13,6 +13,12 @@ func (s *Storage) CreateCardWithItems(ctx context.Context, card *domain.Card, it
 	})
 }
 
+func (s *Storage) UpdateCardWithItems(ctx context.Context, card *domain.Card, items []domain.CardItem) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx *Tx) error {
+		return s.updateCardWithItems(c, tx, card, items)
+	})
+}
+
 func (s *Storage) CloneCard(ctx context.Context, card *domain.Card, oldCardID string) error {
 	return s.Tx(ctx, nil, func(c context.Context, tx *Tx) error {
 		return s.cloneCard(c, tx, card, oldCardID)
@@ -42,15 +48,36 @@ func (s *Storage) DeleteCard(ctx context.Context, cardID string) error {
 	return err
 }
 
+func (s *Storage) updateCardWithItems(ctx context.Context, db IConn, card *domain.Card, items []domain.CardItem) error {
+	if err := s.updateCard(ctx, db, card); err != nil {
+		return fmt.Errorf("failed to update card: %w", err)
+	}
+
+	for ix, item := range items {
+		item.CardID = card.ID
+		item.Position = domain.NewNullInt64(int64(ix))
+		if err := s.upsertCardItem(ctx, db, item); err != nil {
+			return fmt.Errorf("failed to update card item: %w", err)
+		}
+	}
+
+	if err := s.deleteCardItemsPositionedGT(ctx, db, card.ID.String, len(items)-1); err != nil {
+		return fmt.Errorf("failed to delete positioned items: %w", err)
+	}
+
+	return nil
+}
+
 func (s *Storage) createCardWithItems(ctx context.Context, db IConn, card *domain.Card, items []domain.CardItem) error {
 	if err := s.insertCard(ctx, db, card); err != nil {
 		return fmt.Errorf("failed to create card: %w", err)
 	}
 
-	for _, item := range items {
+	for ix, item := range items {
 		item.CardID = card.ID
-		if err := s.insertCardItem(ctx, db, item); err != nil {
-			return fmt.Errorf("failed to create card item: %w", err)
+		item.Position = domain.NewNullInt64(int64(ix))
+		if err := s.upsertCardItem(ctx, db, item); err != nil {
+			return fmt.Errorf("failed to update card item: %w", err)
 		}
 	}
 
@@ -79,4 +106,15 @@ func (s *Storage) insertCard(ctx context.Context, db IConn, card *domain.Card) e
 		Suffix("RETURNING id, created_at")
 
 	return s.QueryRow(ctx, db, query).Scan(&card.ID, &card.CreatedAt)
+}
+
+func (s *Storage) updateCard(ctx context.Context, db IConn, card *domain.Card) error {
+	query := Builder().
+		Update("cards").
+		Set("archived", card.Archived).
+		Set("title_enc", card.TitleEnc).
+		Set("tags_enc", card.TagsEnc).
+		Where("id = ?", card.ID.String)
+
+	return s.Exec1(ctx, db, query)
 }

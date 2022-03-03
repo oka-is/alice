@@ -5,7 +5,7 @@ import (
 	"github.com/oka-is/alice/pkg/domain"
 )
 
-func BindCreateCard(input *alice_v1.CreateCardRequest) (domain.Card, []domain.CardItem) {
+func BindUpsertCard(input *alice_v1.UpsertCardRequest) (domain.Card, []domain.CardItem) {
 	card := BindCard(input.GetCard())
 	items := BindCardItems(input.GetCardItems())
 	return card, items

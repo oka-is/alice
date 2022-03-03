@@ -10,7 +10,7 @@ import (
 	"github.com/oka-is/alice/server/mapper_v1"
 )
 
-func CreateCard(ctx *engine.Context) {
+func UpdateCard(ctx *engine.Context) {
 	req := new(alice_v1.UpsertCardRequest)
 	if err := ctx.MustBindProto(req); err != nil {
 		_ = ctx.AbortWithError(http.StatusBadRequest, err)
@@ -18,8 +18,8 @@ func CreateCard(ctx *engine.Context) {
 	}
 
 	card, items := mapper_v1.BindUpsertCard(req)
-	card.WorkspaceID = domain.NewEmptyString(ctx.Param(paramWorkspaceID))
-	err := ctx.GetStore().CreateCardWithItems(ctx.Context, &card, items)
+	card.ID = domain.NewEmptyString(ctx.Param(paramCardID))
+	err := ctx.GetStore().UpdateCardWithItems(ctx.Context, &card, items)
 	switch {
 	case validator.IsInvalid(err):
 		_ = ctx.AbortWithError(http.StatusUnprocessableEntity, err)

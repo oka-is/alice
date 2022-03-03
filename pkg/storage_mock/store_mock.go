@@ -341,6 +341,20 @@ func (mr *MockStoreMockRecorder) TruncateAll(ctx interface{}) *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "TruncateAll", reflect.TypeOf((*MockStore)(nil).TruncateAll), ctx)
 }
 
+// UpdateCardWithItems mocks base method.
+func (m *MockStore) UpdateCardWithItems(ctx context.Context, card *domain.Card, items []domain.CardItem) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateCardWithItems", ctx, card, items)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateCardWithItems indicates an expected call of UpdateCardWithItems.
+func (mr *MockStoreMockRecorder) UpdateCardWithItems(ctx, card, items interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCardWithItems", reflect.TypeOf((*MockStore)(nil).UpdateCardWithItems), ctx, card, items)
+}
+
 // MockIBuilder is a mock of IBuilder interface.
 type MockIBuilder struct {
 	ctrl     *gomock.Controller

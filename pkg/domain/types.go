@@ -28,6 +28,10 @@ func NewEmptyInt64(input int64) NullInt64 {
 	return NullInt64{Int64: input, Valid: input != 0}
 }
 
+func NewNullInt64(input int64) NullInt64 {
+	return NullInt64{Int64: input, Valid: true}
+}
+
 func NewEmptyBytes(input []byte) NullBytea {
 	return NullBytea{Bytea: input, Valid: len(input) != 0}
 }

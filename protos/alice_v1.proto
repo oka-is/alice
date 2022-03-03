@@ -65,12 +65,12 @@ message CreateWorkspaceResponse {
   UserWithWorkspace workspace = 1;
 }
 
-message CreateCardRequest {
+message UpsertCardRequest {
   Card card = 1;
   repeated CardItem card_items = 2;
 }
 
-message CreateCardResponse {
+message UpsertCardResponse {
   Card card = 1;
 }
 
@@ -105,9 +105,10 @@ message Card {
 message CardItem {
   string id = 1;
   string card_id = 2;
-  bytes title_enc = 3;
-  bytes body_enc = 4;
-  bool hidden = 5;
+  int64 position = 3;
+  bytes title_enc = 4;
+  bytes body_enc = 5;
+  bool hidden = 6;
 }
 
 // Workspace with linked table "user_workspaces",
