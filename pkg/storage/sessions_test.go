@@ -150,6 +150,26 @@ func TestStorage_NominateSession(t *testing.T) {
 	})
 }
 
+func TestStorage_DeleteSession(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+
+		session01 := mustCreateSession(t, store, &domain.Session{})
+		session02 := mustCreateSession(t, store, &domain.Session{})
+
+		err := store.DeleteSession(ctx, session01.Jti.String)
+		require.NoError(t, err)
+
+		_, err11 := store.FindSession(ctx, session01.Jti.String)
+		_, err12 := store.FindSession(ctx, session02.Jti.String)
+		require.ErrorIs(t, err11, ErrNotFound)
+		require.NoError(t, err12)
+	})
+}
+
 func mustBuildSession(t *testing.T, storage *Storage, input *domain.Session) *domain.Session {
 	out := &domain.Session{
 		Jti:      domain.NewEmptyString(domain.NewUUID()),

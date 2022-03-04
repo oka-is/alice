@@ -97,7 +97,7 @@ func (s *SavepointDB) SelectContext(ctx context.Context, des interface{}, query 
 
 func (s *SavepointDB) GetContext(ctx context.Context, dest interface{}, query string, args ...interface{}) error {
 	s.ensure()
-	return s.tx.GetContext(ctx, dest, query, args...)
+	return SQLErr(s.tx.GetContext(ctx, dest, query, args...))
 }
 
 func (s *SavepointDB) QueryRowContext(ctx context.Context, query string, args ...interface{}) *Row {

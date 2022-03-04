@@ -23,3 +23,7 @@ func (s *SqlxDB) SqlDB() *sql.DB {
 func (s *SqlxDB) BeginTxx(ctx context.Context, opts *TxOpts) (ITransaction, error) {
 	return s.DB.BeginTxx(ctx, opts)
 }
+
+func (s *SqlxDB) GetContext(ctx context.Context, dest interface{}, query string, args ...interface{}) error {
+	return SQLErr(s.DB.GetContext(ctx, dest, query, args...))
+}
