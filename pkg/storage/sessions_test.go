@@ -119,6 +119,37 @@ func TestStorage_CandidateSession(t *testing.T) {
 	})
 }
 
+func TestStorage_NominateSession(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		user := mustCreateUser(t, store, &domain.User{})
+
+		session01 := mustCreateSession(t, store, &domain.Session{
+			CandidateID: user.ID,
+			SrpState:    domain.NewEmptyBytes([]byte("foo")),
+		})
+		session02 := mustCreateSession(t, store, &domain.Session{})
+
+		err := store.NominateSession(ctx, session01.Jti.String)
+		require.NoError(t, err)
+
+		session11, err11 := store.FindSession(ctx, session01.Jti.String)
+		session12, err12 := store.FindSession(ctx, session02.Jti.String)
+		require.NoError(t, err11)
+		require.NoError(t, err12)
+
+		require.Equal(t, session11.UserID.String, user.ID.String, "sets userID")
+		require.Empty(t, session11.CandidateID.String, "clear candidateID")
+		require.Empty(t, session11.SrpState.Bytea, "clear SRP state")
+
+		require.Empty(t, session12.UserID.String)
+		require.Empty(t, session12.CandidateID.String)
+	})
+}
+
 func mustBuildSession(t *testing.T, storage *Storage, input *domain.Session) *domain.Session {
 	out := &domain.Session{
 		Jti:      domain.NewEmptyString(domain.NewUUID()),
@@ -128,6 +159,14 @@ func mustBuildSession(t *testing.T, storage *Storage, input *domain.Session) *do
 
 	if input.Jti.Valid {
 		out.Jti = input.Jti
+	}
+
+	if input.UserID.Valid {
+		out.UserID = input.UserID
+	}
+
+	if input.CandidateID.Valid {
+		out.CandidateID = input.CandidateID
 	}
 
 	if input.TimeFrom.Valid {
