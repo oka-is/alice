@@ -13,13 +13,13 @@ import (
 )
 
 func TestStorage_IssueSession(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
 	t.Run("it works", func(t *testing.T) {
 		ctrl := gomock.NewController(t)
 		ots := jwt_mock.NewMockOts(ctrl)
 		defer ctrl.Finish()
-
-		store, savepoint := MustNewStore(t)
-		t.Cleanup(savepoint.Flush)
 
 		ots.EXPECT().Marshall().Return("foo", nil)
 		ots.EXPECT().SetJti(gomock.Any()).Return(ots)
@@ -62,6 +62,13 @@ func TestStorage_RetrieveSession(t *testing.T) {
 				return nil
 			},
 			wantErr: true,
+		}, {
+			desc: "when not found invalid",
+			before: func(ots *jwt_mock.MockOts) *domain.Session {
+				ots.EXPECT().Unmarshall(gomock.Any()).Return(domain.NewUUID(), nil)
+				return nil
+			},
+			wantErr: true,
 		},
 	}
 
@@ -82,6 +89,34 @@ func TestStorage_RetrieveSession(t *testing.T) {
 			require.Equal(t, want.Jti.String, session.Jti.String)
 		})
 	}
+}
+
+func TestStorage_CandidateSession(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		srp := []byte("srp")
+		user := mustCreateUser(t, store, &domain.User{})
+
+		session01 := mustCreateSession(t, store, &domain.Session{})
+		session02 := mustCreateSession(t, store, &domain.Session{})
+
+		err := store.CandidateSession(ctx, session01.Jti.String, user.ID.String, srp)
+		require.NoError(t, err)
+
+		session11, err11 := store.FindSession(ctx, session01.Jti.String)
+		session12, err12 := store.FindSession(ctx, session02.Jti.String)
+		require.NoError(t, err11)
+		require.NoError(t, err12)
+
+		require.Equal(t, session11.CandidateID.String, user.ID.String)
+		require.Equal(t, session11.SrpState.Bytea, srp)
+
+		require.Empty(t, session12.CandidateID.String)
+		require.Empty(t, session12.SrpState.Bytea)
+	})
 }
 
 func mustBuildSession(t *testing.T, storage *Storage, input *domain.Session) *domain.Session {

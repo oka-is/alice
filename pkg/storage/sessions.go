@@ -69,6 +69,13 @@ func (s *Storage) DeleteSession(ctx context.Context, jti string) error {
 	return s.Exec1(ctx, s.db, query)
 }
 
+// FindSession test case usage only, for regular usage, please use RetrieveSession
+func (s *Storage) FindSession(ctx context.Context, jti string) (out domain.Session, err error) {
+	query := Builder().Select("*").From("sessions").Where("jti = ?", jti)
+	err = s.Get(ctx, s.db, &out, query)
+	return
+}
+
 func (s *Storage) insertSession(ctx context.Context, db IConn, session *domain.Session) error {
 	query := Builder().
 		Insert("sessions").
