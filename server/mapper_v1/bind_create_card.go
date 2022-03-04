@@ -15,6 +15,7 @@ func BindCard(input *alice_v1.Card) domain.Card {
 	return domain.Card{
 		WorkspaceID: domain.NewNullString(),
 		TitleEnc:    domain.NewEmptyBytes(input.GetTitleEnc()),
+		TagsEnc:     domain.NewEmptyByteSlice(input.GetTagsEnc()),
 	}
 }
 
