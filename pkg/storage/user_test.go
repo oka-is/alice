@@ -5,7 +5,42 @@ import (
 	"testing"
 
 	"github.com/oka-is/alice/pkg/domain"
+	"github.com/stretchr/testify/require"
 )
+
+func TestStorage_FindUser(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		user := mustCreateUser(t, store, &domain.User{})
+
+		user1, err1 := store.FindUser(ctx, user.ID.String)
+		_, err2 := store.FindUser(ctx, domain.NewUUID())
+		require.NoError(t, err1)
+		require.ErrorIs(t, err2, ErrNotFound)
+
+		require.Equal(t, user.ID.String, user1.ID.String)
+	})
+}
+
+func TestStorage_FindUserIdentity(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		user := mustCreateUser(t, store, &domain.User{})
+
+		user1, err1 := store.FindUserIdentity(ctx, user.Identity.String)
+		_, err2 := store.FindUserIdentity(ctx, "foo")
+		require.NoError(t, err1)
+		require.ErrorIs(t, err2, ErrNotFound)
+
+		require.Equal(t, user.ID.String, user1.ID.String)
+	})
+}
 
 func mustBuildUser(t *testing.T, storage *Storage, input *domain.User) *domain.User {
 	out := &domain.User{
