@@ -19,6 +19,12 @@ func (s *Storage) DeleteWorkspace(ctx context.Context, ID string) error {
 	return err
 }
 
+func (s *Storage) FindWorkspace(ctx context.Context, ID string) (out domain.Workspace, err error) {
+	query := Builder().Select("*").From("workspaces").Where("id = ?", ID).Limit(1)
+	err = s.Get(ctx, s.db, &out, query)
+	return
+}
+
 func (s *Storage) createWorkspace(ctx context.Context, db IConn, uw *domain.UserWorkspace, workspace *domain.Workspace) error {
 	err := s.insertWorkspace(ctx, db, workspace)
 	if err != nil {

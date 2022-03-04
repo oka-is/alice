@@ -42,6 +42,31 @@ func TestStorage_FindUserIdentity(t *testing.T) {
 	})
 }
 
+func TestStorage_TerminateUser(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it deletes user and all its resources", func(t *testing.T) {
+		ctx := context.Background()
+		user := mustCreateUser(t, store, &domain.User{})
+
+		workspace := mustCreateWorkspace(t, store, &domain.Workspace{})
+		mustCreateUserWorkspace(t, store, &domain.UserWorkspace{
+			OwnerID:     user.ID,
+			WorkspaceID: workspace.ID,
+		})
+
+		err := store.TerminateUser(ctx, []byte(user.Identity.String), user.ID.String)
+		require.NoError(t, err)
+
+		_, err01 := store.FindUser(ctx, user.ID.String)
+		_, err02 := store.FindWorkspace(ctx, workspace.ID.String)
+
+		require.ErrorIs(t, ErrNotFound, err01)
+		require.ErrorIs(t, ErrNotFound, err02)
+	})
+}
+
 func mustBuildUser(t *testing.T, storage *Storage, input *domain.User) *domain.User {
 	out := &domain.User{
 		Ver:        domain.NewEmptyInt64(1),

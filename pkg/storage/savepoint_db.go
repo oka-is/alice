@@ -28,9 +28,10 @@ func (s *SavepointDB) SqlDB() *sql.DB {
 }
 
 func (s *SavepointDB) BeginTxx(ctx context.Context, opts *TxOpts) (ITransaction, error) {
+	s.ensure()
 	uid := strings.Replace(uuid.New().String(), "-", "", -1)
 	uid = fmt.Sprintf("test_%s", uid)
-	point := &SavepointDB{db: s.db, uid: uid}
+	point := &SavepointDB{db: s.db, tx: s.tx, uid: uid}
 
 	if _, err := s.tx.ExecContext(context.Background(), fmt.Sprintf("SAVEPOINT %s", uid)); err != nil {
 		return point, fmt.Errorf("failed to create a savepoint: %w", err)
