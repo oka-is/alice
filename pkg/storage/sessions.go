@@ -27,12 +27,7 @@ func (s *Storage) IssueSession(ctx context.Context, opts jwt.IOts) (domain.Sessi
 		return session, token, fmt.Errorf("jwt failed: %w", err)
 	}
 
-	query := Builder().
-		Insert("sessions").
-		Columns("jti", "time_from", "time_to").
-		Values(session.Jti, session.TimeFrom, session.TimeTo)
-
-	return session, token, s.Exec1(ctx, s.db, query)
+	return session, token, s.insertSession(ctx, s.db, &session)
 }
 
 // RetrieveSession find & verify a session by JWT token
@@ -47,17 +42,6 @@ func (s *Storage) RetrieveSession(ctx context.Context, opts jwt.IOts, token stri
 	return
 }
 
-func (s *Storage) NominateSession(ctx context.Context, jti string) error {
-	query := Builder().
-		Update("sessions").
-		Set("user_id", Expr("candidate_id")).
-		Set("srp_state", Expr("NULL")).
-		Where("jti = ?", jti)
-
-	_, err := s.Exec(ctx, s.db, query)
-	return err
-}
-
 func (s *Storage) CandidateSession(ctx context.Context, jti, candidateID string, srp []byte) error {
 	query := Builder().
 		Update("sessions").
@@ -69,7 +53,27 @@ func (s *Storage) CandidateSession(ctx context.Context, jti, candidateID string,
 	return err
 }
 
+func (s *Storage) NominateSession(ctx context.Context, jti string) error {
+	query := Builder().
+		Update("sessions").
+		Set("user_id", Expr("candidate_id")).
+		Set("srp_state", Expr("NULL")).
+		Where("jti = ?", jti)
+
+	_, err := s.Exec(ctx, s.db, query)
+	return err
+}
+
 func (s *Storage) DeleteSession(ctx context.Context, jti string) error {
 	query := Builder().Delete("sessions").Where("jti = ?", jti)
 	return s.Exec1(ctx, s.db, query)
+}
+
+func (s *Storage) insertSession(ctx context.Context, db IConn, session *domain.Session) error {
+	query := Builder().
+		Insert("sessions").
+		Columns("jti", "time_from", "time_to").
+		Values(session.Jti, session.TimeFrom, session.TimeTo)
+
+	return s.Exec1(ctx, db, query)
 }

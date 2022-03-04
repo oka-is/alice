@@ -6,7 +6,6 @@ BIN_LINTER:=$(BIN)/golangci-lint
 VERSION:=$(shell cat VERSION)
 REGISTRY_DOMAIN=ghcr.io
 REGISTRY_NAME=ghcr.io/oka-is/alice
-PG_DSN?=postgres://localhost:5432/alice?sslmode=disable&timezone=utc
 
 help:
 	@echo 'Available targets: $(VERSION)'
@@ -28,12 +27,18 @@ endif
 spec:
 	$(eval PG_DSN?=postgres://localhost:5432/alice_test?sslmode=disable&timezone=utc)
 
+dev:
+	$(eval PG_DSN?=postgres://localhost:5432/alice?sslmode=disable&timezone=utc)
+
+db\:up: dev
 db\:up:
 	goose -dir migrations postgres "$(PG_DSN)" up
 
+db\:down: dev
 db\:down:
 	goose -dir migrations postgres "$(PG_DSN)" down
 
+db\:status: dev
 db\:status:
 	goose -dir migrations postgres "$(PG_DSN)" status
 
@@ -48,9 +53,6 @@ test: spec
 test:
 	PG_DSN="$(PG_DSN)" go test -count=1 -p 4 -race -cover -covermode atomic ./...
 
-test\:wasm:
-	yarn --cwd js run test
-
 lint: install-lint
 lint:
 	$(BIN_LINTER) run --config=.golangci.yaml ./...
@@ -60,10 +62,6 @@ generate:
 
 generate_build:
 	go generate cmd/goose.go
-
-build\:wasm:
-	go generate wasm.go
-	GOOS=js GOARCH=wasm CGO_ENABLED=0 go build -a -installsuffix cgo -o build/alice.wasm wasm.go
 
 build\:linux: generate_build
 build\:linux:
