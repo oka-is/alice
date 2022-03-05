@@ -5,33 +5,34 @@ import (
 	"github.com/oka-is/alice/pkg/domain"
 )
 
-func BindUpsertCard(input *alice_v1.UpsertCardRequest) (domain.Card, []domain.CardItem) {
-	card := BindCard(input.GetCard())
-	items := BindCardItems(input.GetCardItems())
+func BindUpsertCard(req *alice_v1.UpsertCardRequest) (domain.Card, []domain.CardItem) {
+	card := BindCard(req.GetCard())
+	items := BindCardItems(req.GetCardItems())
 	return card, items
 }
 
-func BindCard(input *alice_v1.Card) domain.Card {
+func BindCard(req *alice_v1.Card) domain.Card {
 	return domain.Card{
 		WorkspaceID: domain.NewNullString(),
-		TitleEnc:    domain.NewEmptyBytes(input.GetTitleEnc()),
-		TagsEnc:     domain.NewEmptyByteSlice(input.GetTagsEnc()),
+		Archived:    domain.NewEmptyBool(req.GetArchived()),
+		TitleEnc:    domain.NewEmptyBytes(req.GetTitleEnc()),
+		TagsEnc:     domain.NewEmptyByteSlice(req.GetTagsEnc()),
 	}
 }
 
-func BindCardItems(input []*alice_v1.CardItem) []domain.CardItem {
-	out := make([]domain.CardItem, len(input))
-	for ix, item := range input {
+func BindCardItems(req []*alice_v1.CardItem) []domain.CardItem {
+	out := make([]domain.CardItem, len(req))
+	for ix, item := range req {
 		out[ix] = BindCardItem(item)
 	}
 	return out
 }
 
-func BindCardItem(input *alice_v1.CardItem) domain.CardItem {
+func BindCardItem(req *alice_v1.CardItem) domain.CardItem {
 	return domain.CardItem{
 		CardID:   domain.NewNullString(),
-		TitleEnc: domain.NewEmptyBytes(input.GetTitleEnc()),
-		BodyEnc:  domain.NewEmptyBytes(input.GetBodyEnc()),
-		Hidden:   domain.NewEmptyBool(input.GetHidden()),
+		TitleEnc: domain.NewEmptyBytes(req.GetTitleEnc()),
+		BodyEnc:  domain.NewEmptyBytes(req.GetBodyEnc()),
+		Hidden:   domain.NewEmptyBool(req.GetHidden()),
 	}
 }
