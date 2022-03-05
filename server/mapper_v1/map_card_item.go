@@ -9,6 +9,7 @@ func MapCardItem(input domain.CardItem) *alice_v1.CardItem {
 	return &alice_v1.CardItem{
 		Id:       input.ID.String,
 		CardId:   input.CardID.String,
+		Position: input.Position.Int64,
 		TitleEnc: input.TitleEnc.Bytea,
 		BodyEnc:  input.BodyEnc.Bytea,
 		Hidden:   input.Hidden.Bool,
