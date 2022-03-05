@@ -68,11 +68,12 @@ func (mr *MockStoreMockRecorder) CandidateSession(ctx, jti, candidateID, srp int
 }
 
 // CloneCard mocks base method.
-func (m *MockStore) CloneCard(ctx context.Context, oldCardID string, titleEnc []byte) error {
+func (m *MockStore) CloneCard(ctx context.Context, oldCardID string, titleEnc []byte) (domain.Card, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CloneCard", ctx, oldCardID, titleEnc)
-	ret0, _ := ret[0].(error)
-	return ret0
+	ret0, _ := ret[0].(domain.Card)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
 }
 
 // CloneCard indicates an expected call of CloneCard.

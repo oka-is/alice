@@ -42,7 +42,6 @@ func TestStorage_RetrieveSession(t *testing.T) {
 	type args struct {
 		desc    string
 		before  func(ots *jwt_mock.MockOts) *domain.Session
-		wantJIT string
 		wantErr bool
 	}
 
