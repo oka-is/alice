@@ -19,10 +19,13 @@ func (s *Storage) UpdateCardWithItems(ctx context.Context, card *domain.Card, it
 	})
 }
 
-func (s *Storage) CloneCard(ctx context.Context, card *domain.Card, oldCardID string) error {
-	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
-		return s.cloneCard(c, tx, card, oldCardID)
+func (s *Storage) CloneCard(ctx context.Context, oldCardID string, titleEnc []byte) (out domain.Card, err error) {
+	err = s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
+		out, err = s.cloneCard(c, tx, oldCardID, titleEnc)
+		return err
 	})
+
+	return
 }
 
 func (s *Storage) ArchiveCard(ctx context.Context, ID string) (archived bool, err error) {
@@ -84,18 +87,39 @@ func (s *Storage) createCardWithItems(ctx context.Context, db IConn, card *domai
 	return nil
 }
 
-func (s *Storage) cloneCard(ctx context.Context, db IConn, card *domain.Card, oldCardID string) error {
-	err := s.insertCard(ctx, db, card)
+func (s *Storage) cloneCard(ctx context.Context, db IConn, oldCardID string, titleEnc []byte) (out domain.Card, err error) {
+	sub := Builder().Select().
+		From("cards").
+		Column("? AS title_enc", titleEnc).
+		Column("workspace_id").
+		Column("archived").
+		Column("tags_enc").
+		Where("id = ?", oldCardID).
+		Suffix("RETURNING id")
+
+	query := Builder().
+		Insert("cards").
+		Columns("title_enc", "workspace_id", "archived", "tags_enc").
+		Select(sub)
+
+	var newID string
+	err = s.QueryRow(ctx, db, query).Scan(&newID)
 	if err != nil {
-		return fmt.Errorf("failed to insert card: %w", err)
+		return out, fmt.Errorf("failed to clone card items: %w", err)
 	}
 
-	err = s.cloneCardItems(ctx, db, card.ID.String, oldCardID)
+	err = s.cloneCardItems(ctx, db, newID, oldCardID)
 	if err != nil {
-		return fmt.Errorf("failed to clone card items: %w", err)
+		return out, fmt.Errorf("failed to clone card items: %w", err)
 	}
 
-	return nil
+	return s.findCard(ctx, db, newID)
+}
+
+func (s *Storage) findCard(ctx context.Context, db IConn, ID string) (out domain.Card, err error) {
+	query := Builder().Select("*").From("cards").Where("id = ?", ID).Limit(1)
+	err = s.Get(ctx, db, &out, query)
+	return
 }
 
 func (s *Storage) insertCard(ctx context.Context, db IConn, card *domain.Card) error {

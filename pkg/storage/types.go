@@ -46,7 +46,7 @@ type IStore interface {
 	ListCardsByWorkspace(ctx context.Context, workspaceID string) (out []domain.Card, err error)
 	ListCardItems(ctx context.Context, cardID string) (out []domain.CardItem, err error)
 	DeleteCard(ctx context.Context, cardID string) error
-	CloneCard(ctx context.Context, card *domain.Card, oldCardID string) error
+	CloneCard(ctx context.Context, oldCardID string, titleEnc []byte) (out domain.Card, err error)
 	ArchiveCard(ctx context.Context, ID string) (archived bool, err error)
 
 	// Operations about workspaces

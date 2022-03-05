@@ -45,6 +45,6 @@ func (s *Storage) cloneCardItems(ctx context.Context, db IConn, newCardID, oldCa
 	query := Builder().
 		Insert("card_items").
 		Columns("card_id", "position", "title_enc", "body_enc", "hidden").Select(sub)
-	_, err := s.Exec(ctx, db, query)
-	return err
+
+	return s.Exec1(ctx, db, query)
 }
