@@ -56,7 +56,8 @@ func (s *Storage) updateCardWithItems(ctx context.Context, db IConn, card *domai
 		return fmt.Errorf("failed to update card: %w", err)
 	}
 
-	for ix, item := range items {
+	for ix := range items {
+		item := &items[ix]
 		item.CardID = card.ID
 		item.Position = domain.NewNullInt64(int64(ix))
 		if err := s.upsertCardItem(ctx, db, item); err != nil {
@@ -76,7 +77,8 @@ func (s *Storage) createCardWithItems(ctx context.Context, db IConn, card *domai
 		return fmt.Errorf("failed to create card: %w", err)
 	}
 
-	for ix, item := range items {
+	for ix := range items {
+		item := &items[ix]
 		item.CardID = card.ID
 		item.Position = domain.NewNullInt64(int64(ix))
 		if err := s.upsertCardItem(ctx, db, item); err != nil {

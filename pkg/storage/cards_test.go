@@ -18,7 +18,13 @@ func TestStorage_CloneCard(t *testing.T) {
 			Archived: domain.NewEmptyBool(true),
 		})
 
+		mustCreateCardItem(t, store, &domain.CardItem{})
+		mustCreateCardItem(t, store, &domain.CardItem{CardID: card.ID})
+
 		clone, err := store.CloneCard(ctx, card.ID.String, []byte("foo"))
+		require.NoError(t, err)
+
+		items, err := store.ListCardItems(ctx, clone.ID.String)
 		require.NoError(t, err)
 
 		require.NotEmpty(t, clone.ID.String)
@@ -28,6 +34,7 @@ func TestStorage_CloneCard(t *testing.T) {
 		require.Equal(t, card.WorkspaceID.String, clone.WorkspaceID.String)
 		require.Equal(t, card.TagsEnc.Slice, clone.TagsEnc.Slice)
 		require.Equal(t, card.Archived.Bool, clone.Archived.Bool)
+		require.Len(t, items, 1)
 	})
 }
 

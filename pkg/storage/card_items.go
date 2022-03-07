@@ -12,7 +12,7 @@ func (s *Storage) ListCardItems(ctx context.Context, cardID string) (out []domai
 	return
 }
 
-func (s *Storage) upsertCardItem(ctx context.Context, db IConn, item domain.CardItem) error {
+func (s *Storage) upsertCardItem(ctx context.Context, db IConn, item *domain.CardItem) error {
 	query := Builder().
 		Insert("card_items").
 		Columns("card_id", "position", "title_enc", "body_enc", "hidden").
