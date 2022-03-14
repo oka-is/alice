@@ -12,6 +12,7 @@ import (
 
 type Opts struct {
 	AllowOrigin  []string
+	JwtKey       []byte
 	CookieDomain string
 	CookieSecure bool
 	BackupUrl    string

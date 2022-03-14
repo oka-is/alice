@@ -26,6 +26,12 @@ var (
 		EnvVars: []string{"COOKIE_SECURE"},
 	}
 
+	FlagServerJwtKey = &cli.StringFlag{
+		Name:    "jwt-key",
+		Value:   "60582546f144e604e4a11c927bcf8bd82a0d7bbd4a31eeaa69ce11d69acd0a4a",
+		EnvVars: []string{"JWT_KEY"},
+	}
+
 	FlagServerAllowOrigin = &cli.StringSliceFlag{
 		Name:    "allow-origin",
 		Aliases: []string{"ao"},
@@ -59,6 +65,7 @@ func Server(ctx *cli.Context) error {
 		CookieSecure: ctx.Bool(FlagServerCookieSecure.Name),
 		CookieDomain: ctx.String(FlagServerCookieDomain.Name),
 		BackupUrl:    ctx.String(FlagServerBackupUrl.Name),
+		JwtKey:       []byte(ctx.String(FlagServerJwtKey.Name)),
 		Ver:          pack.NewWer(pack.Ver1),
 	}
 

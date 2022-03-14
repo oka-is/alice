@@ -17,7 +17,7 @@ func main() {
 		Name:      "alice",
 		Usage:     "password manager backend",
 		Version:   Version,
-		Copyright: "© 2022 OKA OÜ",
+		Copyright: "© 2022 Wault OÜ",
 		Commands: []*cli.Command{
 			{
 				Name:  "server",
@@ -29,6 +29,7 @@ func main() {
 					cmd.FlagServerAllowOrigin,
 					cmd.FlagServerCookieDomain,
 					cmd.FlagServerCookieSecure,
+					cmd.FlagServerJwtKey,
 					cmd.FlagServerBackupUrl,
 					cmd.FlagServerVer666,
 					cmd.FlagServerMountCypress,

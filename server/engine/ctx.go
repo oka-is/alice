@@ -3,6 +3,8 @@ package engine
 import (
 	"context"
 	"io/ioutil"
+	"net/http"
+	"net/url"
 
 	"github.com/gin-gonic/gin"
 	"github.com/wault-pw/alice/lib/jwt"
@@ -16,6 +18,10 @@ const (
 	keyStore = string(rune(iota))
 	keySession
 	keyOpts
+)
+
+const (
+	jwtCookie = "jwt"
 )
 
 type Context struct {
@@ -81,11 +87,21 @@ func (c *Context) Ctx() context.Context {
 
 func (c *Context) SetCookieToken(token string) {
 	opts := c.MustGetOpts()
-	c.SetCookie("jwt", token, 0, "/", opts.CookieDomain, opts.CookieSecure, true)
+
+	http.SetCookie(c.Writer, &http.Cookie{
+		Name:     jwtCookie,
+		Value:    url.QueryEscape(token),
+		MaxAge:   0,
+		Path:     "/",
+		Domain:   opts.CookieDomain,
+		SameSite: http.SameSiteStrictMode,
+		Secure:   opts.CookieSecure,
+		HttpOnly: true,
+	})
 }
 
 func (c *Context) GetCookieToken() (string, error) {
-	return c.Cookie("jwt")
+	return c.Cookie(jwtCookie)
 }
 
 func (c *Context) JwtOpts() jwt.Opts {
@@ -94,8 +110,8 @@ func (c *Context) JwtOpts() jwt.Opts {
 		Sub:  "API/V1",
 		Iss:  "ALICE",
 		Jti:  domain.NewUUID(),
+		Key:  c.MustGetOpts().JwtKey,
 		Algo: jwt.HS256,
-		Key:  []byte{1, 2, 3, 4},
 	}
 }
 

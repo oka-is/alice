@@ -17,7 +17,8 @@ type Opts struct {
 	// Jti is a token ID
 	Jti  string
 	Algo Algo
-	Key  []byte
+	// Key for signature
+	Key []byte
 	// Exp is an expiration time
 	Exp time.Time
 }
