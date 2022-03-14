@@ -16,6 +16,7 @@ help:
 	@echo '  make NAME="create_users" db:create'
 	@echo ' '
 	@echo '  make test'
+	@echo '  make outdated'
 
 .PHONY: install-lint
 install-lint:
@@ -52,6 +53,9 @@ proto:
 test: t
 test:
 	PG_DSN="$(PG_DSN)" go test -count=1 -p 4 -race -cover -covermode atomic ./...
+
+outdated:
+	go list -u -m all
 
 lint: install-lint
 lint:
