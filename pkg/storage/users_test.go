@@ -33,8 +33,8 @@ func TestStorage_FindUserIdentity(t *testing.T) {
 		ctx := context.Background()
 		user := mustCreateUser(t, store, &domain.User{})
 
-		user1, err1 := store.FindUserIdentity(ctx, user.Identity.String)
-		_, err2 := store.FindUserIdentity(ctx, "foo")
+		user1, err1 := store.FindUserIdentity(ctx, user.Identity.Bytea)
+		_, err2 := store.FindUserIdentity(ctx, []byte("foo"))
 		require.NoError(t, err1)
 		require.ErrorIs(t, err2, ErrNotFound)
 
@@ -56,7 +56,7 @@ func TestStorage_TerminateUser(t *testing.T) {
 			WorkspaceID: workspace.ID,
 		})
 
-		err := store.TerminateUser(ctx, []byte(user.Identity.String), user.ID.String)
+		err := store.TerminateUser(ctx, user.Identity.Bytea, user.ID.String)
 		require.NoError(t, err)
 
 		_, err01 := store.FindUser(ctx, user.ID.String)
@@ -70,7 +70,7 @@ func TestStorage_TerminateUser(t *testing.T) {
 func mustBuildUser(t *testing.T, storage *Storage, input *domain.User) *domain.User {
 	out := &domain.User{
 		Ver:        domain.NewEmptyInt64(1),
-		Identity:   domain.NewEmptyString(domain.NewUUID()),
+		Identity:   domain.NewEmptyBytes([]byte(domain.NewUUID())),
 		Verifier:   domain.NewEmptyBytes([]byte("Verifier")),
 		SrpSalt:    domain.NewEmptyBytes([]byte("SrpSalt")),
 		PasswdSalt: domain.NewEmptyBytes([]byte("PasswdSalt")),

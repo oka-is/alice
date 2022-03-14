@@ -7,7 +7,7 @@ option go_package = "desc/alice_v1";
 message RegistrationRequest {
   message User {
     int32 ver = 1;
-    string identity = 2;
+    bytes identity = 2;
     bytes verifier = 3;
     bytes srp_salt = 4;
     bytes passwd_salt = 5;
@@ -38,7 +38,7 @@ message RegistrationRequest {
 }
 
 message Login0Request {
-  string identity = 1;
+  bytes identity = 1;
 }
 
 message Login0Response {

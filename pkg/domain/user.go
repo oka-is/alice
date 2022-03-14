@@ -3,7 +3,7 @@ package domain
 type User struct {
 	ID         NullString `db:"id"`
 	Ver        NullInt64  `db:"ver"`      // pack version
-	Identity   NullString `db:"identity"` // hashed username
+	Identity   NullBytea  `db:"identity"` // hashed username
 	Verifier   NullBytea  `db:"verifier"`
 	SrpSalt    NullBytea  `db:"srp_salt"`
 	PasswdSalt NullBytea  `db:"passwd_salt"`

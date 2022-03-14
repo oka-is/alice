@@ -4,7 +4,7 @@ CREATE TABLE users
 (
     id           UUID                 DEFAULT gen_random_uuid() PRIMARY KEY,
     ver          INT         NOT NULL,
-    identity     varchar     NOT NULL,
+    identity     bytea       NOT NULL,
     verifier     bytea       NOT NULL,
     srp_salt     bytea       NOT NULL,
     passwd_salt  bytea       NOT NULL,

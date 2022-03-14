@@ -24,21 +24,21 @@ ifeq ($(wildcard $(BIN_LINTER)),)
 	GOBIN=$(BIN) go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.44.0
 endif
 
-spec:
+t:
 	$(eval PG_DSN?=postgres://localhost:5432/alice_test?sslmode=disable&timezone=utc)
 
-dev:
+d:
 	$(eval PG_DSN?=postgres://localhost:5432/alice?sslmode=disable&timezone=utc)
 
-db\:up: dev
+db\:up: d
 db\:up:
 	goose -dir migrations postgres "$(PG_DSN)" up
 
-db\:down: dev
+db\:down: d
 db\:down:
 	goose -dir migrations postgres "$(PG_DSN)" down
 
-db\:status: dev
+db\:status: d
 db\:status:
 	goose -dir migrations postgres "$(PG_DSN)" status
 
@@ -49,7 +49,7 @@ db\:create:
 proto:
 	protoc --proto_path=protos --go_out=. alice_v1.proto
 
-test: spec
+test: t
 test:
 	PG_DSN="$(PG_DSN)" go test -count=1 -p 4 -race -cover -covermode atomic ./...
 

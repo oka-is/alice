@@ -10,7 +10,7 @@ func BindRegistration(input *alice_v1.RegistrationRequest) (domain.User, domain.
 
 	user := domain.User{
 		Ver:        domain.NewEmptyInt64(1),
-		Identity:   domain.NewEmptyString(u.GetIdentity()),
+		Identity:   domain.NewEmptyBytes(u.GetIdentity()),
 		Verifier:   domain.NewEmptyBytes(u.GetVerifier()),
 		SrpSalt:    domain.NewEmptyBytes(u.GetSrpSalt()),
 		PasswdSalt: domain.NewEmptyBytes(u.GetPasswdSalt()),

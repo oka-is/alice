@@ -15,7 +15,7 @@ func (s *Storage) CreateUser(ctx context.Context, user *domain.User, uw *domain.
 	})
 }
 
-func (s *Storage) FindUserIdentity(ctx context.Context, identity string) (user domain.User, err error) {
+func (s *Storage) FindUserIdentity(ctx context.Context, identity []byte) (user domain.User, err error) {
 	query := Builder().Select("*").From("users").Where("identity = ?", identity).Limit(1)
 	err = s.Get(ctx, s.db, &user, query)
 	return

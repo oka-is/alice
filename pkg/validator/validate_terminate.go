@@ -14,8 +14,7 @@ type ValidateTerminateOpts struct {
 
 func (v *Validator) ValidateTerminate(opts ValidateTerminateOpts) error {
 	return validation.Errors{
-		//TODO make user Identity HASH(username) bytes
-		"Identity": one(validation.Validate(bytes.Equal(opts.Identity, []byte(opts.User.Identity.String)), validation.Required)),
+		"Identity": one(validation.Validate(bytes.Equal(opts.Identity, opts.User.Identity.Bytea), validation.Required)),
 	}.Filter()
 }
 
