@@ -24,6 +24,7 @@ func main() {
 				Usage: "start API server",
 				Flags: []cli.Flag{
 					cmd.FlagPostgresDSN,
+					cmd.FlagSseKey,
 					cmd.FlagServerAddress,
 					cmd.FlagServerAllowOrigin,
 					cmd.FlagServerCookieDomain,

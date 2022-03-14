@@ -12,19 +12,20 @@ import (
 type Storage struct {
 	db        IDb
 	validator validator.IValidator
+	sseKey    []byte // Server-side encryption key
 }
 
 func Connect(dsn string) (*sqlx.DB, error) {
 	return sqlx.Connect("pgx", dsn)
 }
 
-func NewStorage(db *sqlx.DB, validator validator.IValidator) *Storage {
-	return &Storage{db: NewSqlxDB(db), validator: validator}
+func NewStorage(db *sqlx.DB, validator validator.IValidator, sseKey []byte) *Storage {
+	return &Storage{db: NewSqlxDB(db), validator: validator, sseKey: sseKey}
 }
 
-func NewSavepointStorage(db *sqlx.DB, validator validator.IValidator) (*Storage, *SavepointDB) {
+func NewSavepointStorage(db *sqlx.DB, validator validator.IValidator, sseKey []byte) (*Storage, *SavepointDB) {
 	savepoint := NewSavepointDB(db)
-	return &Storage{db: savepoint, validator: validator}, savepoint
+	return &Storage{db: savepoint, validator: validator, sseKey: sseKey}, savepoint
 }
 
 func (s *Storage) SetValidator(validator validator.IValidator) *Storage {

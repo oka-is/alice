@@ -25,5 +25,5 @@ func TestMain(m *testing.M) {
 }
 
 func MustNewStore(t *testing.T) (*Storage, *SavepointDB) {
-	return NewSavepointStorage(_db, validator.NewNoOpt())
+	return NewSavepointStorage(_db, validator.NewNoOpt(), []byte{1, 2, 3, 4, 5, 6, 7, 8, 9})
 }

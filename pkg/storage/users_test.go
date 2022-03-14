@@ -22,6 +22,7 @@ func TestStorage_FindUser(t *testing.T) {
 		require.ErrorIs(t, err2, ErrNotFound)
 
 		require.Equal(t, user.ID.String, user1.ID.String)
+		require.Equal(t, user.Verifier.Bytea, user1.Verifier.Bytea, "id decrypts encrypted column")
 	})
 }
 

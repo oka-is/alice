@@ -16,7 +16,7 @@ func (s *Storage) CreateUser(ctx context.Context, user *domain.User, uw *domain.
 }
 
 func (s *Storage) FindUserIdentity(ctx context.Context, identity []byte) (user domain.User, err error) {
-	query := Builder().Select("*").From("users").Where("identity = ?", identity).Limit(1)
+	query := s.selectUserColumns().From("users").Where("identity = ?", identity).Limit(1)
 	err = s.Get(ctx, s.db, &user, query)
 	return
 }
@@ -55,7 +55,7 @@ func (s *Storage) terminateUserDB(ctx context.Context, db IConn, identity []byte
 }
 
 func (s *Storage) findUserDB(ctx context.Context, db IConn, ID string) (user domain.User, err error) {
-	query := Builder().Select("*").From("users").Where("id = ?", ID).Limit(1)
+	query := s.selectUserColumns().From("users").Where("id = ?", ID).Limit(1)
 	err = s.Get(ctx, db, &user, query)
 	return
 }
@@ -104,7 +104,7 @@ func (s *Storage) insertUser(ctx context.Context, db IConn, user *domain.User) e
 		Values(
 			user.Ver,
 			user.Identity,
-			user.Verifier,
+			Expr("encrypt(?, ?, 'aes-cbc/pad:pkcs')", user.Verifier, s.sseKey),
 			user.SrpSalt,
 			user.PasswdSalt,
 			user.PrivKeyEnc,
@@ -112,4 +112,10 @@ func (s *Storage) insertUser(ctx context.Context, db IConn, user *domain.User) e
 		Suffix("RETURNING id, created_at")
 
 	return s.QueryRow(ctx, db, query).Scan(&user.ID, &user.CreatedAt)
+}
+
+func (s *Storage) selectUserColumns() SelectBuilder {
+	return Builder().
+		Select("*").
+		Column("decrypt(verifier, ?, 'aes-cbc/pad:pkcs') AS verifier", s.sseKey)
 }
