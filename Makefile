@@ -5,10 +5,12 @@ BIN:=$(CURDIR)/bin
 BIN_LINTER:=$(BIN)/golangci-lint
 VERSION:=$(shell cat VERSION)
 REGISTRY_DOMAIN=ghcr.io
-REGISTRY_NAME=ghcr.io/oka-is/alice
+REGISTRY_NAME=ghcr.io/wault-pw/alice
 
 help:
 	@echo 'Available targets: $(VERSION)'
+	@echo '  make build'
+	@echo '  make push'
 	@echo ' '
 	@echo '  make db:status'
 	@echo '  make db:up'
@@ -63,21 +65,22 @@ generate:
 generate_build:
 	go generate cmd/goose.go
 
-build\:linux: generate_build
-build\:linux:
+linux: generate_build
+linux:
 	env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-s -X 'main.Version=$(VERSION)'" -a -installsuffix cgo -o build/linux
 
-build\:mac: generate_build
-build\:mac:
+mac: generate_build
+mac:
 	env GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-s -X 'main.Version=$(VERSION)'" -a -installsuffix cgo -o build/mac
 
-docker\:build: export TAG=$(VERSION)
-docker\:build:
+.PHONY: build
+build: export TAG=$(VERSION)
+build:
 	docker build --no-cache -f ./Dockerfile -t ${REGISTRY_NAME}:${TAG} .
 	docker tag ${REGISTRY_NAME}:${TAG} ${REGISTRY_NAME}:latest
 
-docker\:push: export TAG=$(VERSION)
-docker\:push:
+push: export TAG=$(VERSION)
+push:
 	@echo $(REGISTRY_PASSWORD) | docker login ${REGISTRY_DOMAIN} --username ${REGISTRY_USERNAME} --password-stdin
 	docker push ${REGISTRY_NAME}:${TAG}
 	docker push ${REGISTRY_NAME}:latest
