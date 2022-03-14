@@ -16,7 +16,7 @@ require (
 	github.com/stretchr/testify v1.7.0
 	github.com/urfave/cli/v2 v2.3.0
 	github.com/wault-pw/srp6ago v0.0.0-20220314201300-78ba430b5a2b
-	golang.org/x/crypto v0.0.0-20220210151621-f4118a5b28e2
+	golang.org/x/crypto v0.0.0-20220313003712-b769efc7c000
 	google.golang.org/protobuf v1.27.1
 )
 
