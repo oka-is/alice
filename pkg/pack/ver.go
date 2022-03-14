@@ -1,8 +1,8 @@
 package pack
 
 import (
-	"github.com/oka-is/alice/lib/cryptos"
-	"github.com/oka-is/srp6ago"
+	"github.com/wault-pw/alice/lib/cryptos"
+	"github.com/wault-pw/srp6ago"
 )
 
 type VerByte byte

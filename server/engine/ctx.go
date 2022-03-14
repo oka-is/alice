@@ -5,10 +5,10 @@ import (
 	"io/ioutil"
 
 	"github.com/gin-gonic/gin"
-	"github.com/oka-is/alice/lib/jwt"
-	"github.com/oka-is/alice/pkg/domain"
-	"github.com/oka-is/alice/pkg/pack"
-	"github.com/oka-is/alice/pkg/storage"
+	"github.com/wault-pw/alice/lib/jwt"
+	"github.com/wault-pw/alice/pkg/domain"
+	"github.com/wault-pw/alice/pkg/pack"
+	"github.com/wault-pw/alice/pkg/storage"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -1,4 +1,4 @@
-module github.com/oka-is/alice
+module github.com/wault-pw/alice
 
 go 1.17
 
@@ -12,10 +12,10 @@ require (
 	github.com/google/uuid v1.3.0
 	github.com/jackc/pgx/v4 v4.15.0
 	github.com/jmoiron/sqlx v1.3.4
-	github.com/oka-is/srp6ago v0.0.0-20220223180606-4e1dc757bbb3
 	github.com/pressly/goose/v3 v3.5.3
 	github.com/stretchr/testify v1.7.0
 	github.com/urfave/cli/v2 v2.3.0
+	github.com/wault-pw/srp6ago v0.0.0-20220314201300-78ba430b5a2b
 	golang.org/x/crypto v0.0.0-20220210151621-f4118a5b28e2
 	google.golang.org/protobuf v1.27.1
 )

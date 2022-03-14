@@ -1,8 +1,8 @@
 package mapper_v1
 
 import (
-	"github.com/oka-is/alice/desc/alice_v1"
-	"github.com/oka-is/alice/pkg/domain"
+	"github.com/wault-pw/alice/desc/alice_v1"
+	"github.com/wault-pw/alice/pkg/domain"
 )
 
 func BindCreateWorkspace(input *alice_v1.CreateWorkspaceRequest) (domain.UserWorkspace, domain.Workspace) {

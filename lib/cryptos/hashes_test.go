@@ -3,8 +3,8 @@ package cryptos
 import (
 	"testing"
 
-	"github.com/oka-is/alice/lib/encoder"
 	"github.com/stretchr/testify/require"
+	"github.com/wault-pw/alice/lib/encoder"
 )
 
 // @refs https://emn178.github.io/online-tools/sha256.html

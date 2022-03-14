@@ -4,8 +4,8 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/oka-is/alice/pkg/domain"
-	"github.com/oka-is/alice/pkg/validator"
+	"github.com/wault-pw/alice/pkg/domain"
+	"github.com/wault-pw/alice/pkg/validator"
 )
 
 func (s *Storage) CreateUser(ctx context.Context, user *domain.User, uw *domain.UserWorkspace,

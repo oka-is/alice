@@ -1,5 +1,3 @@
--include .env.make
-
 .DEFAULT_GOAL := help
 BIN:=$(CURDIR)/bin
 BIN_LINTER:=$(BIN)/golangci-lint
@@ -81,6 +79,5 @@ build:
 
 push: export TAG=$(VERSION)
 push:
-	@echo $(REGISTRY_PASSWORD) | docker login ${REGISTRY_DOMAIN} --username ${REGISTRY_USERNAME} --password-stdin
 	docker push ${REGISTRY_NAME}:${TAG}
 	docker push ${REGISTRY_NAME}:latest

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/oka-is/alice/lib/jwt"
-	"github.com/oka-is/alice/pkg/domain"
+	"github.com/wault-pw/alice/lib/jwt"
+	"github.com/wault-pw/alice/pkg/domain"
 )
 
 const (

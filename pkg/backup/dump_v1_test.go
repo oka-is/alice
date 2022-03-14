@@ -5,12 +5,12 @@ import (
 	"testing"
 
 	"github.com/golang/mock/gomock"
-	"github.com/oka-is/alice/desc/alice_v1"
-	"github.com/oka-is/alice/lib/encoder"
-	"github.com/oka-is/alice/pkg/backup_mock"
-	"github.com/oka-is/alice/pkg/domain"
-	"github.com/oka-is/alice/pkg/storage_mock"
 	"github.com/stretchr/testify/require"
+	"github.com/wault-pw/alice/desc/alice_v1"
+	"github.com/wault-pw/alice/lib/encoder"
+	"github.com/wault-pw/alice/pkg/backup_mock"
+	"github.com/wault-pw/alice/pkg/domain"
+	"github.com/wault-pw/alice/pkg/storage_mock"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/oka-is/alice/pkg/domain"
+	"github.com/wault-pw/alice/pkg/domain"
 )
 
 func (s *Storage) CreateWorkspace(ctx context.Context, uw *domain.UserWorkspace, workspace *domain.Workspace) error {

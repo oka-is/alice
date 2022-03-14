@@ -5,7 +5,7 @@ import (
 	"testing"
 
 	"github.com/jmoiron/sqlx"
-	"github.com/oka-is/alice/pkg/validator"
+	"github.com/wault-pw/alice/pkg/validator"
 )
 
 var (

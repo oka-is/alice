@@ -8,8 +8,8 @@ package api_v1
 //	"net/http/httptest"
 //	"testing"
 //
-//	"github.com/oka-is/alice/server/engine"
-//	"github.com/oka-is/alice/server/engine_mock"
+//	"github.com/wault-pw/alice/server/engine"
+//	"github.com/wault-pw/alice/server/engine_mock"
 //	"github.com/golang/mock/gomock"
 //	"github.com/stretchr/testify/require"
 //	"google.golang.org/protobuf/proto"

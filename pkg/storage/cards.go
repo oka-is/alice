@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/oka-is/alice/pkg/domain"
+	"github.com/wault-pw/alice/pkg/domain"
 )
 
 func (s *Storage) CreateCardWithItems(ctx context.Context, card *domain.Card, items []domain.CardItem) error {

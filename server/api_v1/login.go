@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/oka-is/alice/desc/alice_v1"
-	"github.com/oka-is/alice/server/engine"
-	"github.com/oka-is/srp6ago"
+	"github.com/wault-pw/alice/desc/alice_v1"
+	"github.com/wault-pw/alice/server/engine"
+	"github.com/wault-pw/srp6ago"
 	"google.golang.org/protobuf/proto"
 )
 

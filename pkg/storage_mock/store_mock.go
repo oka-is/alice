@@ -10,9 +10,9 @@ import (
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
-	jwt "github.com/oka-is/alice/lib/jwt"
-	domain "github.com/oka-is/alice/pkg/domain"
-	storage "github.com/oka-is/alice/pkg/storage"
+	jwt "github.com/wault-pw/alice/lib/jwt"
+	domain "github.com/wault-pw/alice/pkg/domain"
+	storage "github.com/wault-pw/alice/pkg/storage"
 )
 
 // MockStore is a mock of IStore interface.

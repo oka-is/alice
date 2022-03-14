@@ -6,7 +6,7 @@ import (
 	sq "github.com/Masterminds/squirrel"
 	_ "github.com/jackc/pgx/v4/stdlib"
 	"github.com/jmoiron/sqlx"
-	"github.com/oka-is/alice/pkg/validator"
+	"github.com/wault-pw/alice/pkg/validator"
 )
 
 type Storage struct {

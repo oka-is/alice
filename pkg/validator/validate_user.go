@@ -2,7 +2,7 @@ package validator
 
 import (
 	validation "github.com/go-ozzo/ozzo-validation/v4"
-	"github.com/oka-is/alice/pkg/domain"
+	"github.com/wault-pw/alice/pkg/domain"
 )
 
 func (v *Validator) ValidateUser(u domain.User) error {

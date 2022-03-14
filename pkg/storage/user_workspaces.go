@@ -3,7 +3,7 @@ package storage
 import (
 	"context"
 
-	"github.com/oka-is/alice/pkg/domain"
+	"github.com/wault-pw/alice/pkg/domain"
 )
 
 func (s *Storage) FindUserWorkspace(ctx context.Context, ID string) (out domain.UserWorkspace, err error) {

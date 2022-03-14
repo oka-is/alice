@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	"github.com/oka-is/alice/pkg/domain"
+	"github.com/wault-pw/alice/pkg/domain"
 )
 
 func mustBuildCardItem(t *testing.T, storage *Storage, input *domain.CardItem) *domain.CardItem {

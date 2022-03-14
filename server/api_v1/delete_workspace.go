@@ -3,7 +3,7 @@ package api_v1
 import (
 	"net/http"
 
-	"github.com/oka-is/alice/server/engine"
+	"github.com/wault-pw/alice/server/engine"
 )
 
 func DeleteWorkspace(ctx *engine.Context) {

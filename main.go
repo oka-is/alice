@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/oka-is/alice/cmd"
 	"github.com/urfave/cli/v2"
+	"github.com/wault-pw/alice/cmd"
 )
 
 var (

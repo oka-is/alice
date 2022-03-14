@@ -9,7 +9,7 @@ import (
 	time "time"
 
 	gomock "github.com/golang/mock/gomock"
-	jwt "github.com/oka-is/alice/lib/jwt"
+	jwt "github.com/wault-pw/alice/lib/jwt"
 )
 
 // MockOts is a mock of IOts interface.

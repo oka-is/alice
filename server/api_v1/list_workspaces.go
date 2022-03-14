@@ -3,8 +3,8 @@ package api_v1
 import (
 	"net/http"
 
-	"github.com/oka-is/alice/server/engine"
-	"github.com/oka-is/alice/server/mapper_v1"
+	"github.com/wault-pw/alice/server/engine"
+	"github.com/wault-pw/alice/server/mapper_v1"
 )
 
 func ListWorkspaces(ctx *engine.Context) {

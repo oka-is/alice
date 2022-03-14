@@ -1,11 +1,11 @@
 package cmd
 
 import (
-	"github.com/oka-is/alice/pkg/pack"
-	"github.com/oka-is/alice/server/api_v1"
-	"github.com/oka-is/alice/server/cypress"
-	"github.com/oka-is/alice/server/engine"
 	"github.com/urfave/cli/v2"
+	"github.com/wault-pw/alice/pkg/pack"
+	"github.com/wault-pw/alice/server/api_v1"
+	"github.com/wault-pw/alice/server/cypress"
+	"github.com/wault-pw/alice/server/engine"
 )
 
 var (

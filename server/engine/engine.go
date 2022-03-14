@@ -6,8 +6,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/oka-is/alice/pkg/pack"
-	"github.com/oka-is/alice/pkg/storage"
+	"github.com/wault-pw/alice/pkg/pack"
+	"github.com/wault-pw/alice/pkg/storage"
 )
 
 type Opts struct {

@@ -3,8 +3,8 @@ package backup
 import (
 	"fmt"
 
-	"github.com/oka-is/alice/pkg/domain"
-	"github.com/oka-is/alice/server/mapper_v1"
+	"github.com/wault-pw/alice/pkg/domain"
+	"github.com/wault-pw/alice/server/mapper_v1"
 )
 
 func (b *Backup) DumpV1(userID string) error {

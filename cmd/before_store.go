@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/oka-is/alice/pkg/storage"
-	"github.com/oka-is/alice/pkg/validator"
 	"github.com/urfave/cli/v2"
+	"github.com/wault-pw/alice/pkg/storage"
+	"github.com/wault-pw/alice/pkg/validator"
 )
 
 var (

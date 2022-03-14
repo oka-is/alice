@@ -3,7 +3,7 @@ package storage
 import (
 	"context"
 
-	"github.com/oka-is/alice/pkg/domain"
+	"github.com/wault-pw/alice/pkg/domain"
 )
 
 func (s *Storage) ListCardItems(ctx context.Context, cardID string) (out []domain.CardItem, err error) {

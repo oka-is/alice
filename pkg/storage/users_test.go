@@ -4,8 +4,8 @@ import (
 	"context"
 	"testing"
 
-	"github.com/oka-is/alice/pkg/domain"
 	"github.com/stretchr/testify/require"
+	"github.com/wault-pw/alice/pkg/domain"
 )
 
 func TestStorage_FindUser(t *testing.T) {

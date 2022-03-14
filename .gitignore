@@ -1,8 +1,6 @@
 bin/*
 build/*
 cmd/embed/*/*
-.env*
-!.env*.example
 !**/*.keep
 !**/EMBED
 js/node_modules

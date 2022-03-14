@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/golang/mock/gomock"
-	"github.com/oka-is/alice/lib/jwt_mock"
-	"github.com/oka-is/alice/pkg/domain"
 	"github.com/stretchr/testify/require"
+	"github.com/wault-pw/alice/lib/jwt_mock"
+	"github.com/wault-pw/alice/pkg/domain"
 )
 
 func TestStorage_IssueSession(t *testing.T) {

@@ -4,8 +4,8 @@ package api_v1
 //	"errors"
 //	"testing"
 //
-//	"github.com/oka-is/alice/desc/alice_v1"
-//	"github.com/oka-is/alice/pkg/validator"
+//	"github.com/wault-pw/alice/desc/alice_v1"
+//	"github.com/wault-pw/alice/pkg/validator"
 //	"github.com/golang/mock/gomock"
 //	"github.com/stretchr/testify/require"
 //)
