@@ -15,7 +15,7 @@ func (s *Storage) CreateUser(ctx context.Context, user *domain.User, uw *domain.
 	})
 }
 
-func (s *Storage) FindUserIdentity(ctx context.Context, identity []byte) (user domain.User, err error) {
+func (s *Storage) FindUserIdentity(ctx context.Context, identity string) (user domain.User, err error) {
 	query := s.selectUserColumns().From("users").Where("identity = ?", identity).Limit(1)
 	err = s.Get(ctx, s.db, &user, query)
 	return
@@ -25,13 +25,13 @@ func (s *Storage) FindUser(ctx context.Context, ID string) (user domain.User, er
 	return s.findUserDB(ctx, s.db, ID)
 }
 
-func (s *Storage) TerminateUser(ctx context.Context, identity []byte, userID string) error {
+func (s *Storage) TerminateUser(ctx context.Context, identity string, userID string) error {
 	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
 		return s.terminateUserDB(c, tx, identity, userID)
 	})
 }
 
-func (s *Storage) terminateUserDB(ctx context.Context, db IConn, identity []byte, userID string) error {
+func (s *Storage) terminateUserDB(ctx context.Context, db IConn, identity string, userID string) error {
 	user, err := s.findUserDB(ctx, db, userID)
 	if err != nil {
 		return fmt.Errorf("failed to find a user: %w", err)

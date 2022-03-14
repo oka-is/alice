@@ -182,7 +182,7 @@ func (mr *MockStoreMockRecorder) FindUser(ctx, ID interface{}) *gomock.Call {
 }
 
 // FindUserIdentity mocks base method.
-func (m *MockStore) FindUserIdentity(ctx context.Context, identity []byte) (domain.User, error) {
+func (m *MockStore) FindUserIdentity(ctx context.Context, identity string) (domain.User, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "FindUserIdentity", ctx, identity)
 	ret0, _ := ret[0].(domain.User)
@@ -316,7 +316,7 @@ func (mr *MockStoreMockRecorder) RetrieveSession(ctx, opts, token interface{}) *
 }
 
 // TerminateUser mocks base method.
-func (m *MockStore) TerminateUser(ctx context.Context, identity []byte, userID string) error {
+func (m *MockStore) TerminateUser(ctx context.Context, identity, userID string) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "TerminateUser", ctx, identity, userID)
 	ret0, _ := ret[0].(error)
