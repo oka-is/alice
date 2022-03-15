@@ -9,7 +9,6 @@ import (
 )
 
 func CloneCard(ctx *engine.Context) {
-	cardID, _ := ctx.Param(paramCardID), ctx.Param(paramWorkspaceID)
 	req := new(alice_v1.CloneCardRequest)
 	err := ctx.MustBindProto(req)
 	if err != nil {
@@ -24,13 +23,31 @@ func CloneCard(ctx *engine.Context) {
 		return
 	}
 
-	card, err := ctx.GetStore().CloneCard(ctx.Context, cardID, req.GetTitleEnc())
+	card, err := ctx.GetStore().FindCard(ctx.Ctx(), ctx.Param(paramCardID))
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	uw, err := ctx.GetStore().FindUserWorkspaceLink(ctx.Ctx(), user.ID.String, ctx.Param(paramWorkspaceID))
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.NewWorkspacePolicy(user, uw).CanManageCard(card)
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	clone, err := ctx.GetStore().CloneCard(ctx.Context, card.ID.String, req.GetTitleEnc())
 	if err != nil {
 		ctx.HandleError(err)
 		return
 	}
 
 	ctx.ProtoBuf(http.StatusOK, &alice_v1.CloneCardResponse{
-		Card: mapper_v1.MapCard(card),
+		Card: mapper_v1.MapCard(clone),
 	})
 }
