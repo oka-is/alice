@@ -9,9 +9,17 @@ import (
 
 func ArchiveCard(ctx *engine.Context) {
 	cardID, _ := ctx.Param(paramCardID), ctx.Param(paramWorkspaceID)
+
+	user := ctx.MustGetUser()
+	err := ctx.NewUserPolicy(user).CanWrite()
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
 	archived, err := ctx.GetStore().ArchiveCard(ctx.Context, cardID)
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		ctx.HandleError(err)
 		return
 	}
 
