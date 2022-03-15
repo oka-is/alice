@@ -5,8 +5,6 @@ import (
 )
 
 func DeleteCard(ctx *engine.Context) {
-	cardID := ctx.Param(paramCardID)
-
 	user := ctx.MustGetUser()
 	err := ctx.NewUserPolicy(user).CanWrite()
 	if err != nil {
@@ -14,7 +12,25 @@ func DeleteCard(ctx *engine.Context) {
 		return
 	}
 
-	err = ctx.GetStore().DeleteCard(ctx.Context, cardID)
+	card, err := ctx.GetStore().FindCard(ctx.Ctx(), ctx.Param(paramCardID))
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	uw, err := ctx.GetStore().FindUserWorkspaceLink(ctx.Ctx(), user.ID.String, ctx.Param(paramWorkspaceID))
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.NewWorkspacePolicy(user, uw).CanManageCard(card)
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.GetStore().DeleteCard(ctx.Context, card.ID.String)
 	if err != nil {
 		ctx.HandleError(err)
 		return

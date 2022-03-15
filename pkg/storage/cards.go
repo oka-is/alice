@@ -45,6 +45,10 @@ func (s *Storage) ListCardsByWorkspace(ctx context.Context, workspaceID string) 
 	return
 }
 
+func (s *Storage) FindCard(ctx context.Context, ID string) (out domain.Card, err error) {
+	return s.findCard(ctx, s.db, ID)
+}
+
 func (s *Storage) DeleteCard(ctx context.Context, cardID string) error {
 	query := Builder().Delete("cards").Where("id = ?", cardID)
 	_, err := s.Exec(ctx, s.db, query)

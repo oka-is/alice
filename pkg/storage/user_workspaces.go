@@ -12,6 +12,12 @@ func (s *Storage) FindUserWorkspace(ctx context.Context, ID string) (out domain.
 	return
 }
 
+func (s *Storage) FindUserWorkspaceLink(ctx context.Context, userID, workspaceID string) (out domain.UserWorkspace, err error) {
+	query := Builder().Select("*").From("user_workspaces").Where("user_id =? AND workspace_id = ?", userID, workspaceID).Limit(1)
+	err = s.Get(ctx, s.db, &out, query)
+	return
+}
+
 func (s *Storage) insertUserWorkspace(ctx context.Context, conn IConn, userWorkspace *domain.UserWorkspace) error {
 	query := Builder().
 		Insert("user_workspaces").

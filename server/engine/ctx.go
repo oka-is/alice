@@ -157,3 +157,7 @@ func (c *Context) HandleError(err error) {
 func (c *Context) NewUserPolicy(user domain.User) policy.IUserPolicy {
 	return c.MustGetOpts().UserPolicy.Wrap(user)
 }
+
+func (c *Context) NewWorkspacePolicy(user domain.User, uw domain.UserWorkspace) policy.IWorkspacePolicy {
+	return c.MustGetOpts().WorkspacePolicy.Wrap(user, uw)
+}

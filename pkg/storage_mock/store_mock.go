@@ -166,6 +166,21 @@ func (mr *MockStoreMockRecorder) DeleteWorkspace(ctx, ID interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorkspace", reflect.TypeOf((*MockStore)(nil).DeleteWorkspace), ctx, ID)
 }
 
+// FindCard mocks base method.
+func (m *MockStore) FindCard(ctx context.Context, ID string) (domain.Card, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindCard", ctx, ID)
+	ret0, _ := ret[0].(domain.Card)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindCard indicates an expected call of FindCard.
+func (mr *MockStoreMockRecorder) FindCard(ctx, ID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindCard", reflect.TypeOf((*MockStore)(nil).FindCard), ctx, ID)
+}
+
 // FindUser mocks base method.
 func (m *MockStore) FindUser(ctx context.Context, ID string) (domain.User, error) {
 	m.ctrl.T.Helper()
@@ -209,6 +224,21 @@ func (m *MockStore) FindUserWithWorkspace(ctx context.Context, ID string) (domai
 func (mr *MockStoreMockRecorder) FindUserWithWorkspace(ctx, ID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserWithWorkspace", reflect.TypeOf((*MockStore)(nil).FindUserWithWorkspace), ctx, ID)
+}
+
+// FindUserWorkspaceLink mocks base method.
+func (m *MockStore) FindUserWorkspaceLink(ctx context.Context, userID, workspaceID string) (domain.UserWorkspace, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindUserWorkspaceLink", ctx, userID, workspaceID)
+	ret0, _ := ret[0].(domain.UserWorkspace)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindUserWorkspaceLink indicates an expected call of FindUserWorkspaceLink.
+func (mr *MockStoreMockRecorder) FindUserWorkspaceLink(ctx, userID, workspaceID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserWorkspaceLink", reflect.TypeOf((*MockStore)(nil).FindUserWorkspaceLink), ctx, userID, workspaceID)
 }
 
 // IssueSession mocks base method.

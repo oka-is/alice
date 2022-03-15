@@ -5,6 +5,6 @@ type UserWorkspace struct {
 	UserID      NullString `db:"user_id"`
 	OwnerID     NullString `db:"owner_id"`
 	WorkspaceID NullString `db:"workspace_id"`
-	AedKeyEnc   NullBytea  `db:"scrt_key_enc"`
+	AedKeyEnc   NullBytea  `db:"aed_key_enc"`
 	CreatedAt   NullTime   `db:"created_at"`
 }

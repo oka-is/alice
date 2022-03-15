@@ -18,33 +18,40 @@ import (
 )
 
 type Setup struct {
-	store      *storage_mock.MockStore
-	engine     *engine.Engine
-	opts       engine.Opts
-	userPolicy *policy_mock.MockUserPolicy
-	ctrl       *gomock.Controller
-	res        *httptest.ResponseRecorder
+	store           *storage_mock.MockStore
+	engine          *engine.Engine
+	opts            engine.Opts
+	userPolicy      *policy_mock.MockUserPolicy
+	workspacePolicy *policy_mock.MockWorkspacePolicy
+	ctrl            *gomock.Controller
+	res             *httptest.ResponseRecorder
 }
 
 func MustSetup(t *testing.T) *Setup {
 	ctrl := gomock.NewController(t)
 	store := storage_mock.NewMockStore(ctrl)
 	userPolicy := policy_mock.NewMockUserPolicy(ctrl)
+	workspacePolicy := policy_mock.NewMockWorkspacePolicy(ctrl)
 	res := httptest.NewRecorder()
+
 	opts := engine.Opts{
-		AllowOrigin: []string{"*"},
+		AllowOrigin:     []string{"*"},
+		UserPolicy:      userPolicy,
+		WorkspacePolicy: workspacePolicy,
 	}
-	opts.UserPolicy = userPolicy
 	router := Extend(engine.New(store, opts))
+
 	userPolicy.EXPECT().Wrap(gomock.Any()).Return(userPolicy).AnyTimes()
+	workspacePolicy.EXPECT().Wrap(gomock.Any(), gomock.Any()).Return(workspacePolicy).AnyTimes()
 
 	return &Setup{
-		ctrl:       ctrl,
-		opts:       opts,
-		store:      store,
-		userPolicy: userPolicy,
-		res:        res,
-		engine:     router,
+		ctrl:            ctrl,
+		opts:            opts,
+		store:           store,
+		userPolicy:      userPolicy,
+		workspacePolicy: workspacePolicy,
+		res:             res,
+		engine:          router,
 	}
 }
 

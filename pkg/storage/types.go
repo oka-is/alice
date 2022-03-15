@@ -46,12 +46,14 @@ type IStore interface {
 	ListCardsByWorkspace(ctx context.Context, workspaceID string) (out []domain.Card, err error)
 	ListCardItems(ctx context.Context, cardID string) (out []domain.CardItem, err error)
 	DeleteCard(ctx context.Context, cardID string) error
+	FindCard(ctx context.Context, ID string) (out domain.Card, err error)
 	CloneCard(ctx context.Context, oldCardID string, titleEnc []byte) (out domain.Card, err error)
 	ArchiveCard(ctx context.Context, ID string) (archived bool, err error)
 
 	// Operations about workspaces
 
 	ListUserWithWorkspaces(ctx context.Context, userID string) (out []domain.UserWithWorkspace, err error)
+	FindUserWorkspaceLink(ctx context.Context, userID, workspaceID string) (out domain.UserWorkspace, err error)
 	CreateWorkspace(ctx context.Context, uw *domain.UserWorkspace, workspace *domain.Workspace) error
 	FindUserWithWorkspace(ctx context.Context, ID string) (out domain.UserWithWorkspace, err error)
 	DeleteWorkspace(ctx context.Context, ID string) error

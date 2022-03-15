@@ -6,15 +6,17 @@ import (
 )
 
 type Opts struct {
-	AllowOrigin  []string
-	JwtKey       []byte
-	CookieDomain string
-	CookieSecure bool
-	BackupUrl    string
-	Ver          *pack.Ver
-	UserPolicy   policy.IUserPolicy
+	AllowOrigin     []string
+	JwtKey          []byte
+	CookieDomain    string
+	CookieSecure    bool
+	BackupUrl       string
+	Ver             *pack.Ver
+	UserPolicy      policy.IUserPolicy
+	WorkspacePolicy policy.IWorkspacePolicy
 }
 
 func (o *Opts) SetDefaultPolicies() {
 	o.UserPolicy = &policy.UserPolicy{}
+	o.WorkspacePolicy = &policy.WorkspacePolicy{}
 }
