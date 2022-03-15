@@ -8,10 +8,24 @@ import (
 )
 
 func ListCards(ctx *engine.Context) {
-	workspaceID := ctx.Param(paramWorkspaceID)
-	cards, err := ctx.GetStore().ListCardsByWorkspace(ctx.Context, workspaceID)
+	user := ctx.MustGetUser()
+
+	uw, err := ctx.GetStore().FindUserWorkspaceLink(ctx.Ctx(), user.ID.String, ctx.Param(paramWorkspaceID))
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.NewWorkspacePolicy(user, uw).CanSeeWorkspace()
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	cards, err := ctx.GetStore().ListCardsByWorkspace(ctx.Context, uw.WorkspaceID.String)
+	if err != nil {
+		ctx.HandleError(err)
+		return
 	}
 
 	ctx.ProtoBuf(http.StatusOK, mapper_v1.MapListCardsResponse(cards))

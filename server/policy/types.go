@@ -19,4 +19,6 @@ type IWorkspacePolicy interface {
 	Wrap(user domain.User, uw domain.UserWorkspace) IWorkspacePolicy
 	CanManageWorkspace() error
 	CanManageCard(card domain.Card) error
+	CanSeeWorkspace() error
+	CanSeeCard(card domain.Card) error
 }

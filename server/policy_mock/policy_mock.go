@@ -114,6 +114,34 @@ func (mr *MockWorkspacePolicyMockRecorder) CanManageWorkspace() *gomock.Call {
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CanManageWorkspace", reflect.TypeOf((*MockWorkspacePolicy)(nil).CanManageWorkspace))
 }
 
+// CanSeeCard mocks base method.
+func (m *MockWorkspacePolicy) CanSeeCard(card domain.Card) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CanSeeCard", card)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CanSeeCard indicates an expected call of CanSeeCard.
+func (mr *MockWorkspacePolicyMockRecorder) CanSeeCard(card interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CanSeeCard", reflect.TypeOf((*MockWorkspacePolicy)(nil).CanSeeCard), card)
+}
+
+// CanSeeWorkspace mocks base method.
+func (m *MockWorkspacePolicy) CanSeeWorkspace() error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CanSeeWorkspace")
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CanSeeWorkspace indicates an expected call of CanSeeWorkspace.
+func (mr *MockWorkspacePolicyMockRecorder) CanSeeWorkspace() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CanSeeWorkspace", reflect.TypeOf((*MockWorkspacePolicy)(nil).CanSeeWorkspace))
+}
+
 // Wrap mocks base method.
 func (m *MockWorkspacePolicy) Wrap(user domain.User, uw domain.UserWorkspace) policy.IWorkspacePolicy {
 	m.ctrl.T.Helper()

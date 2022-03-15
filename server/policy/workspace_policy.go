@@ -21,6 +21,26 @@ func (w *WorkspacePolicy) CanManageWorkspace() error {
 	return nil
 }
 
+func (w *WorkspacePolicy) CanSeeWorkspace() error {
+	if w.uw.UserID.String != w.user.ID.String {
+		return ErrDenied
+	}
+
+	return nil
+}
+
+func (w *WorkspacePolicy) CanSeeCard(card domain.Card) error {
+	if err := w.CanSeeWorkspace(); err != nil {
+		return err
+	}
+
+	if card.WorkspaceID.String != w.uw.WorkspaceID.String {
+		return ErrDenied
+	}
+
+	return nil
+}
+
 func (w *WorkspacePolicy) CanManageCard(card domain.Card) error {
 	if err := w.CanManageWorkspace(); err != nil {
 		return err

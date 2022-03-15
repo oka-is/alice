@@ -18,6 +18,7 @@ func TestDeleteWorkspace(t *testing.T) {
 		s.userPolicy.EXPECT().CanWrite().Return(policy.ErrDenied)
 
 		s.MustPOST(t, "/v1/workspaces/:wid/delete", nil)
+
 		require.Equal(t, 403, s.res.Code)
 	})
 
