@@ -33,13 +33,15 @@ func MustSetup(t *testing.T) *Setup {
 	userPolicy := policy_mock.NewMockUserPolicy(ctrl)
 	workspacePolicy := policy_mock.NewMockWorkspacePolicy(ctrl)
 	res := httptest.NewRecorder()
-
 	opts := engine.Opts{
 		AllowOrigin:     []string{"*"},
 		UserPolicy:      userPolicy,
 		WorkspacePolicy: workspacePolicy,
 	}
-	router := Extend(engine.New(store, opts))
+
+	app, err := engine.New(store, opts)
+	require.NoError(t, err)
+	router := Extend(app)
 
 	userPolicy.EXPECT().Wrap(gomock.Any()).Return(userPolicy).AnyTimes()
 	workspacePolicy.EXPECT().Wrap(gomock.Any(), gomock.Any()).Return(workspacePolicy).AnyTimes()

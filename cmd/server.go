@@ -1,6 +1,8 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/urfave/cli/v2"
 	"github.com/wault-pw/alice/pkg/pack"
 	"github.com/wault-pw/alice/server/api_v1"
@@ -57,6 +59,12 @@ var (
 		Usage:   "mount cypress endpoints for test cases only",
 		EnvVars: []string{"MOUNT_CYPRESS"},
 	}
+
+	FlagServerSentryDsn = &cli.StringFlag{
+		Name:    "sentry-dsn",
+		Usage:   "sentry dsn for error monitoring",
+		EnvVars: []string{"SENTRY_DSN"},
+	}
 )
 
 func Server(ctx *cli.Context) error {
@@ -64,7 +72,9 @@ func Server(ctx *cli.Context) error {
 		AllowOrigin:  ctx.StringSlice(FlagServerAllowOrigin.Name),
 		CookieSecure: ctx.Bool(FlagServerCookieSecure.Name),
 		CookieDomain: ctx.String(FlagServerCookieDomain.Name),
+		Production:   ctx.Bool(FlagProduction.Name),
 		BackupUrl:    ctx.String(FlagServerBackupUrl.Name),
+		SentryDsn:    ctx.String(FlagServerSentryDsn.Name),
 		JwtKey:       []byte(ctx.String(FlagServerJwtKey.Name)),
 		Ver:          pack.NewWer(pack.Ver1),
 	}
@@ -74,7 +84,11 @@ func Server(ctx *cli.Context) error {
 		opts.Ver = pack.NewWer(pack.Ver666)
 	}
 
-	routes := engine.New(Ctx(ctx).GetStore(), opts)
+	routes, err := engine.New(Ctx(ctx).GetStore(), opts)
+	if err != nil {
+		return err
+	}
+
 	api_v1.Extend(routes)
 
 	if ctx.Bool(FlagServerMountCypress.Name) {
@@ -82,4 +96,24 @@ func Server(ctx *cli.Context) error {
 	}
 
 	return routes.Run(ctx.String(FlagServerAddress.Name))
+}
+
+func BeforeServerProduction(ctx *cli.Context) error {
+	if !ctx.Bool(FlagProduction.Name) {
+		return nil
+	}
+
+	if ctx.String(FlagServerJwtKey.Name) == FlagServerJwtKey.Value {
+		return fmt.Errorf("please provide <%s> flag", FlagServerJwtKey.Name)
+	}
+
+	if ctx.Bool(FlagServerVer666.Name) {
+		return fmt.Errorf("flag <%s> vant be set in production", FlagServerVer666.Name)
+	}
+
+	if ctx.Bool(FlagServerMountCypress.Name) {
+		return fmt.Errorf("flag <%s> vant be set in production", FlagServerMountCypress.Name)
+	}
+
+	return nil
 }

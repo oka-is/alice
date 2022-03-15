@@ -18,6 +18,9 @@ func main() {
 		Usage:     "password manager backend",
 		Version:   Version,
 		Copyright: "© 2022 Wault OÜ",
+		Flags: []cli.Flag{
+			cmd.FlagProduction,
+		},
 		Commands: []*cli.Command{
 			{
 				Name:  "server",
@@ -33,8 +36,13 @@ func main() {
 					cmd.FlagServerBackupUrl,
 					cmd.FlagServerVer666,
 					cmd.FlagServerMountCypress,
+					cmd.FlagServerSentryDsn,
 				},
-				Before: cmd.BeforeAll(cmd.BeforeStore),
+				Before: cmd.BeforeAll(
+					cmd.BeforeStoreProduction,
+					cmd.BeforeServerProduction,
+					cmd.BeforeStore,
+				),
 				Action: cmd.Server,
 			},
 			{

@@ -10,7 +10,9 @@ type Opts struct {
 	JwtKey          []byte
 	CookieDomain    string
 	CookieSecure    bool
+	Production      bool
 	BackupUrl       string
+	SentryDsn       string
 	Ver             *pack.Ver
 	UserPolicy      policy.IUserPolicy
 	WorkspacePolicy policy.IWorkspacePolicy

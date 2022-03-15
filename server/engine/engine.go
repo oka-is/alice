@@ -1,18 +1,34 @@
 package engine
 
 import (
+	"fmt"
 	"net/http"
 	"time"
 
+	"github.com/getsentry/sentry-go"
+	sentrygin "github.com/getsentry/sentry-go/gin"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/wault-pw/alice/pkg/storage"
 )
 
-func New(store storage.IStore, opts Opts) *Engine {
+func New(store storage.IStore, opts Opts) (*Engine, error) {
+	if opts.Production {
+		gin.SetMode(gin.ReleaseMode)
+	}
+
 	router := gin.Default()
+	err := router.SetTrustedProxies([]string{})
+	if err != nil {
+		return nil, fmt.Errorf("failed to set trusted procies: %w", err)
+	}
+
 	router.NoRoute(WrapAction(noRoute))
 	router.Use(useExtendedContext(store, opts))
+	err = applySentry(router, opts.SentryDsn)
+	if err != nil {
+		return nil, fmt.Errorf("failed to apply sentry: %w", err)
+	}
 
 	router.Use(cors.New(cors.Config{
 		AllowOrigins: opts.AllowOrigin,
@@ -33,7 +49,7 @@ func New(store storage.IStore, opts Opts) *Engine {
 
 	router.GET("/health", WrapAction(health))
 
-	return router
+	return router, nil
 }
 
 func WrapAction(action ActionFN) gin.HandlerFunc {
@@ -55,4 +71,23 @@ func health(ctx *Context) {
 	} else {
 		ctx.String(http.StatusOK, "[OK]")
 	}
+}
+
+// @refs https://docs.sentry.io/platforms/go/guides/gin/
+func applySentry(app *gin.Engine, dsn string) error {
+	if dsn == "" {
+		return nil
+	}
+
+	err := sentry.Init(sentry.ClientOptions{Dsn: dsn, AttachStacktrace: true})
+	if err != nil {
+		return err
+	}
+
+	app.Use(sentrygin.New(sentrygin.Options{
+		Repanic:         true,
+		WaitForDelivery: false,
+	}))
+
+	return nil
 }
