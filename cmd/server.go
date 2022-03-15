@@ -68,6 +68,7 @@ func Server(ctx *cli.Context) error {
 		JwtKey:       []byte(ctx.String(FlagServerJwtKey.Name)),
 		Ver:          pack.NewWer(pack.Ver1),
 	}
+	opts.SetDefaultPolicies()
 
 	if ctx.Bool(FlagServerVer666.Name) {
 		opts.Ver = pack.NewWer(pack.Ver666)

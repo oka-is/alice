@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/wault-pw/alice/desc/alice_v1"
-	"github.com/wault-pw/alice/pkg/validator"
 	"github.com/wault-pw/alice/server/engine"
 )
 
@@ -14,14 +13,16 @@ func Terminate(ctx *engine.Context) {
 		_ = ctx.AbortWithError(http.StatusBadRequest, err)
 	}
 
-	userID := ctx.MustGetSession().UserID.String
-	err := ctx.GetStore().TerminateUser(ctx.Ctx(), req.GetIdentity(), userID)
-	switch {
-	case validator.IsInvalid(err):
-		_ = ctx.AbortWithError(http.StatusUnprocessableEntity, err)
+	user := ctx.MustGetUser()
+	err := ctx.NewUserPolicy(user).CanWrite()
+	if err != nil {
+		ctx.HandleError(err)
 		return
-	case err != nil:
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+	}
+
+	err = ctx.GetStore().TerminateUser(ctx.Ctx(), req.GetIdentity(), user.ID.String)
+	if err != nil {
+		ctx.HandleError(err)
 		return
 	}
 

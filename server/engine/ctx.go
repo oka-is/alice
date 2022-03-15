@@ -2,6 +2,8 @@ package engine
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -11,6 +13,8 @@ import (
 	"github.com/wault-pw/alice/pkg/domain"
 	"github.com/wault-pw/alice/pkg/pack"
 	"github.com/wault-pw/alice/pkg/storage"
+	"github.com/wault-pw/alice/pkg/validator"
+	"github.com/wault-pw/alice/server/policy"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -68,6 +72,15 @@ func (c *Context) MustGetSession() domain.Session {
 	return session
 }
 
+// MustGetUser returns session user
+func (c *Context) MustGetUser() domain.User {
+	user, err := c.GetStore().FindUser(c.Ctx(), c.MustGetSession().UserID.String)
+	if err != nil {
+		panic(fmt.Errorf("failed to get session user: %w", err))
+	}
+	return user
+}
+
 func (c *Context) MustGetVer() *pack.Ver {
 	ver := c.MustGetOpts().Ver
 	if ver == nil {
@@ -122,4 +135,22 @@ func (c *Context) MustBindProto(m proto.Message) error {
 	}
 
 	return proto.Unmarshal(buf, m)
+}
+
+func (c *Context) HandleError(err error) {
+	switch {
+	case validator.IsInvalid(err):
+		_ = c.AbortWithError(http.StatusUnprocessableEntity, err)
+		return
+	case errors.Is(err, policy.ErrDenied):
+		_ = c.AbortWithError(http.StatusForbidden, err)
+		return
+	case err != nil:
+		_ = c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+}
+
+func (c *Context) NewUserPolicy(user domain.User) policy.IUserPolicy {
+	return c.MustGetOpts().UserPolicy.Wrap(user)
 }

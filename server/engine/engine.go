@@ -6,18 +6,8 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	"github.com/wault-pw/alice/pkg/pack"
 	"github.com/wault-pw/alice/pkg/storage"
 )
-
-type Opts struct {
-	AllowOrigin  []string
-	JwtKey       []byte
-	CookieDomain string
-	CookieSecure bool
-	BackupUrl    string
-	Ver          *pack.Ver
-}
 
 func New(store storage.IStore, opts Opts) *Engine {
 	router := gin.Default()

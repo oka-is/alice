@@ -95,6 +95,7 @@ func (s *Storage) insertUser(ctx context.Context, db IConn, user *domain.User) e
 		Insert("users").
 		Columns(
 			"ver",
+			"readonly",
 			"identity",
 			"verifier",
 			"srp_salt",
@@ -103,6 +104,7 @@ func (s *Storage) insertUser(ctx context.Context, db IConn, user *domain.User) e
 			"pub_key").
 		Values(
 			user.Ver,
+			user.Readonly,
 			user.Identity,
 			Expr("encrypt(?, ?, 'aes-cbc/pad:pkcs')", user.Verifier, s.sseKey),
 			user.SrpSalt,
