@@ -5,27 +5,31 @@ import (
 
 	"github.com/wault-pw/alice/desc/alice_v1"
 	"github.com/wault-pw/alice/pkg/domain"
-	"github.com/wault-pw/alice/pkg/validator"
 	"github.com/wault-pw/alice/server/engine"
 	"github.com/wault-pw/alice/server/mapper_v1"
 )
 
 func UpdateCard(ctx *engine.Context) {
 	req := new(alice_v1.UpsertCardRequest)
-	if err := ctx.MustBindProto(req); err != nil {
-		_ = ctx.AbortWithError(http.StatusBadRequest, err)
+	err := ctx.MustBindProto(req)
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	user := ctx.MustGetUser()
+	err = ctx.NewUserPolicy(user).CanWrite()
+	if err != nil {
+		ctx.HandleError(err)
 		return
 	}
 
 	card, items := mapper_v1.BindUpsertCard(req)
 	card.ID = domain.NewEmptyString(ctx.Param(paramCardID))
-	err := ctx.GetStore().UpdateCardWithItems(ctx.Context, &card, items)
-	switch {
-	case validator.IsInvalid(err):
-		_ = ctx.AbortWithError(http.StatusUnprocessableEntity, err)
-		return
-	case err != nil:
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+
+	err = ctx.GetStore().UpdateCardWithItems(ctx.Context, &card, items)
+	if err != nil {
+		ctx.HandleError(err)
 		return
 	}
 
