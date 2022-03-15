@@ -5,8 +5,6 @@ import (
 )
 
 func DeleteWorkspace(ctx *engine.Context) {
-	workspaceID := ctx.Param(paramWorkspaceID)
-
 	user := ctx.MustGetUser()
 	err := ctx.NewUserPolicy(user).CanWrite()
 	if err != nil {
@@ -14,7 +12,19 @@ func DeleteWorkspace(ctx *engine.Context) {
 		return
 	}
 
-	err = ctx.GetStore().DeleteWorkspace(ctx, workspaceID)
+	uw, err := ctx.GetStore().FindUserWorkspaceLink(ctx.Ctx(), user.ID.String, ctx.Param(paramWorkspaceID))
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.NewWorkspacePolicy(user, uw).CanManageWorkspace()
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.GetStore().DeleteWorkspace(ctx, uw.WorkspaceID.String)
 	if err != nil {
 		ctx.HandleError(err)
 		return
