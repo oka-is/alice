@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/wault-pw/alice/desc/alice_v1"
-	"github.com/wault-pw/alice/pkg/domain"
 	"github.com/wault-pw/alice/server/engine"
 	"github.com/wault-pw/alice/server/mapper_v1"
 )
@@ -17,7 +16,6 @@ func CreateCard(ctx *engine.Context) {
 		return
 	}
 
-	workspaceID := ctx.Param(paramWorkspaceID)
 	user := ctx.MustGetUser()
 	err = ctx.NewUserPolicy(user).CanWrite()
 	if err != nil {
@@ -25,8 +23,20 @@ func CreateCard(ctx *engine.Context) {
 		return
 	}
 
+	uw, err := ctx.GetStore().FindUserWorkspaceLink(ctx.Ctx(), user.ID.String, ctx.Param(paramWorkspaceID))
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.NewWorkspacePolicy(user, uw).CanManageWorkspace()
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
 	card, items := mapper_v1.BindUpsertCard(req)
-	card.WorkspaceID = domain.NewEmptyString(workspaceID)
+	card.WorkspaceID = uw.WorkspaceID
 
 	err = ctx.GetStore().CreateCardWithItems(ctx.Context, &card, items)
 	if err != nil {
