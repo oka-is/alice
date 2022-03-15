@@ -3,16 +3,17 @@ package api_v1
 import (
 	"bytes"
 	"fmt"
-	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/proto"
+	"io/ioutil"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/golang/mock/gomock"
+	"github.com/stretchr/testify/require"
 	"github.com/wault-pw/alice/pkg/storage_mock"
 	"github.com/wault-pw/alice/server/engine"
 	"github.com/wault-pw/alice/server/policy_mock"
+	"google.golang.org/protobuf/proto"
 )
 
 type Setup struct {
@@ -57,9 +58,9 @@ func (s *Setup) MustPOST(t *testing.T, path string, message proto.Message) {
 	s.engine.ServeHTTP(s.res, req)
 }
 
-//func (s *Setup) ShouldBind(t *testing.T, message proto.Message) {
-//	body, err := ioutil.ReadAll(s.res.Body)
-//	require.NoError(t, err, "body read")
-//	err = proto.Unmarshal(body, message)
-//	require.NoError(t, err, "unmarshall error")
-//}
+func (s *Setup) MustBindResponse(t *testing.T, message proto.Message) {
+	body, err := ioutil.ReadAll(s.res.Body)
+	require.NoError(t, err, "body read")
+	err = proto.Unmarshal(body, message)
+	require.NoError(t, err, "unmarshall error")
+}

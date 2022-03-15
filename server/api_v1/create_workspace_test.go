@@ -10,7 +10,7 @@ import (
 	"github.com/wault-pw/alice/server/policy"
 )
 
-func TestTerminate(t *testing.T) {
+func TestCreateWorkspace(t *testing.T) {
 	t.Run("it errors when user is a readonly", func(t *testing.T) {
 		s := MustSetup(t)
 		defer s.ctrl.Finish()
@@ -20,7 +20,7 @@ func TestTerminate(t *testing.T) {
 		s.userPolicy.EXPECT().Wrap(gomock.Any()).Return(s.userPolicy)
 		s.userPolicy.EXPECT().CanWrite().Return(policy.ErrDenied)
 
-		s.MustPOST(t, "/v1/terminate", &alice_v1.TerminateRequest{})
+		s.MustPOST(t, "/v1/workspaces/create", &alice_v1.CreateWorkspaceRequest{})
 
 		require.Equal(t, 403, s.res.Code)
 	})
@@ -33,10 +33,16 @@ func TestTerminate(t *testing.T) {
 		s.store.EXPECT().FindUser(gomock.Any(), gomock.Any()).Return(domain.User{}, nil)
 		s.userPolicy.EXPECT().Wrap(gomock.Any()).Return(s.userPolicy)
 		s.userPolicy.EXPECT().CanWrite().Return(nil)
-		s.store.EXPECT().TerminateUser(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
+		s.store.EXPECT().CreateWorkspace(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
+		s.store.EXPECT().FindUserWithWorkspace(gomock.Any(), gomock.Any()).Return(domain.UserWithWorkspace{
+			TitleEnc: domain.NewEmptyBytes([]byte("foo")),
+		}, nil)
 
-		s.MustPOST(t, "/v1/terminate", &alice_v1.TerminateRequest{})
+		s.MustPOST(t, "/v1/workspaces/create", &alice_v1.CreateWorkspaceRequest{})
+		res := new(alice_v1.CreateWorkspaceResponse)
+		s.MustBindResponse(t, res)
 
 		require.Equal(t, 200, s.res.Code)
+		require.Equal(t, []byte("foo"), res.GetWorkspace().GetTitleEnc())
 	})
 }
