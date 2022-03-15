@@ -8,10 +8,6 @@ import (
 )
 
 func WhoAmI(ctx *engine.Context) {
-	user, err := ctx.GetStore().FindUser(ctx, ctx.MustGetSession().UserID.String)
-	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
-	}
-
+	user := ctx.MustGetUser()
 	ctx.ProtoBuf(http.StatusOK, mapper_v1.MapWhoAmI(user))
 }

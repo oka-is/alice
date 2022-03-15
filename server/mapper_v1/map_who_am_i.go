@@ -8,6 +8,7 @@ import (
 func MapWhoAmI(input domain.User) *alice_v1.WhoAmIResponse {
 	return &alice_v1.WhoAmIResponse{
 		Id:         input.ID.String,
+		Readonly:   input.Readonly.Bool,
 		PasswdSalt: input.PasswdSalt.Bytea,
 		PrivKeyEnc: input.PrivKeyEnc.Bytea,
 		PubKey:     input.PubKey.Bytea,
