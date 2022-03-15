@@ -10,6 +10,7 @@ import (
 
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
+	"github.com/wault-pw/alice/pkg/domain"
 	"github.com/wault-pw/alice/pkg/storage_mock"
 	"github.com/wault-pw/alice/server/engine"
 	"github.com/wault-pw/alice/server/policy_mock"
@@ -35,6 +36,7 @@ func MustSetup(t *testing.T) *Setup {
 	}
 	opts.UserPolicy = userPolicy
 	router := Extend(engine.New(store, opts))
+	userPolicy.EXPECT().Wrap(gomock.Any()).Return(userPolicy).AnyTimes()
 
 	return &Setup{
 		ctrl:       ctrl,
@@ -63,4 +65,9 @@ func (s *Setup) MustBindResponse(t *testing.T, message proto.Message) {
 	require.NoError(t, err, "body read")
 	err = proto.Unmarshal(body, message)
 	require.NoError(t, err, "unmarshall error")
+}
+
+func (s *Setup) LoginAs(t *testing.T, session domain.Session, user domain.User) {
+	s.store.EXPECT().RetrieveSession(gomock.Any(), gomock.Any(), gomock.Any()).Return(session, nil)
+	s.store.EXPECT().FindUser(gomock.Any(), gomock.Any()).Return(user, nil)
 }

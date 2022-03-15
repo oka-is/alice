@@ -15,11 +15,9 @@ func TestCreateWorkspace(t *testing.T) {
 		s := MustSetup(t)
 		defer s.ctrl.Finish()
 
-		s.store.EXPECT().RetrieveSession(gomock.Any(), gomock.Any(), gomock.Any()).Return(domain.Session{}, nil)
-		s.store.EXPECT().FindUser(gomock.Any(), gomock.Any()).Return(domain.User{}, nil)
-		s.userPolicy.EXPECT().Wrap(gomock.Any()).Return(s.userPolicy)
-		s.userPolicy.EXPECT().CanWrite().Return(policy.ErrDenied)
+		s.LoginAs(t, domain.Session{}, domain.User{})
 
+		s.userPolicy.EXPECT().CanWrite().Return(policy.ErrDenied)
 		s.MustPOST(t, "/v1/workspaces/create", &alice_v1.CreateWorkspaceRequest{})
 
 		require.Equal(t, 403, s.res.Code)
@@ -29,20 +27,22 @@ func TestCreateWorkspace(t *testing.T) {
 		s := MustSetup(t)
 		defer s.ctrl.Finish()
 
-		s.store.EXPECT().RetrieveSession(gomock.Any(), gomock.Any(), gomock.Any()).Return(domain.Session{}, nil)
-		s.store.EXPECT().FindUser(gomock.Any(), gomock.Any()).Return(domain.User{}, nil)
-		s.userPolicy.EXPECT().Wrap(gomock.Any()).Return(s.userPolicy)
+		s.LoginAs(t, domain.Session{}, domain.User{})
+
+		workspace := domain.UserWithWorkspace{
+			TitleEnc: domain.NewEmptyBytes([]byte{1}),
+		}
+
 		s.userPolicy.EXPECT().CanWrite().Return(nil)
 		s.store.EXPECT().CreateWorkspace(gomock.Any(), gomock.Any(), gomock.Any()).Return(nil)
-		s.store.EXPECT().FindUserWithWorkspace(gomock.Any(), gomock.Any()).Return(domain.UserWithWorkspace{
-			TitleEnc: domain.NewEmptyBytes([]byte("foo")),
-		}, nil)
+		s.store.EXPECT().FindUserWithWorkspace(gomock.Any(), gomock.Any()).Return(workspace, nil)
 
 		s.MustPOST(t, "/v1/workspaces/create", &alice_v1.CreateWorkspaceRequest{})
+
 		res := new(alice_v1.CreateWorkspaceResponse)
 		s.MustBindResponse(t, res)
 
 		require.Equal(t, 200, s.res.Code)
-		require.Equal(t, []byte("foo"), res.GetWorkspace().GetTitleEnc())
+		require.Equal(t, workspace.TitleEnc.Bytea, res.GetWorkspace().GetTitleEnc())
 	})
 }

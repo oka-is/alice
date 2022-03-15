@@ -11,13 +11,22 @@ import (
 func CloneCard(ctx *engine.Context) {
 	cardID, _ := ctx.Param(paramCardID), ctx.Param(paramWorkspaceID)
 	req := new(alice_v1.CloneCardRequest)
-	if err := ctx.MustBindProto(req); err != nil {
-		_ = ctx.AbortWithError(http.StatusBadRequest, err)
+	err := ctx.MustBindProto(req)
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	user := ctx.MustGetUser()
+	err = ctx.NewUserPolicy(user).CanWrite()
+	if err != nil {
+		ctx.HandleError(err)
+		return
 	}
 
 	card, err := ctx.GetStore().CloneCard(ctx.Context, cardID, req.GetTitleEnc())
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		ctx.HandleError(err)
 		return
 	}
 

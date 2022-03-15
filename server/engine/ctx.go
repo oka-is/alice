@@ -145,7 +145,10 @@ func (c *Context) HandleError(err error) {
 	case errors.Is(err, policy.ErrDenied):
 		_ = c.AbortWithError(http.StatusForbidden, err)
 		return
-	case err != nil:
+	case errors.Is(err, storage.ErrNotFound):
+		_ = c.AbortWithError(http.StatusNotFound, err)
+		return
+	default:
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
