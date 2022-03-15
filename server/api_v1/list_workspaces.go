@@ -8,11 +8,10 @@ import (
 )
 
 func ListWorkspaces(ctx *engine.Context) {
-	session := ctx.MustGetSession()
-	records, err := ctx.GetStore().ListUserWithWorkspaces(ctx, session.UserID.String)
-
+	user := ctx.MustGetUser()
+	records, err := ctx.GetStore().ListUserWithWorkspaces(ctx, user.ID.String)
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		ctx.HandleError(err)
 		return
 	}
 
