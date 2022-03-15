@@ -9,7 +9,6 @@ import (
 
 func ListCards(ctx *engine.Context) {
 	user := ctx.MustGetUser()
-
 	uw, err := ctx.GetStore().FindUserWorkspaceLink(ctx.Ctx(), user.ID.String, ctx.Param(paramWorkspaceID))
 	if err != nil {
 		ctx.HandleError(err)

@@ -38,7 +38,6 @@ func TestCreateWorkspace(t *testing.T) {
 		s.store.EXPECT().FindUserWithWorkspace(gomock.Any(), gomock.Any()).Return(workspace, nil)
 
 		s.MustPOST(t, "/v1/workspaces/create", &alice_v1.CreateWorkspaceRequest{})
-
 		res := new(alice_v1.CreateWorkspaceResponse)
 		s.MustBindResponse(t, res)
 
