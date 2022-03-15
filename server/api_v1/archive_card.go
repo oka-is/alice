@@ -8,8 +8,6 @@ import (
 )
 
 func ArchiveCard(ctx *engine.Context) {
-	cardID, _ := ctx.Param(paramCardID), ctx.Param(paramWorkspaceID)
-
 	user := ctx.MustGetUser()
 	err := ctx.NewUserPolicy(user).CanWrite()
 	if err != nil {
@@ -17,7 +15,25 @@ func ArchiveCard(ctx *engine.Context) {
 		return
 	}
 
-	archived, err := ctx.GetStore().ArchiveCard(ctx.Context, cardID)
+	card, err := ctx.GetStore().FindCard(ctx.Ctx(), ctx.Param(paramCardID))
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	uw, err := ctx.GetStore().FindUserWorkspaceLink(ctx.Ctx(), user.ID.String, ctx.Param(paramWorkspaceID))
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.NewWorkspacePolicy(user, uw).CanManageCard(card)
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	archived, err := ctx.GetStore().ArchiveCard(ctx.Context, card.ID.String)
 	if err != nil {
 		ctx.HandleError(err)
 		return
