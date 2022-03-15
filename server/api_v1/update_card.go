@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/wault-pw/alice/desc/alice_v1"
-	"github.com/wault-pw/alice/pkg/domain"
 	"github.com/wault-pw/alice/server/engine"
 	"github.com/wault-pw/alice/server/mapper_v1"
 )
@@ -24,16 +23,34 @@ func UpdateCard(ctx *engine.Context) {
 		return
 	}
 
-	card, items := mapper_v1.BindUpsertCard(req)
-	card.ID = domain.NewEmptyString(ctx.Param(paramCardID))
+	card, err := ctx.GetStore().FindCard(ctx.Ctx(), ctx.Param(paramCardID))
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
 
-	err = ctx.GetStore().UpdateCardWithItems(ctx.Context, &card, items)
+	uw, err := ctx.GetStore().FindUserWorkspaceLink(ctx.Ctx(), user.ID.String, ctx.Param(paramWorkspaceID))
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.NewWorkspacePolicy(user, uw).CanManageCard(card)
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	clone, items := mapper_v1.BindUpsertCard(req)
+	clone.ID = card.ID
+
+	err = ctx.GetStore().UpdateCardWithItems(ctx.Context, &clone, items)
 	if err != nil {
 		ctx.HandleError(err)
 		return
 	}
 
 	ctx.ProtoBuf(http.StatusOK, &alice_v1.UpsertCardResponse{
-		Card: mapper_v1.MapCard(card),
+		Card: mapper_v1.MapCard(clone),
 	})
 }
