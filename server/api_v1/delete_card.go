@@ -1,16 +1,22 @@
 package api_v1
 
 import (
-	"net/http"
-
 	"github.com/wault-pw/alice/server/engine"
 )
 
 func DeleteCard(ctx *engine.Context) {
 	cardID := ctx.Param(paramCardID)
-	err := ctx.GetStore().DeleteCard(ctx.Context, cardID)
+
+	user := ctx.MustGetUser()
+	err := ctx.NewUserPolicy(user).CanWrite()
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.GetStore().DeleteCard(ctx.Context, cardID)
+	if err != nil {
+		ctx.HandleError(err)
 		return
 	}
 
