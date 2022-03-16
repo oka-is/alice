@@ -84,7 +84,11 @@ func auth1(ctx *engine.Context, req *alice_v1.Login1Request) (proto.Message, err
 		return nil, fmt.Errorf("failed to unmarshall srp server: %w", err)
 	}
 
-	srp.SetClientPublicKey(req.GetMutual())
+	err = srp.SetClientPublicKey(req.GetMutual())
+	if err != nil {
+		return nil, fmt.Errorf("server aborts")
+	}
+
 	if !srp.IsProofValid(req.GetProof()) {
 		return nil, fmt.Errorf("invalid credentials")
 	}

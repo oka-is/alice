@@ -16,7 +16,7 @@ require (
 	github.com/pressly/goose/v3 v3.5.3
 	github.com/stretchr/testify v1.7.0
 	github.com/urfave/cli/v2 v2.3.0
-	github.com/wault-pw/srp6ago v0.0.0-20220314201300-78ba430b5a2b
+	github.com/wault-pw/srp6ago v0.0.0-20220316104911-2eaa1e75f8fd
 	golang.org/x/crypto v0.0.0-20220314234724-5d542ad81a58
 	google.golang.org/protobuf v1.27.1
 )
