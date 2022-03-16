@@ -25,6 +25,10 @@ func (s *Storage) FindWorkspace(ctx context.Context, ID string) (out domain.Work
 	return
 }
 
+func (s *Storage) UpdateWorkspace(ctx context.Context, ID string, titleEnc []byte) error {
+	return s.updateWorkspace(ctx, s.db, ID, titleEnc)
+}
+
 func (s *Storage) createWorkspace(ctx context.Context, db IConn, uw *domain.UserWorkspace, workspace *domain.Workspace) error {
 	err := s.insertWorkspace(ctx, db, workspace)
 	if err != nil {
@@ -38,6 +42,11 @@ func (s *Storage) createWorkspace(ctx context.Context, db IConn, uw *domain.User
 	}
 
 	return nil
+}
+
+func (s *Storage) updateWorkspace(ctx context.Context, db IConn, ID string, titleEnc []byte) error {
+	query := Builder().Update("workspaces").Set("title_enc", domain.NewEmptyBytes(titleEnc)).Where("id = ? ", ID)
+	return s.Exec1(ctx, db, query)
 }
 
 func (s *Storage) insertWorkspace(ctx context.Context, conn IConn, workspace *domain.Workspace) error {

@@ -387,6 +387,20 @@ func (mr *MockStoreMockRecorder) UpdateCardWithItems(ctx, card, items interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCardWithItems", reflect.TypeOf((*MockStore)(nil).UpdateCardWithItems), ctx, card, items)
 }
 
+// UpdateWorkspace mocks base method.
+func (m *MockStore) UpdateWorkspace(ctx context.Context, ID string, titleEnc []byte) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateWorkspace", ctx, ID, titleEnc)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateWorkspace indicates an expected call of UpdateWorkspace.
+func (mr *MockStoreMockRecorder) UpdateWorkspace(ctx, ID, titleEnc interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateWorkspace", reflect.TypeOf((*MockStore)(nil).UpdateWorkspace), ctx, ID, titleEnc)
+}
+
 // MockIBuilder is a mock of IBuilder interface.
 type MockIBuilder struct {
 	ctrl     *gomock.Controller

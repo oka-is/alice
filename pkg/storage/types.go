@@ -57,6 +57,7 @@ type IStore interface {
 	CreateWorkspace(ctx context.Context, uw *domain.UserWorkspace, workspace *domain.Workspace) error
 	FindUserWithWorkspace(ctx context.Context, ID string) (out domain.UserWithWorkspace, err error)
 	DeleteWorkspace(ctx context.Context, ID string) error
+	UpdateWorkspace(ctx context.Context, ID string, titleEnc []byte) error
 }
 
 type IBuilder interface {
