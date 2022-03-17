@@ -387,6 +387,20 @@ func (mr *MockStoreMockRecorder) UpdateCardWithItems(ctx, card, items interface{
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCardWithItems", reflect.TypeOf((*MockStore)(nil).UpdateCardWithItems), ctx, card, items)
 }
 
+// UpdateCredentials mocks base method.
+func (m *MockStore) UpdateCredentials(ctx context.Context, ID, oldIdentity string, user domain.User) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "UpdateCredentials", ctx, ID, oldIdentity, user)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// UpdateCredentials indicates an expected call of UpdateCredentials.
+func (mr *MockStoreMockRecorder) UpdateCredentials(ctx, ID, oldIdentity, user interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateCredentials", reflect.TypeOf((*MockStore)(nil).UpdateCredentials), ctx, ID, oldIdentity, user)
+}
+
 // UpdateWorkspace mocks base method.
 func (m *MockStore) UpdateWorkspace(ctx context.Context, ID string, titleEnc []byte) error {
 	m.ctrl.T.Helper()

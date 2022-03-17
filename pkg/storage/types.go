@@ -38,6 +38,7 @@ type IStore interface {
 	FindUserIdentity(ctx context.Context, identity string) (user domain.User, err error)
 	FindUser(ctx context.Context, ID string) (user domain.User, err error)
 	TerminateUser(ctx context.Context, identity string, userID string) error
+	UpdateCredentials(ctx context.Context, ID string, oldIdentity string, user domain.User) error
 
 	// Operations about cards & items
 

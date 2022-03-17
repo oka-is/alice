@@ -22,17 +22,23 @@ func (s *Storage) FindUserIdentity(ctx context.Context, identity string) (user d
 }
 
 func (s *Storage) FindUser(ctx context.Context, ID string) (user domain.User, err error) {
-	return s.findUserDB(ctx, s.db, ID)
+	return s.findUser(ctx, s.db, ID)
 }
 
 func (s *Storage) TerminateUser(ctx context.Context, identity string, userID string) error {
 	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
-		return s.terminateUserDB(c, tx, identity, userID)
+		return s.terminateUser(c, tx, identity, userID)
 	})
 }
 
-func (s *Storage) terminateUserDB(ctx context.Context, db IConn, identity string, userID string) error {
-	user, err := s.findUserDB(ctx, db, userID)
+func (s *Storage) UpdateCredentials(ctx context.Context, ID string, oldIdentity string, newUser domain.User) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
+		return s.updateCredentials(c, tx, ID, oldIdentity, newUser)
+	})
+}
+
+func (s *Storage) terminateUser(ctx context.Context, db IConn, identity string, userID string) error {
+	user, err := s.findUser(ctx, db, userID)
 	if err != nil {
 		return fmt.Errorf("failed to find a user: %w", err)
 	}
@@ -54,7 +60,7 @@ func (s *Storage) terminateUserDB(ctx context.Context, db IConn, identity string
 	return s.Exec1(ctx, db, query)
 }
 
-func (s *Storage) findUserDB(ctx context.Context, db IConn, ID string) (user domain.User, err error) {
+func (s *Storage) findUser(ctx context.Context, db IConn, ID string) (user domain.User, err error) {
 	query := s.selectUserColumns().From("users").Where("id = ?", ID).Limit(1)
 	err = s.Get(ctx, db, &user, query)
 	return
@@ -88,6 +94,32 @@ func (s *Storage) createUser(ctx context.Context, db IConn, user *domain.User, u
 	}
 
 	return nil
+}
+
+func (s *Storage) updateCredentials(ctx context.Context, db IConn, ID string, oldIdentity string, newUser domain.User) error {
+	oldUser, err := s.findUser(ctx, db, ID)
+	if err != nil {
+		return fmt.Errorf("faield to fetch a user: %w", err)
+	}
+
+	err = s.validator.ValidateUpdateCredentials(validator.ValidateUpdateCredentialsOpts{
+		OldUser:     oldUser,
+		NewUser:     newUser,
+		OldIdentity: oldIdentity,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to validate update password: %w", err)
+	}
+
+	query := Builder().Update("users").
+		Set("identity", newUser.Identity).
+		Set("verifier", Expr("encrypt(?, ?, 'aes-cbc/pad:pkcs')", newUser.Verifier, s.sseKey)).
+		Set("srp_salt", newUser.SrpSalt).
+		Set("passwd_salt", newUser.PasswdSalt).
+		Set("priv_key_enc", newUser.PrivKeyEnc).
+		Where("id = ?", ID)
+
+	return s.Exec1(ctx, db, query)
 }
 
 func (s *Storage) insertUser(ctx context.Context, db IConn, user *domain.User) error {

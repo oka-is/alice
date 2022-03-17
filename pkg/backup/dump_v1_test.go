@@ -34,7 +34,7 @@ func Test_Whoami(t *testing.T) {
 		marker := MustParse(t, buf, res)
 		require.Equal(t, MarkerWhoAmI, marker)
 
-		require.Equal(t, user.PasswdSalt.Bytea, res.PasswdSalt)
+		require.Equal(t, user.PasswdSalt.Bytea, res.User.PasswdSalt)
 	})
 }
 

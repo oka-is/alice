@@ -68,6 +68,45 @@ func TestStorage_TerminateUser(t *testing.T) {
 	})
 }
 
+func TestStorage_UpdateCredentials(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it update user credentials", func(t *testing.T) {
+		ctx := context.Background()
+		oldUser := mustCreateUser(t, store, &domain.User{})
+		extUser := mustCreateUser(t, store, &domain.User{})
+		newUser := domain.User{
+			Identity:   domain.NewEmptyString("1"),
+			Verifier:   domain.NewEmptyBytes([]byte{1}),
+			SrpSalt:    domain.NewEmptyBytes([]byte{2}),
+			PasswdSalt: domain.NewEmptyBytes([]byte{3}),
+			PrivKeyEnc: domain.NewEmptyBytes([]byte{4}),
+		}
+
+		err := store.UpdateCredentials(ctx, oldUser.ID.String, oldUser.Identity.String, newUser)
+		require.NoError(t, err)
+
+		oldUser01, err01 := store.FindUser(ctx, oldUser.ID.String)
+		extUser01, err02 := store.FindUser(ctx, extUser.ID.String)
+
+		require.NoError(t, err01)
+		require.NoError(t, err02)
+
+		require.Equal(t, newUser.Identity.String, oldUser01.Identity.String, "Identity")
+		require.Equal(t, newUser.Verifier.Bytea, oldUser01.Verifier.Bytea, "Verifier")
+		require.Equal(t, newUser.SrpSalt.Bytea, oldUser01.SrpSalt.Bytea, "SrpSalt")
+		require.Equal(t, newUser.PasswdSalt.Bytea, oldUser01.PasswdSalt.Bytea, "PasswdSalt")
+		require.Equal(t, newUser.PrivKeyEnc.Bytea, oldUser01.PrivKeyEnc.Bytea, "PrivKeyEnc")
+
+		require.Equal(t, extUser.Identity.String, extUser01.Identity.String, "Identity")
+		require.Equal(t, extUser.Verifier.Bytea, extUser01.Verifier.Bytea, "Verifier")
+		require.Equal(t, extUser.SrpSalt.Bytea, extUser01.SrpSalt.Bytea, "SrpSalt")
+		require.Equal(t, extUser.PasswdSalt.Bytea, extUser01.PasswdSalt.Bytea, "PasswdSalt")
+		require.Equal(t, extUser.PrivKeyEnc.Bytea, extUser01.PrivKeyEnc.Bytea, "PrivKeyEnc")
+	})
+}
+
 func mustBuildUser(t *testing.T, storage *Storage, input *domain.User) *domain.User {
 	out := &domain.User{
 		Ver:        domain.NewEmptyInt64(1),

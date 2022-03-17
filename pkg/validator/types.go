@@ -5,6 +5,7 @@ import "github.com/wault-pw/alice/pkg/domain"
 type IValidator interface {
 	ValidateUser(user domain.User) error
 	ValidateTerminate(opts ValidateTerminateOpts) error
+	ValidateUpdateCredentials(opts ValidateUpdateCredentialsOpts) error
 }
 
 type Validator struct{}
