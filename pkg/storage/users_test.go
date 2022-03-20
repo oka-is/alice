@@ -107,15 +107,86 @@ func TestStorage_UpdateCredentials(t *testing.T) {
 	})
 }
 
+func TestStorage_IssueUserOtp(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		user01 := mustCreateUser(t, store, &domain.User{})
+		user02 := mustCreateUser(t, store, &domain.User{})
+		secret := "foo"
+
+		err := store.IssueUserOtp(ctx, user01.ID.String, secret)
+		require.NoError(t, err)
+
+		user11, err11 := store.FindUser(ctx, user01.ID.String)
+		user22, err22 := store.FindUser(ctx, user02.ID.String)
+		require.NoError(t, err11)
+		require.NoError(t, err22)
+
+		require.Equal(t, secret, string(user11.OtpCandidate.Bytea))
+		require.Equal(t, user02.OtpCandidate.Bytea, user22.OtpCandidate.Bytea)
+	})
+}
+
+func TestStorage_EnableUserOtp(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		user01 := mustCreateUser(t, store, &domain.User{OtpCandidate: domain.NewEmptyBytes([]byte{1})})
+		user02 := mustCreateUser(t, store, &domain.User{})
+
+		err := store.EnableUserOtp(ctx, user01.ID.String, user01.Identity.String, user01.OtpCandidate.Bytea)
+		require.NoError(t, err)
+
+		user11, err11 := store.FindUser(ctx, user01.ID.String)
+		user22, err22 := store.FindUser(ctx, user02.ID.String)
+		require.NoError(t, err11)
+		require.NoError(t, err22)
+
+		require.Equal(t, user01.OtpCandidate.Bytea, user11.OtpSecret.Bytea, "sets secret from candidate")
+		require.Equal(t, []byte{}, user11.OtpCandidate.Bytea, "clear candidate")
+
+		require.Equal(t, user02.OtpSecret.Bytea, user22.OtpSecret.Bytea)
+	})
+}
+
+func TestStorage_DisableUserOtp(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		user01 := mustCreateUser(t, store, &domain.User{OtpSecret: domain.NewEmptyBytes([]byte{1})})
+		user02 := mustCreateUser(t, store, &domain.User{OtpSecret: domain.NewEmptyBytes([]byte{2})})
+
+		err := store.DisableUserOtp(ctx, user01.ID.String)
+		require.NoError(t, err)
+
+		user11, err11 := store.FindUser(ctx, user01.ID.String)
+		user22, err22 := store.FindUser(ctx, user02.ID.String)
+		require.NoError(t, err11)
+		require.NoError(t, err22)
+
+		require.Equal(t, []byte{}, user11.OtpSecret.Bytea)
+		require.Equal(t, user02.OtpSecret.Bytea, user22.OtpSecret.Bytea)
+	})
+}
+
 func mustBuildUser(t *testing.T, storage *Storage, input *domain.User) *domain.User {
 	out := &domain.User{
-		Ver:        domain.NewEmptyInt64(1),
-		Identity:   domain.NewEmptyString(domain.NewUUID()),
-		Verifier:   domain.NewEmptyBytes([]byte("Verifier")),
-		SrpSalt:    domain.NewEmptyBytes([]byte("SrpSalt")),
-		PasswdSalt: domain.NewEmptyBytes([]byte("PasswdSalt")),
-		PrivKeyEnc: domain.NewEmptyBytes([]byte("PrivKeyEnc")),
-		PubKey:     domain.NewEmptyBytes([]byte("PubKey")),
+		Ver:          domain.NewEmptyInt64(1),
+		Identity:     domain.NewEmptyString(domain.NewUUID()),
+		Verifier:     domain.NewEmptyBytes([]byte("Verifier")),
+		SrpSalt:      domain.NewEmptyBytes([]byte("SrpSalt")),
+		PasswdSalt:   domain.NewEmptyBytes([]byte("PasswdSalt")),
+		PrivKeyEnc:   domain.NewEmptyBytes([]byte("PrivKeyEnc")),
+		PubKey:       domain.NewEmptyBytes([]byte("PubKey")),
+		OtpCandidate: domain.NewNullBytea(),
+		OtpSecret:    domain.NewNullBytea(),
 	}
 
 	if input.Ver.Valid {
@@ -144,6 +215,14 @@ func mustBuildUser(t *testing.T, storage *Storage, input *domain.User) *domain.U
 
 	if input.PubKey.Valid {
 		out.PubKey = input.PubKey
+	}
+
+	if input.OtpCandidate.Valid {
+		out.OtpCandidate = input.OtpCandidate
+	}
+
+	if input.OtpSecret.Valid {
+		out.OtpSecret = input.OtpSecret
 	}
 
 	return out

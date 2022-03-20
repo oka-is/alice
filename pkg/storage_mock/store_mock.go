@@ -166,6 +166,34 @@ func (mr *MockStoreMockRecorder) DeleteWorkspace(ctx, ID interface{}) *gomock.Ca
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteWorkspace", reflect.TypeOf((*MockStore)(nil).DeleteWorkspace), ctx, ID)
 }
 
+// DisableUserOtp mocks base method.
+func (m *MockStore) DisableUserOtp(ctx context.Context, ID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DisableUserOtp", ctx, ID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DisableUserOtp indicates an expected call of DisableUserOtp.
+func (mr *MockStoreMockRecorder) DisableUserOtp(ctx, ID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DisableUserOtp", reflect.TypeOf((*MockStore)(nil).DisableUserOtp), ctx, ID)
+}
+
+// EnableUserOtp mocks base method.
+func (m *MockStore) EnableUserOtp(ctx context.Context, ID, identity string, secret []byte) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "EnableUserOtp", ctx, ID, identity, secret)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// EnableUserOtp indicates an expected call of EnableUserOtp.
+func (mr *MockStoreMockRecorder) EnableUserOtp(ctx, ID, identity, secret interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "EnableUserOtp", reflect.TypeOf((*MockStore)(nil).EnableUserOtp), ctx, ID, identity, secret)
+}
+
 // FindCard mocks base method.
 func (m *MockStore) FindCard(ctx context.Context, ID string) (domain.Card, error) {
 	m.ctrl.T.Helper()
@@ -257,6 +285,20 @@ func (mr *MockStoreMockRecorder) IssueSession(ctx, opts interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IssueSession", reflect.TypeOf((*MockStore)(nil).IssueSession), ctx, opts)
 }
 
+// IssueUserOtp mocks base method.
+func (m *MockStore) IssueUserOtp(ctx context.Context, ID, secret string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "IssueUserOtp", ctx, ID, secret)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// IssueUserOtp indicates an expected call of IssueUserOtp.
+func (mr *MockStoreMockRecorder) IssueUserOtp(ctx, ID, secret interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "IssueUserOtp", reflect.TypeOf((*MockStore)(nil).IssueUserOtp), ctx, ID, secret)
+}
+
 // ListCardItems mocks base method.
 func (m *MockStore) ListCardItems(ctx context.Context, cardID string) ([]domain.CardItem, error) {
 	m.ctrl.T.Helper()
@@ -314,6 +356,20 @@ func (m *MockStore) NominateSession(ctx context.Context, jti string) error {
 func (mr *MockStoreMockRecorder) NominateSession(ctx, jti interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "NominateSession", reflect.TypeOf((*MockStore)(nil).NominateSession), ctx, jti)
+}
+
+// OtpSessionSucceed mocks base method.
+func (m *MockStore) OtpSessionSucceed(ctx context.Context, jti string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "OtpSessionSucceed", ctx, jti)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// OtpSessionSucceed indicates an expected call of OtpSessionSucceed.
+func (mr *MockStoreMockRecorder) OtpSessionSucceed(ctx, jti interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "OtpSessionSucceed", reflect.TypeOf((*MockStore)(nil).OtpSessionSucceed), ctx, jti)
 }
 
 // Ping mocks base method.

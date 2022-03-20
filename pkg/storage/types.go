@@ -31,6 +31,7 @@ type IStore interface {
 	NominateSession(ctx context.Context, jti string) error
 	CandidateSession(ctx context.Context, jti, candidateID string, srp []byte) error
 	DeleteSession(ctx context.Context, jti string) error
+	OtpSessionSucceed(ctx context.Context, jti string) error
 
 	// Operations about users
 
@@ -39,6 +40,9 @@ type IStore interface {
 	FindUser(ctx context.Context, ID string) (user domain.User, err error)
 	TerminateUser(ctx context.Context, identity string, userID string) error
 	UpdateCredentials(ctx context.Context, ID string, oldIdentity string, user domain.User) error
+	IssueUserOtp(ctx context.Context, ID string, secret string) error
+	EnableUserOtp(ctx context.Context, ID string, identity string, secret []byte) error
+	DisableUserOtp(ctx context.Context, ID string) error
 
 	// Operations about cards & items
 

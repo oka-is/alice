@@ -6,6 +6,7 @@ type IValidator interface {
 	ValidateUser(user domain.User) error
 	ValidateTerminate(opts ValidateTerminateOpts) error
 	ValidateUpdateCredentials(opts ValidateUpdateCredentialsOpts) error
+	ValidateEnableUserOtp(opts ValidateEnableUserOtpOpts) error
 }
 
 type Validator struct{}

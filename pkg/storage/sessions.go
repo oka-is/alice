@@ -64,6 +64,11 @@ func (s *Storage) NominateSession(ctx context.Context, jti string) error {
 	return s.Exec1(ctx, s.db, query)
 }
 
+func (s *Storage) OtpSessionSucceed(ctx context.Context, jti string) error {
+	query := Builder().Update("sessions").Set("otp_succeed", true).Where("jti = ?", jti)
+	return s.Exec1(ctx, s.db, query)
+}
+
 func (s *Storage) DeleteSession(ctx context.Context, jti string) error {
 	query := Builder().Delete("sessions").Where("jti = ?", jti)
 	return s.Exec1(ctx, s.db, query)

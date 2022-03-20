@@ -14,23 +14,31 @@ func Extend(router *engine.Engine) *engine.Engine {
 	// BEGIN:AUTHENTICATED
 	auth := router.Group("/", engine.WrapAction(useAuth))
 	auth.POST("/v1/login/auth1", engine.WrapAction(LoginAuth1))
-	auth.POST("/v1/whoami", engine.WrapAction(WhoAmI))
-	auth.POST("/v1/credentials/update", engine.WrapAction(UpdateCredentials))
-	auth.POST("/v1/sessions/delete", engine.WrapAction(DeleteSession))
-	auth.POST("/v1/terminate", engine.WrapAction(Terminate))
-	auth.GET("/v1/backups/create", engine.WrapAction(CreateBackup))
-	auth.POST("/v1/workspaces/list", engine.WrapAction(ListWorkspaces))
-	auth.POST("/v1/workspaces/create", engine.WrapAction(CreateWorkspace))
-	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards", paramWorkspaceID), engine.WrapAction(ListCards))
-	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/delete", paramWorkspaceID), engine.WrapAction(DeleteWorkspace))
-	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/update", paramWorkspaceID), engine.WrapAction(UpdateWorkspace))
-	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/items", paramWorkspaceID, paramCardID), engine.WrapAction(ListCardItems))
-	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/archive", paramWorkspaceID, paramCardID), engine.WrapAction(ArchiveCard))
-	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/create", paramWorkspaceID), engine.WrapAction(CreateCard))
-	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/update", paramWorkspaceID, paramCardID), engine.WrapAction(UpdateCard))
-	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/delete", paramWorkspaceID, paramCardID), engine.WrapAction(DeleteCard))
-	auth.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/clone", paramWorkspaceID, paramCardID), engine.WrapAction(CloneCard))
+	auth.POST("/v1/login/otp", engine.WrapAction(LoginOtp))
 	// END:AUTHENTICATED
+
+	// BEGIN:AUTHENTICATED+OTP
+	otp := router.Group("/", engine.WrapAction(useAuth), engine.WrapAction(useOtpCheck))
+	otp.POST("/v1/whoami", engine.WrapAction(WhoAmI))
+	otp.POST("/v1/otp/issue", engine.WrapAction(OtpIssue))
+	otp.POST("/v1/otp/enable", engine.WrapAction(OtpEnable))
+	otp.POST("/v1/otp/disable", engine.WrapAction(OtpDisable))
+	otp.POST("/v1/credentials/update", engine.WrapAction(UpdateCredentials))
+	otp.POST("/v1/sessions/delete", engine.WrapAction(DeleteSession))
+	otp.POST("/v1/terminate", engine.WrapAction(Terminate))
+	otp.GET("/v1/backups/create", engine.WrapAction(CreateBackup))
+	otp.POST("/v1/workspaces/list", engine.WrapAction(ListWorkspaces))
+	otp.POST("/v1/workspaces/create", engine.WrapAction(CreateWorkspace))
+	otp.POST(fmt.Sprintf("/v1/workspaces/:%s/cards", paramWorkspaceID), engine.WrapAction(ListCards))
+	otp.POST(fmt.Sprintf("/v1/workspaces/:%s/delete", paramWorkspaceID), engine.WrapAction(DeleteWorkspace))
+	otp.POST(fmt.Sprintf("/v1/workspaces/:%s/update", paramWorkspaceID), engine.WrapAction(UpdateWorkspace))
+	otp.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/items", paramWorkspaceID, paramCardID), engine.WrapAction(ListCardItems))
+	otp.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/archive", paramWorkspaceID, paramCardID), engine.WrapAction(ArchiveCard))
+	otp.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/create", paramWorkspaceID), engine.WrapAction(CreateCard))
+	otp.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/update", paramWorkspaceID, paramCardID), engine.WrapAction(UpdateCard))
+	otp.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/delete", paramWorkspaceID, paramCardID), engine.WrapAction(DeleteCard))
+	otp.POST(fmt.Sprintf("/v1/workspaces/:%s/cards/:%s/clone", paramWorkspaceID, paramCardID), engine.WrapAction(CloneCard))
+	// END:AUTHENTICATED+OTP
 
 	return router
 }
@@ -49,5 +57,16 @@ func useAuth(ctx *engine.Context) {
 	}
 
 	ctx.SetSession(session)
+	ctx.Next()
+}
+
+func useOtpCheck(ctx *engine.Context) {
+	session := ctx.MustGetSession()
+
+	if !session.OtpSucceed.Bool {
+		_ = ctx.AbortWithError(http.StatusUnauthorized, fmt.Errorf("OTP is not succeed"))
+		return
+	}
+
 	ctx.Next()
 }

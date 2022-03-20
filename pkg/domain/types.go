@@ -24,6 +24,10 @@ func NewNullString() NullString {
 	return NullString{Valid: false}
 }
 
+func NewNullBytea() NullBytea {
+	return NullBytea{Bytea: []byte{}, Valid: false}
+}
+
 func NewEmptyInt64(input int64) NullInt64 {
 	return NullInt64{Int64: input, Valid: input != 0}
 }

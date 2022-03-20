@@ -287,6 +287,100 @@ func (x *Login1Response) GetProof() []byte {
 	return nil
 }
 
+type LoginOtpRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Passcode string `protobuf:"bytes,1,opt,name=passcode,proto3" json:"passcode,omitempty"`
+}
+
+func (x *LoginOtpRequest) Reset() {
+	*x = LoginOtpRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_alice_v1_proto_msgTypes[5]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *LoginOtpRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginOtpRequest) ProtoMessage() {}
+
+func (x *LoginOtpRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alice_v1_proto_msgTypes[5]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginOtpRequest.ProtoReflect.Descriptor instead.
+func (*LoginOtpRequest) Descriptor() ([]byte, []int) {
+	return file_alice_v1_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *LoginOtpRequest) GetPasscode() string {
+	if x != nil {
+		return x.Passcode
+	}
+	return ""
+}
+
+type LoginOtpResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Required bool `protobuf:"varint,1,opt,name=required,proto3" json:"required,omitempty"`
+}
+
+func (x *LoginOtpResponse) Reset() {
+	*x = LoginOtpResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_alice_v1_proto_msgTypes[6]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *LoginOtpResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*LoginOtpResponse) ProtoMessage() {}
+
+func (x *LoginOtpResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_alice_v1_proto_msgTypes[6]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use LoginOtpResponse.ProtoReflect.Descriptor instead.
+func (*LoginOtpResponse) Descriptor() ([]byte, []int) {
+	return file_alice_v1_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *LoginOtpResponse) GetRequired() bool {
+	if x != nil {
+		return x.Required
+	}
+	return false
+}
+
 type CreateWorkspaceRequest struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -300,7 +394,7 @@ type CreateWorkspaceRequest struct {
 func (x *CreateWorkspaceRequest) Reset() {
 	*x = CreateWorkspaceRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[5]
+		mi := &file_alice_v1_proto_msgTypes[7]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -313,7 +407,7 @@ func (x *CreateWorkspaceRequest) String() string {
 func (*CreateWorkspaceRequest) ProtoMessage() {}
 
 func (x *CreateWorkspaceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[5]
+	mi := &file_alice_v1_proto_msgTypes[7]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -326,7 +420,7 @@ func (x *CreateWorkspaceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWorkspaceRequest.ProtoReflect.Descriptor instead.
 func (*CreateWorkspaceRequest) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{5}
+	return file_alice_v1_proto_rawDescGZIP(), []int{7}
 }
 
 func (x *CreateWorkspaceRequest) GetAedKeyEnc() []byte {
@@ -361,7 +455,7 @@ type CreateWorkspaceResponse struct {
 func (x *CreateWorkspaceResponse) Reset() {
 	*x = CreateWorkspaceResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[6]
+		mi := &file_alice_v1_proto_msgTypes[8]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -374,7 +468,7 @@ func (x *CreateWorkspaceResponse) String() string {
 func (*CreateWorkspaceResponse) ProtoMessage() {}
 
 func (x *CreateWorkspaceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[6]
+	mi := &file_alice_v1_proto_msgTypes[8]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -387,7 +481,7 @@ func (x *CreateWorkspaceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CreateWorkspaceResponse.ProtoReflect.Descriptor instead.
 func (*CreateWorkspaceResponse) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{6}
+	return file_alice_v1_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *CreateWorkspaceResponse) GetWorkspace() *UserWithWorkspace {
@@ -409,7 +503,7 @@ type UpsertCardRequest struct {
 func (x *UpsertCardRequest) Reset() {
 	*x = UpsertCardRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[7]
+		mi := &file_alice_v1_proto_msgTypes[9]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -422,7 +516,7 @@ func (x *UpsertCardRequest) String() string {
 func (*UpsertCardRequest) ProtoMessage() {}
 
 func (x *UpsertCardRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[7]
+	mi := &file_alice_v1_proto_msgTypes[9]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -435,7 +529,7 @@ func (x *UpsertCardRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpsertCardRequest.ProtoReflect.Descriptor instead.
 func (*UpsertCardRequest) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{7}
+	return file_alice_v1_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *UpsertCardRequest) GetCard() *Card {
@@ -463,7 +557,7 @@ type UpsertCardResponse struct {
 func (x *UpsertCardResponse) Reset() {
 	*x = UpsertCardResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[8]
+		mi := &file_alice_v1_proto_msgTypes[10]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -476,7 +570,7 @@ func (x *UpsertCardResponse) String() string {
 func (*UpsertCardResponse) ProtoMessage() {}
 
 func (x *UpsertCardResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[8]
+	mi := &file_alice_v1_proto_msgTypes[10]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -489,7 +583,7 @@ func (x *UpsertCardResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpsertCardResponse.ProtoReflect.Descriptor instead.
 func (*UpsertCardResponse) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{8}
+	return file_alice_v1_proto_rawDescGZIP(), []int{10}
 }
 
 func (x *UpsertCardResponse) GetCard() *Card {
@@ -510,7 +604,7 @@ type CloneCardRequest struct {
 func (x *CloneCardRequest) Reset() {
 	*x = CloneCardRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[9]
+		mi := &file_alice_v1_proto_msgTypes[11]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -523,7 +617,7 @@ func (x *CloneCardRequest) String() string {
 func (*CloneCardRequest) ProtoMessage() {}
 
 func (x *CloneCardRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[9]
+	mi := &file_alice_v1_proto_msgTypes[11]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -536,7 +630,7 @@ func (x *CloneCardRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloneCardRequest.ProtoReflect.Descriptor instead.
 func (*CloneCardRequest) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{9}
+	return file_alice_v1_proto_rawDescGZIP(), []int{11}
 }
 
 func (x *CloneCardRequest) GetTitleEnc() []byte {
@@ -557,7 +651,7 @@ type CloneCardResponse struct {
 func (x *CloneCardResponse) Reset() {
 	*x = CloneCardResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[10]
+		mi := &file_alice_v1_proto_msgTypes[12]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -570,7 +664,7 @@ func (x *CloneCardResponse) String() string {
 func (*CloneCardResponse) ProtoMessage() {}
 
 func (x *CloneCardResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[10]
+	mi := &file_alice_v1_proto_msgTypes[12]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -583,7 +677,7 @@ func (x *CloneCardResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CloneCardResponse.ProtoReflect.Descriptor instead.
 func (*CloneCardResponse) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{10}
+	return file_alice_v1_proto_rawDescGZIP(), []int{12}
 }
 
 func (x *CloneCardResponse) GetCard() *Card {
@@ -604,7 +698,7 @@ type ListWorkspacesResponse struct {
 func (x *ListWorkspacesResponse) Reset() {
 	*x = ListWorkspacesResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[11]
+		mi := &file_alice_v1_proto_msgTypes[13]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -617,7 +711,7 @@ func (x *ListWorkspacesResponse) String() string {
 func (*ListWorkspacesResponse) ProtoMessage() {}
 
 func (x *ListWorkspacesResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[11]
+	mi := &file_alice_v1_proto_msgTypes[13]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -630,7 +724,7 @@ func (x *ListWorkspacesResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListWorkspacesResponse.ProtoReflect.Descriptor instead.
 func (*ListWorkspacesResponse) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{11}
+	return file_alice_v1_proto_rawDescGZIP(), []int{13}
 }
 
 func (x *ListWorkspacesResponse) GetItems() []*UserWithWorkspace {
@@ -650,12 +744,13 @@ type PrivUser struct {
 	PasswdSalt []byte `protobuf:"bytes,3,opt,name=passwd_salt,json=passwdSalt,proto3" json:"passwd_salt,omitempty"`
 	PrivKeyEnc []byte `protobuf:"bytes,4,opt,name=priv_key_enc,json=privKeyEnc,proto3" json:"priv_key_enc,omitempty"`
 	PubKey     []byte `protobuf:"bytes,5,opt,name=pub_key,json=pubKey,proto3" json:"pub_key,omitempty"`
+	OtpEnabled bool   `protobuf:"varint,6,opt,name=otp_enabled,json=otpEnabled,proto3" json:"otp_enabled,omitempty"`
 }
 
 func (x *PrivUser) Reset() {
 	*x = PrivUser{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[12]
+		mi := &file_alice_v1_proto_msgTypes[14]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -668,7 +763,7 @@ func (x *PrivUser) String() string {
 func (*PrivUser) ProtoMessage() {}
 
 func (x *PrivUser) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[12]
+	mi := &file_alice_v1_proto_msgTypes[14]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -681,7 +776,7 @@ func (x *PrivUser) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use PrivUser.ProtoReflect.Descriptor instead.
 func (*PrivUser) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{12}
+	return file_alice_v1_proto_rawDescGZIP(), []int{14}
 }
 
 func (x *PrivUser) GetId() string {
@@ -719,6 +814,13 @@ func (x *PrivUser) GetPubKey() []byte {
 	return nil
 }
 
+func (x *PrivUser) GetOtpEnabled() bool {
+	if x != nil {
+		return x.OtpEnabled
+	}
+	return false
+}
+
 type WhoAmIResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
@@ -730,7 +832,7 @@ type WhoAmIResponse struct {
 func (x *WhoAmIResponse) Reset() {
 	*x = WhoAmIResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[13]
+		mi := &file_alice_v1_proto_msgTypes[15]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -743,7 +845,7 @@ func (x *WhoAmIResponse) String() string {
 func (*WhoAmIResponse) ProtoMessage() {}
 
 func (x *WhoAmIResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[13]
+	mi := &file_alice_v1_proto_msgTypes[15]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -756,7 +858,7 @@ func (x *WhoAmIResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use WhoAmIResponse.ProtoReflect.Descriptor instead.
 func (*WhoAmIResponse) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{13}
+	return file_alice_v1_proto_rawDescGZIP(), []int{15}
 }
 
 func (x *WhoAmIResponse) GetUser() *PrivUser {
@@ -782,7 +884,7 @@ type Card struct {
 func (x *Card) Reset() {
 	*x = Card{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[14]
+		mi := &file_alice_v1_proto_msgTypes[16]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -795,7 +897,7 @@ func (x *Card) String() string {
 func (*Card) ProtoMessage() {}
 
 func (x *Card) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[14]
+	mi := &file_alice_v1_proto_msgTypes[16]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -808,7 +910,7 @@ func (x *Card) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Card.ProtoReflect.Descriptor instead.
 func (*Card) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{14}
+	return file_alice_v1_proto_rawDescGZIP(), []int{16}
 }
 
 func (x *Card) GetId() string {
@@ -869,7 +971,7 @@ type CardItem struct {
 func (x *CardItem) Reset() {
 	*x = CardItem{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[15]
+		mi := &file_alice_v1_proto_msgTypes[17]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -882,7 +984,7 @@ func (x *CardItem) String() string {
 func (*CardItem) ProtoMessage() {}
 
 func (x *CardItem) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[15]
+	mi := &file_alice_v1_proto_msgTypes[17]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -895,7 +997,7 @@ func (x *CardItem) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use CardItem.ProtoReflect.Descriptor instead.
 func (*CardItem) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{15}
+	return file_alice_v1_proto_rawDescGZIP(), []int{17}
 }
 
 func (x *CardItem) GetId() string {
@@ -961,7 +1063,7 @@ type UserWithWorkspace struct {
 func (x *UserWithWorkspace) Reset() {
 	*x = UserWithWorkspace{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[16]
+		mi := &file_alice_v1_proto_msgTypes[18]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -974,7 +1076,7 @@ func (x *UserWithWorkspace) String() string {
 func (*UserWithWorkspace) ProtoMessage() {}
 
 func (x *UserWithWorkspace) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[16]
+	mi := &file_alice_v1_proto_msgTypes[18]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -987,7 +1089,7 @@ func (x *UserWithWorkspace) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UserWithWorkspace.ProtoReflect.Descriptor instead.
 func (*UserWithWorkspace) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{16}
+	return file_alice_v1_proto_rawDescGZIP(), []int{18}
 }
 
 func (x *UserWithWorkspace) GetId() string {
@@ -1064,7 +1166,7 @@ type ListCardsResponse struct {
 func (x *ListCardsResponse) Reset() {
 	*x = ListCardsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[17]
+		mi := &file_alice_v1_proto_msgTypes[19]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1077,7 +1179,7 @@ func (x *ListCardsResponse) String() string {
 func (*ListCardsResponse) ProtoMessage() {}
 
 func (x *ListCardsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[17]
+	mi := &file_alice_v1_proto_msgTypes[19]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1090,7 +1192,7 @@ func (x *ListCardsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCardsResponse.ProtoReflect.Descriptor instead.
 func (*ListCardsResponse) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{17}
+	return file_alice_v1_proto_rawDescGZIP(), []int{19}
 }
 
 func (x *ListCardsResponse) GetItems() []*Card {
@@ -1111,7 +1213,7 @@ type ListCardItemsResponse struct {
 func (x *ListCardItemsResponse) Reset() {
 	*x = ListCardItemsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[18]
+		mi := &file_alice_v1_proto_msgTypes[20]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1124,7 +1226,7 @@ func (x *ListCardItemsResponse) String() string {
 func (*ListCardItemsResponse) ProtoMessage() {}
 
 func (x *ListCardItemsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[18]
+	mi := &file_alice_v1_proto_msgTypes[20]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1137,7 +1239,7 @@ func (x *ListCardItemsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ListCardItemsResponse.ProtoReflect.Descriptor instead.
 func (*ListCardItemsResponse) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{18}
+	return file_alice_v1_proto_rawDescGZIP(), []int{20}
 }
 
 func (x *ListCardItemsResponse) GetItems() []*CardItem {
@@ -1158,7 +1260,7 @@ type ArchiveCardResponse struct {
 func (x *ArchiveCardResponse) Reset() {
 	*x = ArchiveCardResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[19]
+		mi := &file_alice_v1_proto_msgTypes[21]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1171,7 +1273,7 @@ func (x *ArchiveCardResponse) String() string {
 func (*ArchiveCardResponse) ProtoMessage() {}
 
 func (x *ArchiveCardResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[19]
+	mi := &file_alice_v1_proto_msgTypes[21]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1184,7 +1286,7 @@ func (x *ArchiveCardResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use ArchiveCardResponse.ProtoReflect.Descriptor instead.
 func (*ArchiveCardResponse) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{19}
+	return file_alice_v1_proto_rawDescGZIP(), []int{21}
 }
 
 func (x *ArchiveCardResponse) GetArchived() bool {
@@ -1205,7 +1307,7 @@ type TerminateRequest struct {
 func (x *TerminateRequest) Reset() {
 	*x = TerminateRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[20]
+		mi := &file_alice_v1_proto_msgTypes[22]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1218,7 +1320,7 @@ func (x *TerminateRequest) String() string {
 func (*TerminateRequest) ProtoMessage() {}
 
 func (x *TerminateRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[20]
+	mi := &file_alice_v1_proto_msgTypes[22]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1231,7 +1333,7 @@ func (x *TerminateRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use TerminateRequest.ProtoReflect.Descriptor instead.
 func (*TerminateRequest) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{20}
+	return file_alice_v1_proto_rawDescGZIP(), []int{22}
 }
 
 func (x *TerminateRequest) GetIdentity() string {
@@ -1252,7 +1354,7 @@ type UpdateWorkspaceRequest struct {
 func (x *UpdateWorkspaceRequest) Reset() {
 	*x = UpdateWorkspaceRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[21]
+		mi := &file_alice_v1_proto_msgTypes[23]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1265,7 +1367,7 @@ func (x *UpdateWorkspaceRequest) String() string {
 func (*UpdateWorkspaceRequest) ProtoMessage() {}
 
 func (x *UpdateWorkspaceRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[21]
+	mi := &file_alice_v1_proto_msgTypes[23]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1278,7 +1380,7 @@ func (x *UpdateWorkspaceRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateWorkspaceRequest.ProtoReflect.Descriptor instead.
 func (*UpdateWorkspaceRequest) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{21}
+	return file_alice_v1_proto_rawDescGZIP(), []int{23}
 }
 
 func (x *UpdateWorkspaceRequest) GetTitleEnc() []byte {
@@ -1299,7 +1401,7 @@ type UpdateWorkspaceResponse struct {
 func (x *UpdateWorkspaceResponse) Reset() {
 	*x = UpdateWorkspaceResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[22]
+		mi := &file_alice_v1_proto_msgTypes[24]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1312,7 +1414,7 @@ func (x *UpdateWorkspaceResponse) String() string {
 func (*UpdateWorkspaceResponse) ProtoMessage() {}
 
 func (x *UpdateWorkspaceResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[22]
+	mi := &file_alice_v1_proto_msgTypes[24]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1325,7 +1427,7 @@ func (x *UpdateWorkspaceResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateWorkspaceResponse.ProtoReflect.Descriptor instead.
 func (*UpdateWorkspaceResponse) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{22}
+	return file_alice_v1_proto_rawDescGZIP(), []int{24}
 }
 
 func (x *UpdateWorkspaceResponse) GetWorkspace() *UserWithWorkspace {
@@ -1351,7 +1453,7 @@ type UpdateCredentialsRequest struct {
 func (x *UpdateCredentialsRequest) Reset() {
 	*x = UpdateCredentialsRequest{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[23]
+		mi := &file_alice_v1_proto_msgTypes[25]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1364,7 +1466,7 @@ func (x *UpdateCredentialsRequest) String() string {
 func (*UpdateCredentialsRequest) ProtoMessage() {}
 
 func (x *UpdateCredentialsRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[23]
+	mi := &file_alice_v1_proto_msgTypes[25]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1377,7 +1479,7 @@ func (x *UpdateCredentialsRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCredentialsRequest.ProtoReflect.Descriptor instead.
 func (*UpdateCredentialsRequest) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{23}
+	return file_alice_v1_proto_rawDescGZIP(), []int{25}
 }
 
 func (x *UpdateCredentialsRequest) GetOldIdentity() string {
@@ -1433,7 +1535,7 @@ type UpdateCredentialsResponse struct {
 func (x *UpdateCredentialsResponse) Reset() {
 	*x = UpdateCredentialsResponse{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[24]
+		mi := &file_alice_v1_proto_msgTypes[26]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1446,7 +1548,7 @@ func (x *UpdateCredentialsResponse) String() string {
 func (*UpdateCredentialsResponse) ProtoMessage() {}
 
 func (x *UpdateCredentialsResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[24]
+	mi := &file_alice_v1_proto_msgTypes[26]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1459,7 +1561,7 @@ func (x *UpdateCredentialsResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateCredentialsResponse.ProtoReflect.Descriptor instead.
 func (*UpdateCredentialsResponse) Descriptor() ([]byte, []int) {
-	return file_alice_v1_proto_rawDescGZIP(), []int{24}
+	return file_alice_v1_proto_rawDescGZIP(), []int{26}
 }
 
 func (x *UpdateCredentialsResponse) GetUser() *PrivUser {
@@ -1467,6 +1569,116 @@ func (x *UpdateCredentialsResponse) GetUser() *PrivUser {
 		return x.User
 	}
 	return nil
+}
+
+type OtpIssueResponse struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Secret string `protobuf:"bytes,1,opt,name=secret,proto3" json:"secret,omitempty"`
+	Url    string `protobuf:"bytes,2,opt,name=url,proto3" json:"url,omitempty"`
+}
+
+func (x *OtpIssueResponse) Reset() {
+	*x = OtpIssueResponse{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_alice_v1_proto_msgTypes[27]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *OtpIssueResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OtpIssueResponse) ProtoMessage() {}
+
+func (x *OtpIssueResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_alice_v1_proto_msgTypes[27]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OtpIssueResponse.ProtoReflect.Descriptor instead.
+func (*OtpIssueResponse) Descriptor() ([]byte, []int) {
+	return file_alice_v1_proto_rawDescGZIP(), []int{27}
+}
+
+func (x *OtpIssueResponse) GetSecret() string {
+	if x != nil {
+		return x.Secret
+	}
+	return ""
+}
+
+func (x *OtpIssueResponse) GetUrl() string {
+	if x != nil {
+		return x.Url
+	}
+	return ""
+}
+
+type OtpEnableRequest struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	Identity string `protobuf:"bytes,1,opt,name=identity,proto3" json:"identity,omitempty"`
+	Passcode string `protobuf:"bytes,2,opt,name=passcode,proto3" json:"passcode,omitempty"`
+}
+
+func (x *OtpEnableRequest) Reset() {
+	*x = OtpEnableRequest{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_alice_v1_proto_msgTypes[28]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *OtpEnableRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*OtpEnableRequest) ProtoMessage() {}
+
+func (x *OtpEnableRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_alice_v1_proto_msgTypes[28]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use OtpEnableRequest.ProtoReflect.Descriptor instead.
+func (*OtpEnableRequest) Descriptor() ([]byte, []int) {
+	return file_alice_v1_proto_rawDescGZIP(), []int{28}
+}
+
+func (x *OtpEnableRequest) GetIdentity() string {
+	if x != nil {
+		return x.Identity
+	}
+	return ""
+}
+
+func (x *OtpEnableRequest) GetPasscode() string {
+	if x != nil {
+		return x.Passcode
+	}
+	return ""
 }
 
 type RegistrationRequest_User struct {
@@ -1486,7 +1698,7 @@ type RegistrationRequest_User struct {
 func (x *RegistrationRequest_User) Reset() {
 	*x = RegistrationRequest_User{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[25]
+		mi := &file_alice_v1_proto_msgTypes[29]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1499,7 +1711,7 @@ func (x *RegistrationRequest_User) String() string {
 func (*RegistrationRequest_User) ProtoMessage() {}
 
 func (x *RegistrationRequest_User) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[25]
+	mi := &file_alice_v1_proto_msgTypes[29]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1576,7 +1788,7 @@ type RegistrationRequest_Workspace struct {
 func (x *RegistrationRequest_Workspace) Reset() {
 	*x = RegistrationRequest_Workspace{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[26]
+		mi := &file_alice_v1_proto_msgTypes[30]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1589,7 +1801,7 @@ func (x *RegistrationRequest_Workspace) String() string {
 func (*RegistrationRequest_Workspace) ProtoMessage() {}
 
 func (x *RegistrationRequest_Workspace) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[26]
+	mi := &file_alice_v1_proto_msgTypes[30]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1632,7 +1844,7 @@ type RegistrationRequest_CardItem struct {
 func (x *RegistrationRequest_CardItem) Reset() {
 	*x = RegistrationRequest_CardItem{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[27]
+		mi := &file_alice_v1_proto_msgTypes[31]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1645,7 +1857,7 @@ func (x *RegistrationRequest_CardItem) String() string {
 func (*RegistrationRequest_CardItem) ProtoMessage() {}
 
 func (x *RegistrationRequest_CardItem) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[27]
+	mi := &file_alice_v1_proto_msgTypes[31]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1695,7 +1907,7 @@ type RegistrationRequest_CardWithItems struct {
 func (x *RegistrationRequest_CardWithItems) Reset() {
 	*x = RegistrationRequest_CardWithItems{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_alice_v1_proto_msgTypes[28]
+		mi := &file_alice_v1_proto_msgTypes[32]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -1708,7 +1920,7 @@ func (x *RegistrationRequest_CardWithItems) String() string {
 func (*RegistrationRequest_CardWithItems) ProtoMessage() {}
 
 func (x *RegistrationRequest_CardWithItems) ProtoReflect() protoreflect.Message {
-	mi := &file_alice_v1_proto_msgTypes[28]
+	mi := &file_alice_v1_proto_msgTypes[32]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -1809,50 +2021,58 @@ var file_alice_v1_proto_rawDesc = []byte{
 	0x52, 0x05, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x22, 0x26, 0x0a, 0x0e, 0x4c, 0x6f, 0x67, 0x69, 0x6e,
 	0x31, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x14, 0x0a, 0x05, 0x70, 0x72, 0x6f,
 	0x6f, 0x66, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x05, 0x70, 0x72, 0x6f, 0x6f, 0x66, 0x22,
-	0x75, 0x0a, 0x16, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61,
-	0x63, 0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1e, 0x0a, 0x0b, 0x61, 0x65, 0x64,
-	0x5f, 0x6b, 0x65, 0x79, 0x5f, 0x65, 0x6e, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09,
-	0x61, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x45, 0x6e, 0x63, 0x12, 0x1e, 0x0a, 0x0b, 0x61, 0x65, 0x64,
-	0x5f, 0x6b, 0x65, 0x79, 0x5f, 0x74, 0x61, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09,
-	0x61, 0x65, 0x64, 0x4b, 0x65, 0x79, 0x54, 0x61, 0x67, 0x12, 0x1b, 0x0a, 0x09, 0x74, 0x69, 0x74,
-	0x6c, 0x65, 0x5f, 0x65, 0x6e, 0x63, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x08, 0x74, 0x69,
-	0x74, 0x6c, 0x65, 0x45, 0x6e, 0x63, 0x22, 0x54, 0x0a, 0x17, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65,
-	0x57, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73,
-	0x65, 0x12, 0x39, 0x0a, 0x09, 0x77, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65, 0x18, 0x01,
-	0x20, 0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x61, 0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31, 0x2e,
+	0x2d, 0x0a, 0x0f, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x4f, 0x74, 0x70, 0x52, 0x65, 0x71, 0x75, 0x65,
+	0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x61, 0x73, 0x73, 0x63, 0x6f, 0x64, 0x65, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x61, 0x73, 0x73, 0x63, 0x6f, 0x64, 0x65, 0x22, 0x2e,
+	0x0a, 0x10, 0x4c, 0x6f, 0x67, 0x69, 0x6e, 0x4f, 0x74, 0x70, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e,
+	0x73, 0x65, 0x12, 0x1a, 0x0a, 0x08, 0x72, 0x65, 0x71, 0x75, 0x69, 0x72, 0x65, 0x64, 0x18, 0x01,
+	0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x72, 0x65, 0x71, 0x75, 0x69, 0x72, 0x65, 0x64, 0x22, 0x75,
+	0x0a, 0x16, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1e, 0x0a, 0x0b, 0x61, 0x65, 0x64, 0x5f,
+	0x6b, 0x65, 0x79, 0x5f, 0x65, 0x6e, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09, 0x61,
+	0x65, 0x64, 0x4b, 0x65, 0x79, 0x45, 0x6e, 0x63, 0x12, 0x1e, 0x0a, 0x0b, 0x61, 0x65, 0x64, 0x5f,
+	0x6b, 0x65, 0x79, 0x5f, 0x74, 0x61, 0x67, 0x18, 0x02, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x09, 0x61,
+	0x65, 0x64, 0x4b, 0x65, 0x79, 0x54, 0x61, 0x67, 0x12, 0x1b, 0x0a, 0x09, 0x74, 0x69, 0x74, 0x6c,
+	0x65, 0x5f, 0x65, 0x6e, 0x63, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x08, 0x74, 0x69, 0x74,
+	0x6c, 0x65, 0x45, 0x6e, 0x63, 0x22, 0x54, 0x0a, 0x17, 0x43, 0x72, 0x65, 0x61, 0x74, 0x65, 0x57,
+	0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
+	0x12, 0x39, 0x0a, 0x09, 0x77, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x61, 0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31, 0x2e, 0x55,
+	0x73, 0x65, 0x72, 0x57, 0x69, 0x74, 0x68, 0x57, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65,
+	0x52, 0x09, 0x77, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65, 0x22, 0x6a, 0x0a, 0x11, 0x55,
+	0x70, 0x73, 0x65, 0x72, 0x74, 0x43, 0x61, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74,
+	0x12, 0x22, 0x0a, 0x04, 0x63, 0x61, 0x72, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e,
+	0x2e, 0x61, 0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31, 0x2e, 0x43, 0x61, 0x72, 0x64, 0x52, 0x04,
+	0x63, 0x61, 0x72, 0x64, 0x12, 0x31, 0x0a, 0x0a, 0x63, 0x61, 0x72, 0x64, 0x5f, 0x69, 0x74, 0x65,
+	0x6d, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x61, 0x6c, 0x69, 0x63, 0x65,
+	0x5f, 0x76, 0x31, 0x2e, 0x43, 0x61, 0x72, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x09, 0x63, 0x61,
+	0x72, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x73, 0x22, 0x38, 0x0a, 0x12, 0x55, 0x70, 0x73, 0x65, 0x72,
+	0x74, 0x43, 0x61, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x22, 0x0a,
+	0x04, 0x63, 0x61, 0x72, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x61, 0x6c,
+	0x69, 0x63, 0x65, 0x5f, 0x76, 0x31, 0x2e, 0x43, 0x61, 0x72, 0x64, 0x52, 0x04, 0x63, 0x61, 0x72,
+	0x64, 0x22, 0x2f, 0x0a, 0x10, 0x43, 0x6c, 0x6f, 0x6e, 0x65, 0x43, 0x61, 0x72, 0x64, 0x52, 0x65,
+	0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x5f, 0x65,
+	0x6e, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x08, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x45,
+	0x6e, 0x63, 0x22, 0x37, 0x0a, 0x11, 0x43, 0x6c, 0x6f, 0x6e, 0x65, 0x43, 0x61, 0x72, 0x64, 0x52,
+	0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x22, 0x0a, 0x04, 0x63, 0x61, 0x72, 0x64, 0x18,
+	0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x61, 0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31,
+	0x2e, 0x43, 0x61, 0x72, 0x64, 0x52, 0x04, 0x63, 0x61, 0x72, 0x64, 0x22, 0x4b, 0x0a, 0x16, 0x4c,
+	0x69, 0x73, 0x74, 0x57, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65, 0x73, 0x52, 0x65, 0x73,
+	0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x31, 0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x18, 0x01,
+	0x20, 0x03, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x61, 0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31, 0x2e,
 	0x55, 0x73, 0x65, 0x72, 0x57, 0x69, 0x74, 0x68, 0x57, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63,
-	0x65, 0x52, 0x09, 0x77, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65, 0x22, 0x6a, 0x0a, 0x11,
-	0x55, 0x70, 0x73, 0x65, 0x72, 0x74, 0x43, 0x61, 0x72, 0x64, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73,
-	0x74, 0x12, 0x22, 0x0a, 0x04, 0x63, 0x61, 0x72, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32,
-	0x0e, 0x2e, 0x61, 0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31, 0x2e, 0x43, 0x61, 0x72, 0x64, 0x52,
-	0x04, 0x63, 0x61, 0x72, 0x64, 0x12, 0x31, 0x0a, 0x0a, 0x63, 0x61, 0x72, 0x64, 0x5f, 0x69, 0x74,
-	0x65, 0x6d, 0x73, 0x18, 0x02, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x61, 0x6c, 0x69, 0x63,
-	0x65, 0x5f, 0x76, 0x31, 0x2e, 0x43, 0x61, 0x72, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x52, 0x09, 0x63,
-	0x61, 0x72, 0x64, 0x49, 0x74, 0x65, 0x6d, 0x73, 0x22, 0x38, 0x0a, 0x12, 0x55, 0x70, 0x73, 0x65,
-	0x72, 0x74, 0x43, 0x61, 0x72, 0x64, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x22,
-	0x0a, 0x04, 0x63, 0x61, 0x72, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x61,
-	0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31, 0x2e, 0x43, 0x61, 0x72, 0x64, 0x52, 0x04, 0x63, 0x61,
-	0x72, 0x64, 0x22, 0x2f, 0x0a, 0x10, 0x43, 0x6c, 0x6f, 0x6e, 0x65, 0x43, 0x61, 0x72, 0x64, 0x52,
-	0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1b, 0x0a, 0x09, 0x74, 0x69, 0x74, 0x6c, 0x65, 0x5f,
-	0x65, 0x6e, 0x63, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x08, 0x74, 0x69, 0x74, 0x6c, 0x65,
-	0x45, 0x6e, 0x63, 0x22, 0x37, 0x0a, 0x11, 0x43, 0x6c, 0x6f, 0x6e, 0x65, 0x43, 0x61, 0x72, 0x64,
-	0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x22, 0x0a, 0x04, 0x63, 0x61, 0x72, 0x64,
-	0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x0e, 0x2e, 0x61, 0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76,
-	0x31, 0x2e, 0x43, 0x61, 0x72, 0x64, 0x52, 0x04, 0x63, 0x61, 0x72, 0x64, 0x22, 0x4b, 0x0a, 0x16,
-	0x4c, 0x69, 0x73, 0x74, 0x57, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61, 0x63, 0x65, 0x73, 0x52, 0x65,
-	0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x31, 0x0a, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x18,
-	0x01, 0x20, 0x03, 0x28, 0x0b, 0x32, 0x1b, 0x2e, 0x61, 0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31,
-	0x2e, 0x55, 0x73, 0x65, 0x72, 0x57, 0x69, 0x74, 0x68, 0x57, 0x6f, 0x72, 0x6b, 0x73, 0x70, 0x61,
-	0x63, 0x65, 0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x22, 0x92, 0x01, 0x0a, 0x08, 0x50, 0x72,
-	0x69, 0x76, 0x55, 0x73, 0x65, 0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01,
-	0x28, 0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x72, 0x65, 0x61, 0x64, 0x6f, 0x6e,
-	0x6c, 0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x72, 0x65, 0x61, 0x64, 0x6f, 0x6e,
-	0x6c, 0x79, 0x12, 0x1f, 0x0a, 0x0b, 0x70, 0x61, 0x73, 0x73, 0x77, 0x64, 0x5f, 0x73, 0x61, 0x6c,
-	0x74, 0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0a, 0x70, 0x61, 0x73, 0x73, 0x77, 0x64, 0x53,
-	0x61, 0x6c, 0x74, 0x12, 0x20, 0x0a, 0x0c, 0x70, 0x72, 0x69, 0x76, 0x5f, 0x6b, 0x65, 0x79, 0x5f,
-	0x65, 0x6e, 0x63, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0a, 0x70, 0x72, 0x69, 0x76, 0x4b,
-	0x65, 0x79, 0x45, 0x6e, 0x63, 0x12, 0x17, 0x0a, 0x07, 0x70, 0x75, 0x62, 0x5f, 0x6b, 0x65, 0x79,
-	0x18, 0x05, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x06, 0x70, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x22, 0x38,
+	0x65, 0x52, 0x05, 0x69, 0x74, 0x65, 0x6d, 0x73, 0x22, 0xb3, 0x01, 0x0a, 0x08, 0x50, 0x72, 0x69,
+	0x76, 0x55, 0x73, 0x65, 0x72, 0x12, 0x0e, 0x0a, 0x02, 0x69, 0x64, 0x18, 0x01, 0x20, 0x01, 0x28,
+	0x09, 0x52, 0x02, 0x69, 0x64, 0x12, 0x1a, 0x0a, 0x08, 0x72, 0x65, 0x61, 0x64, 0x6f, 0x6e, 0x6c,
+	0x79, 0x18, 0x02, 0x20, 0x01, 0x28, 0x08, 0x52, 0x08, 0x72, 0x65, 0x61, 0x64, 0x6f, 0x6e, 0x6c,
+	0x79, 0x12, 0x1f, 0x0a, 0x0b, 0x70, 0x61, 0x73, 0x73, 0x77, 0x64, 0x5f, 0x73, 0x61, 0x6c, 0x74,
+	0x18, 0x03, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0a, 0x70, 0x61, 0x73, 0x73, 0x77, 0x64, 0x53, 0x61,
+	0x6c, 0x74, 0x12, 0x20, 0x0a, 0x0c, 0x70, 0x72, 0x69, 0x76, 0x5f, 0x6b, 0x65, 0x79, 0x5f, 0x65,
+	0x6e, 0x63, 0x18, 0x04, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x0a, 0x70, 0x72, 0x69, 0x76, 0x4b, 0x65,
+	0x79, 0x45, 0x6e, 0x63, 0x12, 0x17, 0x0a, 0x07, 0x70, 0x75, 0x62, 0x5f, 0x6b, 0x65, 0x79, 0x18,
+	0x05, 0x20, 0x01, 0x28, 0x0c, 0x52, 0x06, 0x70, 0x75, 0x62, 0x4b, 0x65, 0x79, 0x12, 0x1f, 0x0a,
+	0x0b, 0x6f, 0x74, 0x70, 0x5f, 0x65, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x18, 0x06, 0x20, 0x01,
+	0x28, 0x08, 0x52, 0x0a, 0x6f, 0x74, 0x70, 0x45, 0x6e, 0x61, 0x62, 0x6c, 0x65, 0x64, 0x22, 0x38,
 	0x0a, 0x0e, 0x57, 0x68, 0x6f, 0x41, 0x6d, 0x49, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65,
 	0x12, 0x26, 0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12,
 	0x2e, 0x61, 0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31, 0x2e, 0x50, 0x72, 0x69, 0x76, 0x55, 0x73,
@@ -1936,8 +2156,17 @@ var file_alice_v1_proto_rawDesc = []byte{
 	0x6e, 0x74, 0x69, 0x61, 0x6c, 0x73, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x26,
 	0x0a, 0x04, 0x75, 0x73, 0x65, 0x72, 0x18, 0x01, 0x20, 0x01, 0x28, 0x0b, 0x32, 0x12, 0x2e, 0x61,
 	0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31, 0x2e, 0x50, 0x72, 0x69, 0x76, 0x55, 0x73, 0x65, 0x72,
-	0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x42, 0x0f, 0x5a, 0x0d, 0x64, 0x65, 0x73, 0x63, 0x2f, 0x61,
-	0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
+	0x52, 0x04, 0x75, 0x73, 0x65, 0x72, 0x22, 0x3c, 0x0a, 0x10, 0x4f, 0x74, 0x70, 0x49, 0x73, 0x73,
+	0x75, 0x65, 0x52, 0x65, 0x73, 0x70, 0x6f, 0x6e, 0x73, 0x65, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x65,
+	0x63, 0x72, 0x65, 0x74, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x65, 0x63, 0x72,
+	0x65, 0x74, 0x12, 0x10, 0x0a, 0x03, 0x75, 0x72, 0x6c, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52,
+	0x03, 0x75, 0x72, 0x6c, 0x22, 0x4a, 0x0a, 0x10, 0x4f, 0x74, 0x70, 0x45, 0x6e, 0x61, 0x62, 0x6c,
+	0x65, 0x52, 0x65, 0x71, 0x75, 0x65, 0x73, 0x74, 0x12, 0x1a, 0x0a, 0x08, 0x69, 0x64, 0x65, 0x6e,
+	0x74, 0x69, 0x74, 0x79, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x69, 0x64, 0x65, 0x6e,
+	0x74, 0x69, 0x74, 0x79, 0x12, 0x1a, 0x0a, 0x08, 0x70, 0x61, 0x73, 0x73, 0x63, 0x6f, 0x64, 0x65,
+	0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x08, 0x70, 0x61, 0x73, 0x73, 0x63, 0x6f, 0x64, 0x65,
+	0x42, 0x0f, 0x5a, 0x0d, 0x64, 0x65, 0x73, 0x63, 0x2f, 0x61, 0x6c, 0x69, 0x63, 0x65, 0x5f, 0x76,
+	0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
 var (
@@ -1952,54 +2181,58 @@ func file_alice_v1_proto_rawDescGZIP() []byte {
 	return file_alice_v1_proto_rawDescData
 }
 
-var file_alice_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 29)
+var file_alice_v1_proto_msgTypes = make([]protoimpl.MessageInfo, 33)
 var file_alice_v1_proto_goTypes = []interface{}{
 	(*RegistrationRequest)(nil),               // 0: alice_v1.RegistrationRequest
 	(*Login0Request)(nil),                     // 1: alice_v1.Login0Request
 	(*Login0Response)(nil),                    // 2: alice_v1.Login0Response
 	(*Login1Request)(nil),                     // 3: alice_v1.Login1Request
 	(*Login1Response)(nil),                    // 4: alice_v1.Login1Response
-	(*CreateWorkspaceRequest)(nil),            // 5: alice_v1.CreateWorkspaceRequest
-	(*CreateWorkspaceResponse)(nil),           // 6: alice_v1.CreateWorkspaceResponse
-	(*UpsertCardRequest)(nil),                 // 7: alice_v1.UpsertCardRequest
-	(*UpsertCardResponse)(nil),                // 8: alice_v1.UpsertCardResponse
-	(*CloneCardRequest)(nil),                  // 9: alice_v1.CloneCardRequest
-	(*CloneCardResponse)(nil),                 // 10: alice_v1.CloneCardResponse
-	(*ListWorkspacesResponse)(nil),            // 11: alice_v1.ListWorkspacesResponse
-	(*PrivUser)(nil),                          // 12: alice_v1.PrivUser
-	(*WhoAmIResponse)(nil),                    // 13: alice_v1.WhoAmIResponse
-	(*Card)(nil),                              // 14: alice_v1.Card
-	(*CardItem)(nil),                          // 15: alice_v1.CardItem
-	(*UserWithWorkspace)(nil),                 // 16: alice_v1.UserWithWorkspace
-	(*ListCardsResponse)(nil),                 // 17: alice_v1.ListCardsResponse
-	(*ListCardItemsResponse)(nil),             // 18: alice_v1.ListCardItemsResponse
-	(*ArchiveCardResponse)(nil),               // 19: alice_v1.ArchiveCardResponse
-	(*TerminateRequest)(nil),                  // 20: alice_v1.TerminateRequest
-	(*UpdateWorkspaceRequest)(nil),            // 21: alice_v1.UpdateWorkspaceRequest
-	(*UpdateWorkspaceResponse)(nil),           // 22: alice_v1.UpdateWorkspaceResponse
-	(*UpdateCredentialsRequest)(nil),          // 23: alice_v1.UpdateCredentialsRequest
-	(*UpdateCredentialsResponse)(nil),         // 24: alice_v1.UpdateCredentialsResponse
-	(*RegistrationRequest_User)(nil),          // 25: alice_v1.RegistrationRequest.User
-	(*RegistrationRequest_Workspace)(nil),     // 26: alice_v1.RegistrationRequest.Workspace
-	(*RegistrationRequest_CardItem)(nil),      // 27: alice_v1.RegistrationRequest.CardItem
-	(*RegistrationRequest_CardWithItems)(nil), // 28: alice_v1.RegistrationRequest.CardWithItems
+	(*LoginOtpRequest)(nil),                   // 5: alice_v1.LoginOtpRequest
+	(*LoginOtpResponse)(nil),                  // 6: alice_v1.LoginOtpResponse
+	(*CreateWorkspaceRequest)(nil),            // 7: alice_v1.CreateWorkspaceRequest
+	(*CreateWorkspaceResponse)(nil),           // 8: alice_v1.CreateWorkspaceResponse
+	(*UpsertCardRequest)(nil),                 // 9: alice_v1.UpsertCardRequest
+	(*UpsertCardResponse)(nil),                // 10: alice_v1.UpsertCardResponse
+	(*CloneCardRequest)(nil),                  // 11: alice_v1.CloneCardRequest
+	(*CloneCardResponse)(nil),                 // 12: alice_v1.CloneCardResponse
+	(*ListWorkspacesResponse)(nil),            // 13: alice_v1.ListWorkspacesResponse
+	(*PrivUser)(nil),                          // 14: alice_v1.PrivUser
+	(*WhoAmIResponse)(nil),                    // 15: alice_v1.WhoAmIResponse
+	(*Card)(nil),                              // 16: alice_v1.Card
+	(*CardItem)(nil),                          // 17: alice_v1.CardItem
+	(*UserWithWorkspace)(nil),                 // 18: alice_v1.UserWithWorkspace
+	(*ListCardsResponse)(nil),                 // 19: alice_v1.ListCardsResponse
+	(*ListCardItemsResponse)(nil),             // 20: alice_v1.ListCardItemsResponse
+	(*ArchiveCardResponse)(nil),               // 21: alice_v1.ArchiveCardResponse
+	(*TerminateRequest)(nil),                  // 22: alice_v1.TerminateRequest
+	(*UpdateWorkspaceRequest)(nil),            // 23: alice_v1.UpdateWorkspaceRequest
+	(*UpdateWorkspaceResponse)(nil),           // 24: alice_v1.UpdateWorkspaceResponse
+	(*UpdateCredentialsRequest)(nil),          // 25: alice_v1.UpdateCredentialsRequest
+	(*UpdateCredentialsResponse)(nil),         // 26: alice_v1.UpdateCredentialsResponse
+	(*OtpIssueResponse)(nil),                  // 27: alice_v1.OtpIssueResponse
+	(*OtpEnableRequest)(nil),                  // 28: alice_v1.OtpEnableRequest
+	(*RegistrationRequest_User)(nil),          // 29: alice_v1.RegistrationRequest.User
+	(*RegistrationRequest_Workspace)(nil),     // 30: alice_v1.RegistrationRequest.Workspace
+	(*RegistrationRequest_CardItem)(nil),      // 31: alice_v1.RegistrationRequest.CardItem
+	(*RegistrationRequest_CardWithItems)(nil), // 32: alice_v1.RegistrationRequest.CardWithItems
 }
 var file_alice_v1_proto_depIdxs = []int32{
-	25, // 0: alice_v1.RegistrationRequest.user:type_name -> alice_v1.RegistrationRequest.User
-	26, // 1: alice_v1.RegistrationRequest.workspace:type_name -> alice_v1.RegistrationRequest.Workspace
-	28, // 2: alice_v1.RegistrationRequest.card_with_items:type_name -> alice_v1.RegistrationRequest.CardWithItems
-	16, // 3: alice_v1.CreateWorkspaceResponse.workspace:type_name -> alice_v1.UserWithWorkspace
-	14, // 4: alice_v1.UpsertCardRequest.card:type_name -> alice_v1.Card
-	15, // 5: alice_v1.UpsertCardRequest.card_items:type_name -> alice_v1.CardItem
-	14, // 6: alice_v1.UpsertCardResponse.card:type_name -> alice_v1.Card
-	14, // 7: alice_v1.CloneCardResponse.card:type_name -> alice_v1.Card
-	16, // 8: alice_v1.ListWorkspacesResponse.items:type_name -> alice_v1.UserWithWorkspace
-	12, // 9: alice_v1.WhoAmIResponse.user:type_name -> alice_v1.PrivUser
-	14, // 10: alice_v1.ListCardsResponse.items:type_name -> alice_v1.Card
-	15, // 11: alice_v1.ListCardItemsResponse.items:type_name -> alice_v1.CardItem
-	16, // 12: alice_v1.UpdateWorkspaceResponse.workspace:type_name -> alice_v1.UserWithWorkspace
-	12, // 13: alice_v1.UpdateCredentialsResponse.user:type_name -> alice_v1.PrivUser
-	27, // 14: alice_v1.RegistrationRequest.CardWithItems.items:type_name -> alice_v1.RegistrationRequest.CardItem
+	29, // 0: alice_v1.RegistrationRequest.user:type_name -> alice_v1.RegistrationRequest.User
+	30, // 1: alice_v1.RegistrationRequest.workspace:type_name -> alice_v1.RegistrationRequest.Workspace
+	32, // 2: alice_v1.RegistrationRequest.card_with_items:type_name -> alice_v1.RegistrationRequest.CardWithItems
+	18, // 3: alice_v1.CreateWorkspaceResponse.workspace:type_name -> alice_v1.UserWithWorkspace
+	16, // 4: alice_v1.UpsertCardRequest.card:type_name -> alice_v1.Card
+	17, // 5: alice_v1.UpsertCardRequest.card_items:type_name -> alice_v1.CardItem
+	16, // 6: alice_v1.UpsertCardResponse.card:type_name -> alice_v1.Card
+	16, // 7: alice_v1.CloneCardResponse.card:type_name -> alice_v1.Card
+	18, // 8: alice_v1.ListWorkspacesResponse.items:type_name -> alice_v1.UserWithWorkspace
+	14, // 9: alice_v1.WhoAmIResponse.user:type_name -> alice_v1.PrivUser
+	16, // 10: alice_v1.ListCardsResponse.items:type_name -> alice_v1.Card
+	17, // 11: alice_v1.ListCardItemsResponse.items:type_name -> alice_v1.CardItem
+	18, // 12: alice_v1.UpdateWorkspaceResponse.workspace:type_name -> alice_v1.UserWithWorkspace
+	14, // 13: alice_v1.UpdateCredentialsResponse.user:type_name -> alice_v1.PrivUser
+	31, // 14: alice_v1.RegistrationRequest.CardWithItems.items:type_name -> alice_v1.RegistrationRequest.CardItem
 	15, // [15:15] is the sub-list for method output_type
 	15, // [15:15] is the sub-list for method input_type
 	15, // [15:15] is the sub-list for extension type_name
@@ -2074,7 +2307,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[5].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateWorkspaceRequest); i {
+			switch v := v.(*LoginOtpRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2086,7 +2319,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[6].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CreateWorkspaceResponse); i {
+			switch v := v.(*LoginOtpResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2098,7 +2331,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[7].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpsertCardRequest); i {
+			switch v := v.(*CreateWorkspaceRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2110,7 +2343,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[8].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpsertCardResponse); i {
+			switch v := v.(*CreateWorkspaceResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2122,7 +2355,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[9].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CloneCardRequest); i {
+			switch v := v.(*UpsertCardRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2134,7 +2367,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[10].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CloneCardResponse); i {
+			switch v := v.(*UpsertCardResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2146,7 +2379,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[11].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListWorkspacesResponse); i {
+			switch v := v.(*CloneCardRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2158,7 +2391,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[12].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*PrivUser); i {
+			switch v := v.(*CloneCardResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2170,7 +2403,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[13].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*WhoAmIResponse); i {
+			switch v := v.(*ListWorkspacesResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2182,7 +2415,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[14].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*Card); i {
+			switch v := v.(*PrivUser); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2194,7 +2427,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[15].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*CardItem); i {
+			switch v := v.(*WhoAmIResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2206,7 +2439,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[16].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UserWithWorkspace); i {
+			switch v := v.(*Card); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2218,7 +2451,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[17].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListCardsResponse); i {
+			switch v := v.(*CardItem); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2230,7 +2463,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[18].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ListCardItemsResponse); i {
+			switch v := v.(*UserWithWorkspace); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2242,7 +2475,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[19].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ArchiveCardResponse); i {
+			switch v := v.(*ListCardsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2254,7 +2487,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[20].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TerminateRequest); i {
+			switch v := v.(*ListCardItemsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2266,7 +2499,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[21].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateWorkspaceRequest); i {
+			switch v := v.(*ArchiveCardResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2278,7 +2511,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[22].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateWorkspaceResponse); i {
+			switch v := v.(*TerminateRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2290,7 +2523,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[23].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateCredentialsRequest); i {
+			switch v := v.(*UpdateWorkspaceRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2302,7 +2535,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[24].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*UpdateCredentialsResponse); i {
+			switch v := v.(*UpdateWorkspaceResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2314,7 +2547,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[25].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RegistrationRequest_User); i {
+			switch v := v.(*UpdateCredentialsRequest); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2326,7 +2559,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[26].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RegistrationRequest_Workspace); i {
+			switch v := v.(*UpdateCredentialsResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2338,7 +2571,7 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[27].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*RegistrationRequest_CardItem); i {
+			switch v := v.(*OtpIssueResponse); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -2350,6 +2583,54 @@ func file_alice_v1_proto_init() {
 			}
 		}
 		file_alice_v1_proto_msgTypes[28].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*OtpEnableRequest); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_alice_v1_proto_msgTypes[29].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RegistrationRequest_User); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_alice_v1_proto_msgTypes[30].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RegistrationRequest_Workspace); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_alice_v1_proto_msgTypes[31].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*RegistrationRequest_CardItem); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_alice_v1_proto_msgTypes[32].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*RegistrationRequest_CardWithItems); i {
 			case 0:
 				return &v.state
@@ -2368,7 +2649,7 @@ func file_alice_v1_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_alice_v1_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   29,
+			NumMessages:   33,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

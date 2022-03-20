@@ -12,5 +12,6 @@ func MapPrivUser(input domain.User) *alice_v1.PrivUser {
 		PasswdSalt: input.PasswdSalt.Bytea,
 		PrivKeyEnc: input.PrivKeyEnc.Bytea,
 		PubKey:     input.PubKey.Bytea,
+		OtpEnabled: input.IsOtpEnabled(),
 	}
 }

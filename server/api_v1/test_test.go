@@ -77,6 +77,10 @@ func (s *Setup) MustBindResponse(t *testing.T, message proto.Message) {
 }
 
 func (s *Setup) LoginAs(t *testing.T, session domain.Session, user domain.User) {
+	if !session.OtpSucceed.Valid {
+		session.OtpSucceed = domain.NewEmptyBool(true)
+	}
+
 	s.store.EXPECT().RetrieveSession(gomock.Any(), gomock.Any(), gomock.Any()).Return(session, nil)
 	s.store.EXPECT().FindUser(gomock.Any(), gomock.Any()).Return(user, nil)
 }

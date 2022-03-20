@@ -37,6 +37,50 @@ func (s *Storage) UpdateCredentials(ctx context.Context, ID string, oldIdentity 
 	})
 }
 
+func (s *Storage) IssueUserOtp(ctx context.Context, ID string, secret string) error {
+	query := Builder().
+		Update("users").
+		Set("otp_candidate", Expr("encrypt(?, ?, 'aes-cbc/pad:pkcs')", secret, s.sseKey)).
+		Where("id = ?", ID)
+
+	return s.Exec1(ctx, s.db, query)
+}
+
+func (s *Storage) EnableUserOtp(ctx context.Context, ID string, identity string, secret []byte) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
+		return s.enableUserOtp(c, tx, ID, identity, secret)
+	})
+}
+
+func (s *Storage) DisableUserOtp(ctx context.Context, ID string) error {
+	query := Builder().Update("users").Set("otp_secret", Expr("NULL")).Where("id = ?", ID)
+	return s.Exec1(ctx, s.db, query)
+}
+
+func (s *Storage) enableUserOtp(ctx context.Context, db IConn, ID string, identity string, secret []byte) error {
+	user, err := s.findUser(ctx, db, ID)
+	if err != nil {
+		return fmt.Errorf("failed to find a user: %w", err)
+	}
+
+	err = s.validator.ValidateEnableUserOtp(validator.ValidateEnableUserOtpOpts{
+		User:     user,
+		Identity: identity,
+		Secret:   secret,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to validate enable otp: %w", err)
+	}
+
+	query := Builder().Update("users").
+		Set("otp_secret", Expr("otp_candidate")).
+		Set("otp_candidate", Expr("NULL")).
+		Where("id = ?", ID)
+
+	return s.Exec1(ctx, db, query)
+
+}
+
 func (s *Storage) terminateUser(ctx context.Context, db IConn, identity string, userID string) error {
 	user, err := s.findUser(ctx, db, userID)
 	if err != nil {
@@ -130,6 +174,8 @@ func (s *Storage) insertUser(ctx context.Context, db IConn, user *domain.User) e
 			"readonly",
 			"identity",
 			"verifier",
+			"otp_secret",
+			"otp_candidate",
 			"srp_salt",
 			"passwd_salt",
 			"priv_key_enc",
@@ -139,6 +185,8 @@ func (s *Storage) insertUser(ctx context.Context, db IConn, user *domain.User) e
 			user.Readonly,
 			user.Identity,
 			Expr("encrypt(?, ?, 'aes-cbc/pad:pkcs')", user.Verifier, s.sseKey),
+			Expr("encrypt(?, ?, 'aes-cbc/pad:pkcs')", user.OtpSecret, s.sseKey),
+			Expr("encrypt(?, ?, 'aes-cbc/pad:pkcs')", user.OtpCandidate, s.sseKey),
 			user.SrpSalt,
 			user.PasswdSalt,
 			user.PrivKeyEnc,
@@ -151,5 +199,7 @@ func (s *Storage) insertUser(ctx context.Context, db IConn, user *domain.User) e
 func (s *Storage) selectUserColumns() SelectBuilder {
 	return Builder().
 		Select("*").
-		Column("decrypt(verifier, ?, 'aes-cbc/pad:pkcs') AS verifier", s.sseKey)
+		Column("decrypt(verifier, ?, 'aes-cbc/pad:pkcs') AS verifier", s.sseKey).
+		Column("decrypt(otp_secret, ?, 'aes-cbc/pad:pkcs') AS otp_secret", s.sseKey).
+		Column("decrypt(otp_candidate, ?, 'aes-cbc/pad:pkcs') AS otp_candidate", s.sseKey)
 }

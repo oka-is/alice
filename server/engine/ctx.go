@@ -9,6 +9,7 @@ import (
 	"net/url"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pquerna/otp/totp"
 	"github.com/wault-pw/alice/lib/jwt"
 	"github.com/wault-pw/alice/pkg/domain"
 	"github.com/wault-pw/alice/pkg/pack"
@@ -160,4 +161,21 @@ func (c *Context) NewUserPolicy(user domain.User) policy.IUserPolicy {
 
 func (c *Context) NewWorkspacePolicy(user domain.User, uw domain.UserWorkspace) policy.IWorkspacePolicy {
 	return c.MustGetOpts().WorkspacePolicy.Wrap(user, uw)
+}
+
+func (c *Context) OtpIssue(user domain.User) (secret string, url string, err error) {
+	key, err := totp.Generate(totp.GenerateOpts{
+		Issuer:      "wault",
+		AccountName: user.ID.String,
+	})
+
+	if err != nil {
+		return "", "", err
+	}
+
+	return key.Secret(), key.URL(), err
+}
+
+func (c *Context) IsOtpValid(passcode string, secret string) bool {
+	return totp.Validate(passcode, secret)
 }

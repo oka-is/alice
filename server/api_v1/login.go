@@ -53,6 +53,53 @@ func LoginAuth1(ctx *engine.Context) {
 	ctx.ProtoBuf(http.StatusOK, message)
 }
 
+func LoginOtp(ctx *engine.Context) {
+	req := new(alice_v1.LoginOtpRequest)
+	err := ctx.MustBindProto(req)
+	if err != nil {
+		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
+	var message proto.Message
+	if req.GetPasscode() == "" {
+		message, err = loginOtpPre(ctx)
+	} else {
+		message, err = loginOtp(ctx, req)
+	}
+
+	if err != nil {
+		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.ProtoBuf(http.StatusOK, message)
+}
+
+func loginOtpPre(ctx *engine.Context) (proto.Message, error) {
+	user := ctx.MustGetUser()
+	session := ctx.MustGetSession()
+
+	if user.IsOtpDisabled() {
+		return &alice_v1.LoginOtpResponse{Required: false},
+			ctx.GetStore().OtpSessionSucceed(ctx.Ctx(), session.Jti.String)
+	}
+
+	return &alice_v1.LoginOtpResponse{Required: true}, nil
+}
+
+func loginOtp(ctx *engine.Context, req *alice_v1.LoginOtpRequest) (proto.Message, error) {
+	user := ctx.MustGetUser()
+	session := ctx.MustGetSession()
+
+	if ctx.IsOtpValid(req.GetPasscode(), string(user.OtpSecret.Bytea)) {
+		return &alice_v1.LoginOtpResponse{Required: false},
+			ctx.GetStore().OtpSessionSucceed(ctx.Ctx(), session.Jti.String)
+	}
+
+	return &alice_v1.LoginOtpResponse{Required: true}, nil
+}
+
 func auth0(ctx *engine.Context, req *alice_v1.Login0Request) (proto.Message, error) {
 	user, err := ctx.GetStore().FindUserIdentity(ctx.Ctx(), req.GetIdentity())
 	if err != nil {
