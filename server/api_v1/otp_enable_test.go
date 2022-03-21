@@ -28,15 +28,17 @@ func TestOtpEnable(t *testing.T) {
 		defer s.ctrl.Finish()
 
 		passcode := s.opts.OtpStub
+		session := domain.Session{Jti: domain.NewEmptyString("JTI")}
 		user := domain.User{
 			Identity:     domain.NewEmptyString("foo"),
 			ID:           domain.NewEmptyString("bar"),
 			OtpCandidate: domain.NewEmptyBytes([]byte{1}),
 		}
-		s.LoginAs(t, domain.Session{}, user)
+		s.LoginAs(t, session, user)
 
 		s.userPolicy.EXPECT().CanWrite().Return(nil)
-		s.store.EXPECT().EnableUserOtp(gomock.Any(), user.ID.String, user.Identity.String, user.OtpCandidate.Bytea)
+		s.store.EXPECT().EnableUserOtp(gomock.Any(), user.ID.String, user.Identity.String, user.OtpCandidate.Bytea).Return(nil)
+		s.store.EXPECT().DeleteUserSessionExcept(gomock.Any(), user.ID.String, session.Jti.String).Return(nil)
 
 		s.MustPOST(t, "/v1/otp/enable", &alice_v1.OtpEnableRequest{
 			Identity: user.Identity.String,

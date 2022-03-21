@@ -28,10 +28,12 @@ func TestUpdateCredentials(t *testing.T) {
 
 		oldIdentity := "oldIdentity"
 		user := domain.User{ID: domain.NewEmptyString("ID")}
+		session := domain.Session{Jti: domain.NewEmptyString("JTI")}
+		s.LoginAs(t, session, user)
 
-		s.LoginAs(t, domain.Session{}, user)
 		s.userPolicy.EXPECT().CanWrite().Return(nil)
 		s.store.EXPECT().UpdateCredentials(gomock.Any(), user.ID.String, oldIdentity, gomock.Any()).Return(nil)
+		s.store.EXPECT().DeleteUserSessionExcept(gomock.Any(), user.ID.String, session.Jti.String).Return(nil)
 		s.store.EXPECT().FindUser(gomock.Any(), user.ID.String).Return(user, nil)
 
 		s.MustPOST(t, "/v1/credentials/update", &alice_v1.UpdateCredentialsRequest{

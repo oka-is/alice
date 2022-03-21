@@ -152,6 +152,20 @@ func (mr *MockStoreMockRecorder) DeleteSession(ctx, jti interface{}) *gomock.Cal
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteSession", reflect.TypeOf((*MockStore)(nil).DeleteSession), ctx, jti)
 }
 
+// DeleteUserSessionExcept mocks base method.
+func (m *MockStore) DeleteUserSessionExcept(ctx context.Context, userID, jti string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteUserSessionExcept", ctx, userID, jti)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteUserSessionExcept indicates an expected call of DeleteUserSessionExcept.
+func (mr *MockStoreMockRecorder) DeleteUserSessionExcept(ctx, userID, jti interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUserSessionExcept", reflect.TypeOf((*MockStore)(nil).DeleteUserSessionExcept), ctx, userID, jti)
+}
+
 // DeleteWorkspace mocks base method.
 func (m *MockStore) DeleteWorkspace(ctx context.Context, ID string) error {
 	m.ctrl.T.Helper()

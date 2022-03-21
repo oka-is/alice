@@ -169,6 +169,33 @@ func TestStorage_DeleteSession(t *testing.T) {
 	})
 }
 
+func TestStorage_DeleteUserSessionExcept(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+
+		user1 := mustCreateUser(t, store, &domain.User{})
+		user2 := mustCreateUser(t, store, &domain.User{})
+
+		session01 := mustCreateSession(t, store, &domain.Session{UserID: user1.ID})
+		session02 := mustCreateSession(t, store, &domain.Session{UserID: user1.ID})
+		session03 := mustCreateSession(t, store, &domain.Session{UserID: user2.ID})
+
+		err := store.DeleteUserSessionExcept(ctx, user1.ID.String, session01.Jti.String)
+		require.NoError(t, err)
+
+		_, err11 := store.FindSession(ctx, session01.Jti.String)
+		_, err12 := store.FindSession(ctx, session02.Jti.String)
+		_, err13 := store.FindSession(ctx, session03.Jti.String)
+
+		require.NoError(t, err11, "keeps current session")
+		require.ErrorIs(t, err12, ErrNotFound, "deletes stale sessions")
+		require.NoError(t, err13, "keeps sessions for foreign user")
+	})
+}
+
 func mustBuildSession(t *testing.T, storage *Storage, input *domain.Session) *domain.Session {
 	out := &domain.Session{
 		Jti:      domain.NewEmptyString(domain.NewUUID()),

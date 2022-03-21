@@ -16,7 +16,7 @@ func UpdateCredentials(ctx *engine.Context) {
 		return
 	}
 
-	user := ctx.MustGetUser()
+	user, session := ctx.MustGetUser(), ctx.MustGetSession()
 	err = ctx.NewUserPolicy(user).CanWrite()
 	if err != nil {
 		ctx.HandleError(err)
@@ -25,6 +25,12 @@ func UpdateCredentials(ctx *engine.Context) {
 
 	oldIdentity, newUser := mapper_v1.BindUpdateCredentials(req)
 	err = ctx.GetStore().UpdateCredentials(ctx.Ctx(), user.ID.String, oldIdentity, newUser)
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.GetStore().DeleteUserSessionExcept(ctx.Ctx(), user.ID.String, session.Jti.String)
 	if err != nil {
 		ctx.HandleError(err)
 		return

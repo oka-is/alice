@@ -16,7 +16,7 @@ func OtpEnable(ctx *engine.Context) {
 		return
 	}
 
-	user := ctx.MustGetUser()
+	user, session := ctx.MustGetUser(), ctx.MustGetSession()
 	err = ctx.NewUserPolicy(user).CanWrite()
 	if err != nil {
 		ctx.HandleError(err)
@@ -29,6 +29,12 @@ func OtpEnable(ctx *engine.Context) {
 	}
 
 	err = ctx.GetStore().EnableUserOtp(ctx.Ctx(), user.ID.String, req.GetIdentity(), user.OtpCandidate.Bytea)
+	if err != nil {
+		ctx.HandleError(err)
+		return
+	}
+
+	err = ctx.GetStore().DeleteUserSessionExcept(ctx.Ctx(), user.ID.String, session.Jti.String)
 	if err != nil {
 		ctx.HandleError(err)
 		return

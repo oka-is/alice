@@ -74,6 +74,13 @@ func (s *Storage) DeleteSession(ctx context.Context, jti string) error {
 	return s.Exec1(ctx, s.db, query)
 }
 
+// DeleteUserSessionExcept deletes all issued sessions for specific user except the current one
+// useful in password change or OTP enable
+func (s *Storage) DeleteUserSessionExcept(ctx context.Context, userID, jti string) error {
+	query := Builder().Delete("sessions").Where("user_id = ?", userID).Where("jti <> ?", jti)
+	return s.Exec1(ctx, s.db, query)
+}
+
 // FindSession test case usage only, for regular usage, please use RetrieveSession
 func (s *Storage) FindSession(ctx context.Context, jti string) (out domain.Session, err error) {
 	query := Builder().Select("*").From("sessions").Where("jti = ?", jti)

@@ -32,6 +32,7 @@ type IStore interface {
 	CandidateSession(ctx context.Context, jti, candidateID string, srp []byte) error
 	DeleteSession(ctx context.Context, jti string) error
 	OtpSessionSucceed(ctx context.Context, jti string) error
+	DeleteUserSessionExcept(ctx context.Context, userID, jti string) error
 
 	// Operations about users
 
