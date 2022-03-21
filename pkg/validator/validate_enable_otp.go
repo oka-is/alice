@@ -15,9 +15,11 @@ type ValidateEnableUserOtpOpts struct {
 
 func (v *Validator) ValidateEnableUserOtp(opts ValidateEnableUserOtpOpts) error {
 	return validation.Errors{
-		"Identity":     one(validation.Validate(opts.Identity == opts.User.Identity.String, validation.Required)),
-		"OtpSecret":    one(validation.Validate(!opts.User.OtpSecret.Valid, validation.Required)),
-		"OtpCandidate": one(validation.Validate(bytes.Equal(opts.User.OtpCandidate.Bytea, opts.Secret), validation.Required)),
+		"Identity": one(validation.Validate(opts.Identity == opts.User.Identity.String, validation.Required)),
+		"OtpSecret": one(
+			validation.Validate(!opts.User.OtpSecret.Valid, validation.Required),
+			validation.Validate(bytes.Equal(opts.User.OtpCandidate.Bytea, opts.Secret), validation.Required),
+		),
 	}.Filter()
 }
 
