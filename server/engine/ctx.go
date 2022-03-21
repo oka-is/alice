@@ -151,6 +151,7 @@ func (c *Context) HandleError(err error) {
 		_ = c.AbortWithError(http.StatusNotFound, err)
 		return
 	default:
+		CaptureException(err)
 		_ = c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}

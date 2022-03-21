@@ -91,3 +91,7 @@ func applySentry(app *gin.Engine, dsn string) error {
 
 	return nil
 }
+
+func CaptureException(err error) {
+	sentry.CaptureException(err)
+}
