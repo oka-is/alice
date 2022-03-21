@@ -12,6 +12,7 @@ type Opts struct {
 	CookieSecure    bool
 	Production      bool
 	BackupUrl       string
+	OtpStub         string
 	SentryDsn       string
 	Ver             *pack.Ver
 	UserPolicy      policy.IUserPolicy

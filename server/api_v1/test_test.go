@@ -17,6 +17,8 @@ import (
 	"google.golang.org/protobuf/proto"
 )
 
+const OtpStub = "123456"
+
 type Setup struct {
 	store           *storage_mock.MockStore
 	engine          *engine.Engine
@@ -37,6 +39,7 @@ func MustSetup(t *testing.T) *Setup {
 		AllowOrigin:     []string{"*"},
 		UserPolicy:      userPolicy,
 		WorkspacePolicy: workspacePolicy,
+		OtpStub:         OtpStub,
 	}
 
 	app, err := engine.New(store, opts)

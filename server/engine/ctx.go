@@ -166,12 +166,11 @@ func (c *Context) NewWorkspacePolicy(user domain.User, uw domain.UserWorkspace) 
 
 func (c *Context) OtpIssue(user domain.User) (secret string, url string, err error) {
 	key, err := totp.Generate(totp.GenerateOpts{
-		Issuer:     "wault",
-		Period:     30,
-		SecretSize: 20,
-		Digits:     otp.DigitsSix,
-		// SHA1 is designed by spec
-		Algorithm:   otp.AlgorithmSHA1,
+		Issuer:      "wault",
+		Period:      30,
+		SecretSize:  20,
+		Digits:      otp.DigitsSix,
+		Algorithm:   otp.AlgorithmSHA1, // SHA1 is designed by spec
 		AccountName: user.ID.String,
 	})
 
@@ -183,5 +182,9 @@ func (c *Context) OtpIssue(user domain.User) (secret string, url string, err err
 }
 
 func (c *Context) IsOtpValid(passcode string, secret string) bool {
+	if stub := c.MustGetOpts().OtpStub; stub != "" {
+		return stub == passcode
+	}
+
 	return totp.Validate(passcode, secret)
 }
