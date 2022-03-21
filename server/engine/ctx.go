@@ -9,6 +9,7 @@ import (
 	"net/url"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"github.com/wault-pw/alice/lib/jwt"
 	"github.com/wault-pw/alice/pkg/domain"
@@ -165,7 +166,12 @@ func (c *Context) NewWorkspacePolicy(user domain.User, uw domain.UserWorkspace) 
 
 func (c *Context) OtpIssue(user domain.User) (secret string, url string, err error) {
 	key, err := totp.Generate(totp.GenerateOpts{
-		Issuer:      "wault",
+		Issuer:     "wault",
+		Period:     30,
+		SecretSize: 20,
+		Digits:     otp.DigitsSix,
+		// SHA1 is designed by spec
+		Algorithm:   otp.AlgorithmSHA1,
 		AccountName: user.ID.String,
 	})
 
