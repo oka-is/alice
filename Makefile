@@ -69,11 +69,11 @@ generate_build:
 
 linux: generate_build
 linux:
-	env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-s -X 'main.Version=$(VERSION)'" -a -installsuffix cgo -o build/linux
+	env GOOS=linux GOARCH=amd64 CGO_ENABLED=0 go build -buildvcs=false -ldflags "-s -X 'main.Version=$(VERSION)'" -a -installsuffix cgo -o build/linux
 
 mac: generate_build
 mac:
-	env GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -ldflags "-s -X 'main.Version=$(VERSION)'" -a -installsuffix cgo -o build/mac
+	env GOOS=darwin GOARCH=amd64 CGO_ENABLED=0 go build -buildvcs=false -ldflags "-s -X 'main.Version=$(VERSION)'" -a -installsuffix cgo -o build/mac
 
 .PHONY: build
 build: export TAG=$(VERSION)

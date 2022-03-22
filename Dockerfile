@@ -1,4 +1,4 @@
-ARG BUILD_BASE=golang:1.17-alpine
+ARG BUILD_BASE=golang:1.18-alpine
 ARG ISO_BASE=alpine
 
 FROM ${BUILD_BASE} as build
