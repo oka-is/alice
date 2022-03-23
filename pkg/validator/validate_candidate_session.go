@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	MaxLoginAttempts = 4
+	MaxLoginAttempts = 3
 	LoginAttemptsDur = time.Minute
 )
 
@@ -17,7 +17,7 @@ type ValidateCandidateSessionOpts struct {
 
 func (v *Validator) ValidateCandidateSession(opts ValidateCandidateSessionOpts) error {
 	return validation.Errors{
-		"Attempts": one(validation.Validate(opts.Attempts < MaxLoginAttempts, validation.Required.Error("max login attempts, please try again later"))),
+		"Attempts": one(validation.Validate(opts.Attempts <= MaxLoginAttempts, validation.Required.Error("max login attempts, please try again later"))),
 	}.Filter()
 }
 
