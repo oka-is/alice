@@ -86,11 +86,32 @@ func (s *Storage) FindSession(ctx context.Context, jti string) (out domain.Sessi
 	return
 }
 
+// MakeOtpAttempt do several thinks:
+// 1) validates id user does not reach max OTP attempts per minute
+// 1) increments OTP attempts counter
+func (s *Storage) MakeOtpAttempt(ctx context.Context, jti string) error {
+	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
+		return s.makeOtpAttempt(c, tx, jti)
+	})
+}
+
 func (s *Storage) insertSession(ctx context.Context, db IConn, session *domain.Session) error {
 	query := Builder().
 		Insert("sessions").
-		Columns("jti", "user_id", "candidate_id", "time_from", "time_to").
-		Values(session.Jti, session.UserID, session.CandidateID, session.TimeFrom, session.TimeTo)
+		Columns(
+			"jti",
+			"user_id",
+			"candidate_id",
+			"otp_attempts",
+			"time_from",
+			"time_to").
+		Values(
+			session.Jti,
+			session.UserID,
+			session.CandidateID,
+			session.OtpAttempts,
+			session.TimeFrom,
+			session.TimeTo)
 
 	return s.Exec1(ctx, db, query)
 }
@@ -127,4 +148,40 @@ func (s *Storage) countLoginAttempts(ctx context.Context, db IConn, candidateID 
 
 	err = s.Get(ctx, db, &counter, query)
 	return
+}
+
+func (s *Storage) makeOtpAttempt(ctx context.Context, db IConn, jti string) error {
+	counter, err := s.countOtpAttempts(ctx, db, jti, validator.OtpAttemptsDur)
+	if err != nil {
+		return fmt.Errorf("faild to count otp attempts: %w", err)
+	}
+
+	err = s.validator.ValidateOtpAttempt(validator.ValidateOtpAttemptOpts{
+		Attempts: counter,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to validate otp attempt: %w", err)
+	}
+
+	return s.incrementOtpAttempts(ctx, db, jti)
+}
+
+func (s *Storage) countOtpAttempts(ctx context.Context, db IConn, jti string, dur time.Duration) (counter int, err error) {
+	query := Builder().
+		Select("COALESCE(SUM(otp_attempts), 0)").
+		From("sessions").
+		Where("user_id = (SELECT user_id FROM sessions WHERE jti = ? LIMIT 1)", jti).
+		Where("time_from >= ?", time.Now().Add(-dur))
+
+	err = s.Get(ctx, db, &counter, query)
+	return
+}
+
+func (s *Storage) incrementOtpAttempts(ctx context.Context, db IConn, jti string) error {
+	query := Builder().
+		Update("sessions").
+		Set("otp_attempts", Expr("COALESCE(otp_attempts, 0) + 1")).
+		Where("jti = ?", jti)
+
+	return s.Exec1(ctx, db, query)
 }

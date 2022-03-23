@@ -358,6 +358,20 @@ func (mr *MockStoreMockRecorder) ListUserWithWorkspaces(ctx, userID interface{})
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListUserWithWorkspaces", reflect.TypeOf((*MockStore)(nil).ListUserWithWorkspaces), ctx, userID)
 }
 
+// MakeOtpAttempt mocks base method.
+func (m *MockStore) MakeOtpAttempt(ctx context.Context, jti string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "MakeOtpAttempt", ctx, jti)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// MakeOtpAttempt indicates an expected call of MakeOtpAttempt.
+func (mr *MockStoreMockRecorder) MakeOtpAttempt(ctx, jti interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "MakeOtpAttempt", reflect.TypeOf((*MockStore)(nil).MakeOtpAttempt), ctx, jti)
+}
+
 // NominateSession mocks base method.
 func (m *MockStore) NominateSession(ctx context.Context, jti string) error {
 	m.ctrl.T.Helper()

@@ -195,6 +195,7 @@ func TestStorage_DeleteUserSessionExcept(t *testing.T) {
 		require.NoError(t, err13, "keeps sessions for foreign user")
 	})
 }
+
 func TestStorage_countLoginAttempts(t *testing.T) {
 	store, savepoint := MustNewStore(t)
 	t.Cleanup(savepoint.Flush)
@@ -223,15 +224,71 @@ func TestStorage_countLoginAttempts(t *testing.T) {
 	})
 }
 
+func TestStorage_countOtpAttempts(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		user := mustCreateUser(t, store, &domain.User{})
+		session := mustCreateSession(t, store, &domain.Session{
+			UserID:      user.ID,
+			OtpAttempts: domain.NewNullInt64(3),
+			TimeFrom:    domain.NewEmptyTime(time.Now().Add(-5 * time.Minute)),
+		})
+		_ = mustCreateSession(t, store, &domain.Session{})
+
+		counter01, err01 := store.countOtpAttempts(ctx, savepoint, session.Jti.String, time.Minute)
+		counter02, err02 := store.countOtpAttempts(ctx, savepoint, session.Jti.String, 6*time.Minute)
+
+		require.NoError(t, err01)
+		require.NoError(t, err02)
+
+		require.Equal(t, 0, counter01)
+		require.Equal(t, int(session.OtpAttempts.Int64), counter02)
+	})
+}
+
+func TestStorage_MakeOtpAttempt(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		session01 := mustCreateSession(t, store, &domain.Session{})
+		session02 := mustCreateSession(t, store, &domain.Session{})
+
+		err01 := store.MakeOtpAttempt(ctx, session01.Jti.String)
+		err02 := store.MakeOtpAttempt(ctx, session01.Jti.String)
+
+		require.NoError(t, err01)
+		require.NoError(t, err02)
+
+		session11, err11 := store.FindSession(ctx, session01.Jti.String)
+		session12, err12 := store.FindSession(ctx, session02.Jti.String)
+
+		require.NoError(t, err11)
+		require.NoError(t, err12)
+
+		require.Equal(t, int64(2), session11.OtpAttempts.Int64)
+		require.Equal(t, session02.OtpAttempts.Int64, session12.OtpAttempts.Int64)
+	})
+}
+
 func mustBuildSession(t *testing.T, storage *Storage, input *domain.Session) *domain.Session {
 	out := &domain.Session{
-		Jti:      domain.NewEmptyString(domain.NewUUID()),
-		TimeFrom: domain.NewEmptyTime(time.Now()),
-		TimeTo:   domain.NewEmptyTime(time.Now().Add(24 * time.Hour)),
+		Jti:         domain.NewEmptyString(domain.NewUUID()),
+		TimeFrom:    domain.NewEmptyTime(time.Now()),
+		OtpAttempts: domain.NewNullInt64(0),
+		TimeTo:      domain.NewEmptyTime(time.Now().Add(24 * time.Hour)),
 	}
 
 	if input.Jti.Valid {
 		out.Jti = input.Jti
+	}
+
+	if input.OtpAttempts.Valid {
+		out.OtpAttempts = input.OtpAttempts
 	}
 
 	if input.UserID.Valid {

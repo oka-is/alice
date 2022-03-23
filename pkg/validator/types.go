@@ -8,6 +8,7 @@ type IValidator interface {
 	ValidateUpdateCredentials(opts ValidateUpdateCredentialsOpts) error
 	ValidateEnableUserOtp(opts ValidateEnableUserOtpOpts) error
 	ValidateCandidateSession(opts ValidateCandidateSessionOpts) error
+	ValidateOtpAttempt(opts ValidateOtpAttemptOpts) error
 }
 
 type Validator struct{}

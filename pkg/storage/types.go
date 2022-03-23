@@ -33,6 +33,7 @@ type IStore interface {
 	DeleteSession(ctx context.Context, jti string) error
 	OtpSessionSucceed(ctx context.Context, jti string) error
 	DeleteUserSessionExcept(ctx context.Context, userID, jti string) error
+	MakeOtpAttempt(ctx context.Context, jti string) error
 
 	// Operations about users
 

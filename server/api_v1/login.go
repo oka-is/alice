@@ -62,7 +62,7 @@ func LoginOtp(ctx *engine.Context) {
 	req := new(alice_v1.LoginOtpRequest)
 	err := ctx.MustBindProto(req)
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		ctx.HandleError(err)
 		return
 	}
 
@@ -74,7 +74,7 @@ func LoginOtp(ctx *engine.Context) {
 	}
 
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		ctx.HandleError(err)
 		return
 	}
 
@@ -96,6 +96,11 @@ func loginOtpPre(ctx *engine.Context) (proto.Message, error) {
 func loginOtpChe(ctx *engine.Context, req *alice_v1.LoginOtpRequest) (proto.Message, error) {
 	user := ctx.MustGetUser()
 	session := ctx.MustGetSession()
+
+	err := ctx.GetStore().MakeOtpAttempt(ctx, session.Jti.String)
+	if err != nil {
+		return nil, err
+	}
 
 	if ctx.IsOtpValid(req.GetPasscode(), string(user.OtpSecret.Bytea)) {
 		return &alice_v1.LoginOtpResponse{Required: false},
