@@ -5,22 +5,27 @@ import (
 	"net/http"
 
 	"github.com/wault-pw/alice/desc/alice_v1"
+	"github.com/wault-pw/alice/pkg/validator"
 	"github.com/wault-pw/alice/server/engine"
 	"github.com/wault-pw/srp6ago"
 	"google.golang.org/protobuf/proto"
+)
+
+var (
+	errInvalidCredentials = validator.NewError("invalid credentials")
 )
 
 func LoginAuth0(ctx *engine.Context) {
 	req := new(alice_v1.Login0Request)
 	err := ctx.MustBindProto(req)
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusUnprocessableEntity, err)
+		ctx.HandleError(err)
 		return
 	}
 
 	session, token, err := ctx.GetStore().IssueSession(ctx.Ctx(), ctx.JwtOpts())
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		ctx.HandleError(err)
 		return
 	}
 
@@ -29,7 +34,7 @@ func LoginAuth0(ctx *engine.Context) {
 
 	message, err := auth0(ctx, req)
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusUnprocessableEntity, err)
+		ctx.HandleError(err)
 		return
 	}
 
@@ -40,13 +45,13 @@ func LoginAuth1(ctx *engine.Context) {
 	req := new(alice_v1.Login1Request)
 	err := ctx.MustBindProto(req)
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+		ctx.HandleError(err)
 		return
 	}
 
 	message, err := auth1(ctx, req)
 	if err != nil {
-		_ = ctx.AbortWithError(http.StatusUnprocessableEntity, err)
+		ctx.HandleError(err)
 		return
 	}
 
@@ -65,7 +70,7 @@ func LoginOtp(ctx *engine.Context) {
 	if req.GetPasscode() == "" {
 		message, err = loginOtpPre(ctx)
 	} else {
-		message, err = loginOtp(ctx, req)
+		message, err = loginOtpChe(ctx, req)
 	}
 
 	if err != nil {
@@ -88,7 +93,7 @@ func loginOtpPre(ctx *engine.Context) (proto.Message, error) {
 	return &alice_v1.LoginOtpResponse{Required: true}, nil
 }
 
-func loginOtp(ctx *engine.Context, req *alice_v1.LoginOtpRequest) (proto.Message, error) {
+func loginOtpChe(ctx *engine.Context, req *alice_v1.LoginOtpRequest) (proto.Message, error) {
 	user := ctx.MustGetUser()
 	session := ctx.MustGetSession()
 
@@ -103,13 +108,13 @@ func loginOtp(ctx *engine.Context, req *alice_v1.LoginOtpRequest) (proto.Message
 func auth0(ctx *engine.Context, req *alice_v1.Login0Request) (proto.Message, error) {
 	user, err := ctx.GetStore().FindUserIdentity(ctx.Ctx(), req.GetIdentity())
 	if err != nil {
-		return nil, fmt.Errorf("find user identity failed: %w", err)
+		return nil, fmt.Errorf("failed to find user identity: %w", errInvalidCredentials)
 	}
 
 	srp := ctx.MustGetVer().NewSrpServer(user.Verifier.Bytea, user.SrpSalt.Bytea)
 	mutual, err := srp.PublicKey()
 	if err != nil {
-		return nil, fmt.Errorf("failed to get srp publick key: %w", err)
+		return nil, fmt.Errorf("failed to get srp public key: %w", err)
 	}
 
 	session := ctx.MustGetSession()
@@ -137,12 +142,12 @@ func auth1(ctx *engine.Context, req *alice_v1.Login1Request) (proto.Message, err
 	}
 
 	if !srp.IsProofValid(req.GetProof()) {
-		return nil, fmt.Errorf("invalid credentials")
+		return nil, errInvalidCredentials
 	}
 
 	err = ctx.GetStore().NominateSession(ctx.Ctx(), ctx.MustGetSession().Jti.String)
 	if err != nil {
-		return nil, fmt.Errorf("failed to candidate session: %w", err)
+		return nil, fmt.Errorf("failed to nominate a session: %w", err)
 	}
 
 	return &alice_v1.Login1Response{

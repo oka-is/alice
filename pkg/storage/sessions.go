@@ -7,6 +7,7 @@ import (
 
 	"github.com/wault-pw/alice/lib/jwt"
 	"github.com/wault-pw/alice/pkg/domain"
+	"github.com/wault-pw/alice/pkg/validator"
 )
 
 const (
@@ -43,16 +44,13 @@ func (s *Storage) RetrieveSession(ctx context.Context, opts jwt.IOts, token stri
 }
 
 func (s *Storage) CandidateSession(ctx context.Context, jti, candidateID string, srp []byte) error {
-	query := Builder().
-		Update("sessions").
-		Set("candidate_id", candidateID).
-		Set("srp_state", srp).
-		Where("jti = ?", jti)
-
-	_, err := s.Exec(ctx, s.db, query)
-	return err
+	return s.Tx(ctx, nil, func(c context.Context, tx IConn) error {
+		return s.candidateSession(c, tx, jti, candidateID, srp)
+	})
 }
 
+// NominateSession moves candidateID to userID, from now it means that
+// user is authorized
 func (s *Storage) NominateSession(ctx context.Context, jti string) error {
 	query := Builder().
 		Update("sessions").
@@ -95,4 +93,38 @@ func (s *Storage) insertSession(ctx context.Context, db IConn, session *domain.S
 		Values(session.Jti, session.UserID, session.CandidateID, session.TimeFrom, session.TimeTo)
 
 	return s.Exec1(ctx, db, query)
+}
+
+func (s *Storage) candidateSession(ctx context.Context, db IConn, jti, candidateID string, srp []byte) error {
+	loginAttempts, err := s.countLoginAttempts(ctx, db, candidateID, validator.LoginAttemptsDur)
+	if err != nil {
+		return fmt.Errorf("failed to count login attempts: %w", err)
+	}
+
+	err = s.validator.ValidateCandidateSession(validator.ValidateCandidateSessionOpts{
+		Attempts: loginAttempts,
+	})
+	if err != nil {
+		return fmt.Errorf("failed to validate candidate session: %w", err)
+	}
+
+	query := Builder().
+		Update("sessions").
+		Set("candidate_id", candidateID).
+		Set("srp_state", srp).
+		Where("jti = ?", jti)
+
+	return s.Exec1(ctx, db, query)
+}
+
+// countLoginAttempts counts unsuccessful login attempts for the passed duration
+func (s *Storage) countLoginAttempts(ctx context.Context, db IConn, candidateID string, dur time.Duration) (counter int, err error) {
+	query := Builder().
+		Select("COUNT(*)").
+		From("sessions").
+		Where("candidate_id = ?", candidateID).
+		Where("time_from >= ?", time.Now().Add(-dur))
+
+	err = s.Get(ctx, db, &counter, query)
+	return
 }

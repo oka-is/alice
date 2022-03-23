@@ -195,6 +195,33 @@ func TestStorage_DeleteUserSessionExcept(t *testing.T) {
 		require.NoError(t, err13, "keeps sessions for foreign user")
 	})
 }
+func TestStorage_countLoginAttempts(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		user1 := mustCreateUser(t, store, &domain.User{})
+		user2 := mustCreateUser(t, store, &domain.User{})
+
+		session := mustCreateSession(t, store, &domain.Session{
+			CandidateID: user1.ID,
+			TimeFrom:    domain.NewEmptyTime(time.Now().Add(-5 * time.Minute)),
+		})
+		_ = mustCreateSession(t, store, &domain.Session{
+			CandidateID: user2.ID,
+		})
+
+		counter01, err01 := store.countLoginAttempts(ctx, savepoint, session.CandidateID.String, time.Minute)
+		counter02, err02 := store.countLoginAttempts(ctx, savepoint, session.CandidateID.String, 6*time.Minute)
+
+		require.NoError(t, err01)
+		require.NoError(t, err02)
+
+		require.Equal(t, 0, counter01)
+		require.Equal(t, 1, counter02)
+	})
+}
 
 func mustBuildSession(t *testing.T, storage *Storage, input *domain.Session) *domain.Session {
 	out := &domain.Session{

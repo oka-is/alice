@@ -6,6 +6,7 @@ type Session struct {
 	CandidateID NullString `db:"candidate_id"`
 	SrpState    NullBytea  `db:"srp_state"`
 	OtpSucceed  NullBool   `db:"otp_succeed"`
+	OtpAttempts NullInt64  `db:"otp_attempts"`
 	TimeFrom    NullTime   `db:"time_from"`
 	TimeTo      NullTime   `db:"time_to"`
 }

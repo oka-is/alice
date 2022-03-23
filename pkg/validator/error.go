@@ -8,7 +8,7 @@ import (
 
 // NewError used in testing purpose
 func NewError(message string) error {
-	return validation.Errors{"FIELD": validation.NewError("CODE", message)}.Filter()
+	return validation.Errors{"BASE": validation.NewError("INTERNAL", message)}.Filter()
 }
 
 func IsInvalid(err error) bool {
