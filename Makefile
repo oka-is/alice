@@ -22,7 +22,7 @@ help:
 install-lint:
 ifeq ($(wildcard $(BIN_LINTER)),)
 	$(info Downloading golangci-lint)
-	GOBIN=$(BIN) go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.44.0
+	GOBIN=$(BIN) go install github.com/golangci/golangci-lint/cmd/golangci-lint@v1.45.1
 endif
 
 t:

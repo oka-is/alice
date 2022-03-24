@@ -16,6 +16,7 @@ import (
 	"github.com/wault-pw/alice/pkg/pack"
 	"github.com/wault-pw/alice/pkg/storage"
 	"github.com/wault-pw/alice/pkg/validator"
+	"github.com/wault-pw/alice/server/mapper_v1"
 	"github.com/wault-pw/alice/server/policy"
 	"google.golang.org/protobuf/proto"
 )
@@ -142,7 +143,7 @@ func (c *Context) MustBindProto(m proto.Message) error {
 func (c *Context) HandleError(err error) {
 	switch {
 	case validator.IsInvalid(err):
-		_ = c.AbortWithError(http.StatusUnprocessableEntity, err)
+		c.ProtoBuf(http.StatusUnprocessableEntity, mapper_v1.MapValidationError(err))
 		return
 	case errors.Is(err, policy.ErrDenied):
 		_ = c.AbortWithError(http.StatusForbidden, err)
