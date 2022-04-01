@@ -13,14 +13,9 @@ func CreateBackup(ctx *engine.Context) {
 	flusher := ctx.Writer.(http.Flusher)
 
 	ctx.Header("content-type", "text/html; charset=UTF-8")
-	ctx.Header("content-disposition", fmt.Sprintf(`attachment; filename="%s"`, "backup.html"))
+	ctx.Header("content-disposition", fmt.Sprintf(`attachment; filename="%s"`, "wault.html"))
 
-	err := pre(ctx, flusher)
-	if err != nil {
-		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
-	}
-
-	err = before(ctx, flusher)
+	err := before(ctx, flusher)
 	if err != nil {
 		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
 	}
@@ -31,6 +26,11 @@ func CreateBackup(ctx *engine.Context) {
 	}
 
 	err = after(ctx, flusher)
+	if err != nil {
+		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
+	}
+
+	err = pre(ctx, flusher)
 	if err != nil {
 		_ = ctx.AbortWithError(http.StatusInternalServerError, err)
 	}
@@ -62,7 +62,7 @@ func before(ctx *engine.Context, flusher http.Flusher) error {
 }
 
 func after(ctx *engine.Context, flusher http.Flusher) error {
-	_, err := ctx.Writer.Write([]byte("]);</script></body></html>"))
+	_, err := ctx.Writer.Write([]byte("]);</script>"))
 	flusher.Flush()
 	return err
 }
