@@ -42,8 +42,8 @@ func BeforeStoreProduction(ctx *cli.Context) error {
 		return nil
 	}
 
-	if ctx.String(FlagSseKey.Name) == FlagSseKey.Value {
-		return fmt.Errorf("please provide <%s> flag", FlagSseKey.Name)
+	if !FlagSseKey.IsSet() {
+		return fmt.Errorf("please provide <%s>", FlagSseKey.Name)
 	}
 
 	return nil

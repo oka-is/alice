@@ -103,16 +103,16 @@ func BeforeServerProduction(ctx *cli.Context) error {
 		return nil
 	}
 
-	if ctx.String(FlagServerJwtKey.Name) == FlagServerJwtKey.Value {
-		return fmt.Errorf("please provide <%s> flag", FlagServerJwtKey.Name)
+	if !FlagServerJwtKey.IsSet() {
+		return fmt.Errorf("please provide <%s>", FlagServerJwtKey.Name)
 	}
 
-	if ctx.Bool(FlagServerVer666.Name) {
-		return fmt.Errorf("flag <%s> vant be set in production", FlagServerVer666.Name)
+	if FlagServerVer666.IsSet() {
+		return fmt.Errorf("flag <%s> cant be set in production", FlagServerVer666.Name)
 	}
 
-	if ctx.Bool(FlagServerMountCypress.Name) {
-		return fmt.Errorf("flag <%s> vant be set in production", FlagServerMountCypress.Name)
+	if FlagServerMountCypress.IsSet() {
+		return fmt.Errorf("flag <%s> cant be set in production", FlagServerMountCypress.Name)
 	}
 
 	return nil
