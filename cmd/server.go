@@ -37,6 +37,7 @@ var (
 	FlagServerAllowOrigin = &cli.StringSliceFlag{
 		Name:    "allow-origin",
 		Aliases: []string{"ao"},
+		EnvVars: []string{"ALLOW_ORIGIN"},
 		Value: cli.NewStringSlice(
 			"http://localhost:3000",
 			"http://0.0.0.0:3000",
