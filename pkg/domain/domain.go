@@ -1,7 +1,7 @@
 package domain
 
-import "github.com/google/uuid"
+import "github.com/wault-pw/alice/lib/uuid"
 
 func NewUUID() string {
-	return uuid.New().String()
+	return uuid.NewV4()
 }

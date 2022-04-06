@@ -13,6 +13,7 @@ func (w *WorkspacePolicy) Wrap(user domain.User, uw domain.UserWorkspace) IWorks
 	return w
 }
 
+// CanManageWorkspace only the owner can manage the workspace
 func (w *WorkspacePolicy) CanManageWorkspace() error {
 	if w.uw.OwnerID.String != w.user.ID.String {
 		return ErrDenied
@@ -29,6 +30,19 @@ func (w *WorkspacePolicy) CanSeeWorkspace() error {
 	return nil
 }
 
+func (w *WorkspacePolicy) CanDeleteShare() error {
+	// user can not delete self-created user workspace
+	if w.user.ID == w.uw.UserID && w.user.ID == w.uw.OwnerID {
+		return ErrDenied
+	}
+
+	if w.user.ID == w.uw.UserID || w.user.ID == w.uw.OwnerID {
+		return nil
+	}
+
+	return ErrDenied
+}
+
 func (w *WorkspacePolicy) CanSeeCard(card domain.Card) error {
 	if err := w.CanSeeWorkspace(); err != nil {
 		return err
@@ -42,7 +56,7 @@ func (w *WorkspacePolicy) CanSeeCard(card domain.Card) error {
 }
 
 func (w *WorkspacePolicy) CanManageCard(card domain.Card) error {
-	if err := w.CanManageWorkspace(); err != nil {
+	if err := w.CanSeeWorkspace(); err != nil {
 		return err
 	}
 

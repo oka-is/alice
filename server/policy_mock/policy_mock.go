@@ -86,6 +86,20 @@ func (m *MockWorkspacePolicy) EXPECT() *MockWorkspacePolicyMockRecorder {
 	return m.recorder
 }
 
+// CanDeleteShare mocks base method.
+func (m *MockWorkspacePolicy) CanDeleteShare() error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "CanDeleteShare")
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// CanDeleteShare indicates an expected call of CanDeleteShare.
+func (mr *MockWorkspacePolicyMockRecorder) CanDeleteShare() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CanDeleteShare", reflect.TypeOf((*MockWorkspacePolicy)(nil).CanDeleteShare))
+}
+
 // CanManageCard mocks base method.
 func (m *MockWorkspacePolicy) CanManageCard(card domain.Card) error {
 	m.ctrl.T.Helper()

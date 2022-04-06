@@ -15,3 +15,11 @@ func MapPrivUser(input domain.User) *alice_v1.PrivUser {
 		OtpEnabled: input.IsOtpEnabled(),
 	}
 }
+
+func MapPubUser(input domain.User) *alice_v1.PubUser {
+	return &alice_v1.PubUser{
+		Id:       input.ID.String,
+		Readonly: input.Readonly.Bool,
+		PubKey:   input.PubKey.Bytea,
+	}
+}

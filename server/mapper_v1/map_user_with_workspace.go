@@ -21,13 +21,16 @@ func MapUserWithWorkspaces(input []domain.UserWithWorkspace) []*alice_v1.UserWit
 
 func MapUserWithWorkspace(input domain.UserWithWorkspace) *alice_v1.UserWithWorkspace {
 	return &alice_v1.UserWithWorkspace{
-		Id:          input.WorkspaceID.String,
+		Id:          input.RecordID.String,
 		UserId:      input.UserID.String,
 		OwnerId:     input.OwnerID.String,
 		OwnerPubKey: input.OwnerPubKey.Bytea,
 		WorkspaceId: input.WorkspaceID.String,
 		AedKeyEnc:   input.AedKeyEnc.Bytea,
 		TitleEnc:    input.TitleEnc.Bytea,
-		CreatedAt:   input.WorkspaceCreatedAt.Time.String(),
+		// the owner will see another user_workspace record, where
+		// userID will be equal to OwnerID
+		SharedWithYou: input.UserID != input.OwnerID,
+		CreatedAt:     input.WorkspaceCreatedAt.Time.String(),
 	}
 }

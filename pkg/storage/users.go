@@ -110,6 +110,12 @@ func (s *Storage) findUser(ctx context.Context, db IConn, ID string) (user domai
 	return
 }
 
+func (s *Storage) isUserExists(ctx context.Context, db IConn, ID string) (exists bool, err error) {
+	query := Builder().Select("1").From("users").Where("id = ?", ID).Limit(1).Prefix("SELECT EXISTS(").Suffix(")")
+	err = s.Get(ctx, db, &exists, query)
+	return
+}
+
 func (s *Storage) createUser(ctx context.Context, db IConn, user *domain.User, uw *domain.UserWorkspace, workspace *domain.Workspace, cardsWithItems []domain.CardWithItems) error {
 	err := s.validator.ValidateUser(*user)
 	if err != nil {

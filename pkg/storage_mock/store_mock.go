@@ -166,6 +166,20 @@ func (mr *MockStoreMockRecorder) DeleteUserSessionExcept(ctx, userID, jti interf
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUserSessionExcept", reflect.TypeOf((*MockStore)(nil).DeleteUserSessionExcept), ctx, userID, jti)
 }
 
+// DeleteUserWorkspace mocks base method.
+func (m *MockStore) DeleteUserWorkspace(ctx context.Context, ID string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "DeleteUserWorkspace", ctx, ID)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// DeleteUserWorkspace indicates an expected call of DeleteUserWorkspace.
+func (mr *MockStoreMockRecorder) DeleteUserWorkspace(ctx, ID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUserWorkspace", reflect.TypeOf((*MockStore)(nil).DeleteUserWorkspace), ctx, ID)
+}
+
 // DeleteWorkspace mocks base method.
 func (m *MockStore) DeleteWorkspace(ctx context.Context, ID string) error {
 	m.ctrl.T.Helper()
@@ -268,6 +282,21 @@ func (mr *MockStoreMockRecorder) FindUserWithWorkspace(ctx, ID interface{}) *gom
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserWithWorkspace", reflect.TypeOf((*MockStore)(nil).FindUserWithWorkspace), ctx, ID)
 }
 
+// FindUserWorkspace mocks base method.
+func (m *MockStore) FindUserWorkspace(ctx context.Context, ID string) (domain.UserWorkspace, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "FindUserWorkspace", ctx, ID)
+	ret0, _ := ret[0].(domain.UserWorkspace)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// FindUserWorkspace indicates an expected call of FindUserWorkspace.
+func (mr *MockStoreMockRecorder) FindUserWorkspace(ctx, ID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "FindUserWorkspace", reflect.TypeOf((*MockStore)(nil).FindUserWorkspace), ctx, ID)
+}
+
 // FindUserWorkspaceLink mocks base method.
 func (m *MockStore) FindUserWorkspaceLink(ctx context.Context, userID, workspaceID string) (domain.UserWorkspace, error) {
 	m.ctrl.T.Helper()
@@ -341,6 +370,21 @@ func (m *MockStore) ListCardsByWorkspace(ctx context.Context, workspaceID string
 func (mr *MockStoreMockRecorder) ListCardsByWorkspace(ctx, workspaceID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListCardsByWorkspace", reflect.TypeOf((*MockStore)(nil).ListCardsByWorkspace), ctx, workspaceID)
+}
+
+// ListSharedUserWorkspaces mocks base method.
+func (m *MockStore) ListSharedUserWorkspaces(ctx context.Context, workspaceID, ownerID string) ([]domain.UserWorkspace, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListSharedUserWorkspaces", ctx, workspaceID, ownerID)
+	ret0, _ := ret[0].([]domain.UserWorkspace)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListSharedUserWorkspaces indicates an expected call of ListSharedUserWorkspaces.
+func (mr *MockStoreMockRecorder) ListSharedUserWorkspaces(ctx, workspaceID, ownerID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListSharedUserWorkspaces", reflect.TypeOf((*MockStore)(nil).ListSharedUserWorkspaces), ctx, workspaceID, ownerID)
 }
 
 // ListUserWithWorkspaces mocks base method.
@@ -427,6 +471,20 @@ func (m *MockStore) RetrieveSession(ctx context.Context, opts jwt.IOts, token st
 func (mr *MockStoreMockRecorder) RetrieveSession(ctx, opts, token interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "RetrieveSession", reflect.TypeOf((*MockStore)(nil).RetrieveSession), ctx, opts, token)
+}
+
+// ShareUserWorkspace mocks base method.
+func (m *MockStore) ShareUserWorkspace(ctx context.Context, uw *domain.UserWorkspace) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ShareUserWorkspace", ctx, uw)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// ShareUserWorkspace indicates an expected call of ShareUserWorkspace.
+func (mr *MockStoreMockRecorder) ShareUserWorkspace(ctx, uw interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ShareUserWorkspace", reflect.TypeOf((*MockStore)(nil).ShareUserWorkspace), ctx, uw)
 }
 
 // TerminateUser mocks base method.

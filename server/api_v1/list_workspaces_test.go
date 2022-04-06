@@ -27,6 +27,6 @@ func TestListWorkspaces(t *testing.T) {
 		s.MustBindResponse(t, res)
 
 		require.Len(t, res.Items, 1)
-		require.Equal(t, res.Items[0].Id, uw.WorkspaceID.String)
+		require.Equal(t, res.Items[0].WorkspaceId, uw.WorkspaceID.String)
 	})
 }

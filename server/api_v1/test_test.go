@@ -40,6 +40,7 @@ func MustSetup(t *testing.T) *Setup {
 		UserPolicy:      userPolicy,
 		WorkspacePolicy: workspacePolicy,
 		OtpStub:         OtpStub,
+		Production:      true,
 	}
 
 	app, err := engine.New(store, opts)

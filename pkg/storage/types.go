@@ -60,11 +60,15 @@ type IStore interface {
 	// Operations about workspaces
 
 	ListUserWithWorkspaces(ctx context.Context, userID string) (out []domain.UserWithWorkspace, err error)
+	ListSharedUserWorkspaces(ctx context.Context, workspaceID, ownerID string) (out []domain.UserWorkspace, err error)
+	DeleteUserWorkspace(ctx context.Context, ID string) error
 	FindUserWorkspaceLink(ctx context.Context, userID, workspaceID string) (out domain.UserWorkspace, err error)
 	CreateWorkspace(ctx context.Context, uw *domain.UserWorkspace, workspace *domain.Workspace) error
 	FindUserWithWorkspace(ctx context.Context, ID string) (out domain.UserWithWorkspace, err error)
+	FindUserWorkspace(ctx context.Context, ID string) (out domain.UserWorkspace, err error)
 	DeleteWorkspace(ctx context.Context, ID string) error
 	UpdateWorkspace(ctx context.Context, ID string, titleEnc []byte) error
+	ShareUserWorkspace(ctx context.Context, uw *domain.UserWorkspace) error
 }
 
 type IBuilder interface {
