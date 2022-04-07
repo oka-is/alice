@@ -187,6 +187,7 @@ func (s *Storage) insertUser(ctx context.Context, db IConn, user *domain.User) e
 		Columns(
 			"ver",
 			"readonly",
+			"restrict_sharing",
 			"identity",
 			"verifier",
 			"otp_secret",
@@ -198,6 +199,7 @@ func (s *Storage) insertUser(ctx context.Context, db IConn, user *domain.User) e
 		Values(
 			user.Ver,
 			user.Readonly,
+			user.RestrictSharing,
 			user.Identity,
 			Expr("encrypt(?, ?, 'aes-cbc/pad:pkcs')", user.Verifier, s.sseKey),
 			Expr("encrypt(?, ?, 'aes-cbc/pad:pkcs')", user.OtpSecret, s.sseKey),

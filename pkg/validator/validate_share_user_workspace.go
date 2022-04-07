@@ -6,9 +6,10 @@ import (
 )
 
 type ValidateShareUserWorkspaceOpts struct {
-	NotShared     bool
-	UserExists    bool
-	UserWorkspace domain.UserWorkspace
+	NotShared        bool
+	UserExists       bool
+	SharingPermitted bool
+	UserWorkspace    domain.UserWorkspace
 }
 
 func (v *Validator) ValidateShareUserWorkspace(opts ValidateShareUserWorkspaceOpts) error {
@@ -18,6 +19,7 @@ func (v *Validator) ValidateShareUserWorkspace(opts ValidateShareUserWorkspaceOp
 			validation.Validate(opts.UserWorkspace.UserID != opts.UserWorkspace.OwnerID, validation.Required.Error("can't share with self")),
 			validation.Validate(opts.NotShared, validation.Required.Error("is currently shared")),
 			validation.Validate(opts.UserExists, validation.Required.Error("not exists")),
+			validation.Validate(opts.SharingPermitted, validation.Required.Error("sharing restricted by user")),
 		),
 	}.Filter()
 }

@@ -53,6 +53,14 @@ func TestValidator_ValidateShareUserWorkspace(t *testing.T) {
 				return opts
 			},
 			wantErr: "User",
+		}, {
+			desc: "when sharing restricted by a user",
+			build: func() ValidateShareUserWorkspaceOpts {
+				opts := mustBuildValidateShareUserWorkspaceOpts(t)
+				opts.SharingPermitted = false
+				return opts
+			},
+			wantErr: "User",
 		},
 	}
 
@@ -73,8 +81,9 @@ func TestValidator_ValidateShareUserWorkspace(t *testing.T) {
 
 func mustBuildValidateShareUserWorkspaceOpts(t *testing.T) ValidateShareUserWorkspaceOpts {
 	return ValidateShareUserWorkspaceOpts{
-		NotShared:  true,
-		UserExists: true,
+		NotShared:        true,
+		UserExists:       true,
+		SharingPermitted: true,
 		UserWorkspace: domain.UserWorkspace{
 			AedKeyEnc: domain.NewEmptyBytes([]byte{1}),
 			UserID:    domain.NewEmptyString("workspace-user"),
