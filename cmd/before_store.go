@@ -42,7 +42,7 @@ func BeforeStoreProduction(ctx *cli.Context) error {
 		return nil
 	}
 
-	if !FlagSseKey.IsSet() {
+	if !isStringFlagSet(ctx, FlagSseKey) {
 		return fmt.Errorf("please provide <%s>", FlagSseKey.Name)
 	}
 
