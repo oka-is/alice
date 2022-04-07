@@ -9,6 +9,7 @@ help:
 	@echo 'Available targets: $(VERSION)'
 	@echo '  make build'
 	@echo '  make push'
+	@echo '  make outdated'
 	@echo ' '
 	@echo '  make db:status'
 	@echo '  make db:up'
