@@ -41,9 +41,9 @@ func (s *Storage) shareUserWorkspace(ctx context.Context, db IConn, uw *domain.U
 		return fmt.Errorf("failed to detect user workspace existance: %w", err)
 	}
 
-	userExists, err := s.isUserExists(ctx, db, uw.UserID.String)
+	_, userExists, err := s.findOrBuildUser(ctx, db, uw.UserID.String)
 	if err != nil {
-		return fmt.Errorf("failed to detect user existance: %w", err)
+		return fmt.Errorf("failed to find a user: %w", err)
 	}
 
 	err = s.validator.ValidateShareUserWorkspace(validator.ValidateShareUserWorkspaceOpts{

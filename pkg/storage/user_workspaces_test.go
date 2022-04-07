@@ -57,6 +57,51 @@ func TestStorage_FindUserWorkspaceLink(t *testing.T) {
 	}
 }
 
+func TestStorage_ShareUserWorkspace(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+
+		uw := mustCreateUserWorkspace(t, store, &domain.UserWorkspace{})
+		user := mustCreateUser(t, store, &domain.User{})
+		share := &domain.UserWorkspace{
+			WorkspaceID: uw.WorkspaceID,
+			OwnerID:     uw.OwnerID,
+			UserID:      user.ID,
+			AedKeyEnc:   domain.NewEmptyBytes([]byte{1}),
+		}
+
+		err := store.ShareUserWorkspace(ctx, share)
+		require.NoError(t, err)
+		require.NotEmpty(t, share.ID.String)
+	})
+}
+
+func TestStorage_isUserWorkspaceShared(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+
+		uw := mustCreateUserWorkspace(t, store, &domain.UserWorkspace{})
+
+		exists01, err01 := store.isUserWorkspaceShared(ctx, savepoint, uw.UserID.String, uw.WorkspaceID.String)
+		exists02, err02 := store.isUserWorkspaceShared(ctx, savepoint, domain.NewUUID(), uw.WorkspaceID.String)
+		exists03, err03 := store.isUserWorkspaceShared(ctx, savepoint, uw.UserID.String, domain.NewUUID())
+
+		require.NoError(t, err01)
+		require.NoError(t, err02)
+		require.NoError(t, err03)
+
+		require.Equal(t, true, exists01)
+		require.Equal(t, false, exists02)
+		require.Equal(t, false, exists03)
+	})
+}
+
 func mustBuildUserWorkspace(t *testing.T, storage *Storage, input *domain.UserWorkspace) *domain.UserWorkspace {
 	out := &domain.UserWorkspace{
 		AedKeyEnc: domain.NewEmptyBytes([]byte("AedKeyEnc")),

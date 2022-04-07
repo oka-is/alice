@@ -176,6 +176,27 @@ func TestStorage_DisableUserOtp(t *testing.T) {
 	})
 }
 
+func TestStorage_findOrBuildUser(t *testing.T) {
+	store, savepoint := MustNewStore(t)
+	t.Cleanup(savepoint.Flush)
+
+	t.Run("it works", func(t *testing.T) {
+		ctx := context.Background()
+		user01 := mustCreateUser(t, store, &domain.User{OtpSecret: domain.NewEmptyBytes([]byte{1})})
+
+		user11, found11, err11 := store.findOrBuildUser(ctx, savepoint, user01.ID.String)
+		user12, found12, err12 := store.findOrBuildUser(ctx, savepoint, domain.NewUUID())
+		require.NoError(t, err11)
+		require.NoError(t, err12)
+
+		require.Equal(t, found11, true)
+		require.Equal(t, found12, false)
+
+		require.Equal(t, user01.ID.String, user11.ID.String)
+		require.Equal(t, "", user12.ID.String)
+	})
+}
+
 func mustBuildUser(t *testing.T, storage *Storage, input *domain.User) *domain.User {
 	out := &domain.User{
 		Ver:          domain.NewEmptyInt64(1),

@@ -2,6 +2,7 @@ package storage
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/wault-pw/alice/pkg/domain"
@@ -106,14 +107,22 @@ func (s *Storage) terminateUser(ctx context.Context, db IConn, identity string, 
 
 func (s *Storage) findUser(ctx context.Context, db IConn, ID string) (user domain.User, err error) {
 	query := s.selectUserColumns().From("users").Where("id = ?", ID).Limit(1)
-	err = s.Get(ctx, db, &user, query)
+	err = SQLErr(s.Get(ctx, db, &user, query))
 	return
 }
 
-func (s *Storage) isUserExists(ctx context.Context, db IConn, ID string) (exists bool, err error) {
-	query := Builder().Select("1").From("users").Where("id = ?", ID).Limit(1).Prefix("SELECT EXISTS(").Suffix(")")
-	err = s.Get(ctx, db, &exists, query)
-	return
+func (s *Storage) findOrBuildUser(ctx context.Context, db IConn, ID string) (user domain.User, exists bool, err error) {
+	foundUser, err := s.findUser(ctx, db, ID)
+
+	if errors.Is(ErrNotFound, err) {
+		return user, false, nil
+	}
+
+	if err != nil {
+		return user, false, err
+	}
+
+	return foundUser, true, err
 }
 
 func (s *Storage) createUser(ctx context.Context, db IConn, user *domain.User, uw *domain.UserWorkspace, workspace *domain.Workspace, cardsWithItems []domain.CardWithItems) error {
